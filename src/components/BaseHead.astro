@@ -43,11 +43,17 @@ const resolvedOgImage = ogImage ?? image;
 </style>
 <script is:inline>
   (function () {
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
+    function applyTheme() {
+      const stored = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
     }
+    applyTheme();
+    document.addEventListener('astro:after-swap', applyTheme);
   })();
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
