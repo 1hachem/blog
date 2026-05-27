@@ -1,13 +1,21 @@
 ---
 import { SITE_AUTHOR } from '../consts';
+import { getGitInfo } from '../lib/git';
+
 const year = new Date().getFullYear();
+const { lastUpdated, commitHash } = getGitInfo();
 ---
 
 <footer>
 	<div>
-		<a href="/rss.xml">rss</a>
-		<span>·</span>
-		<span>&copy; {year} {SITE_AUTHOR}</span>
+		{lastUpdated && (
+			<span>updated {lastUpdated} <code>{commitHash}</code></span>
+		)}
+		<span class="right">
+			<a href="/rss.xml">rss</a>
+			<span>·</span>
+			<span>&copy; {year} {SITE_AUTHOR}</span>
+		</span>
 	</div>
 </footer>
 
@@ -24,11 +32,21 @@ const year = new Date().getFullYear();
 		display: flex;
 		gap: 0.5rem;
 		align-items: center;
+		justify-content: space-between;
+	}
+	.right {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
 	}
 	a {
 		color: var(--muted);
 	}
 	a:hover {
 		color: var(--fg);
+	}
+	code {
+		font-size: 0.8em;
+		opacity: 0.6;
 	}
 </style>
