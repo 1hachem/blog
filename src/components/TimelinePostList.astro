@@ -1,0 +1,160 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+	currentPage: number;
+	totalPages: number;
+	baseURL?: string;
+}
+
+const { posts, currentPage, totalPages, baseURL = '/' } = Astro.props;
+
+const THREE_MONTHS = 1000 * 60 * 60 * 24 * 90;
+const now = Date.now();
+
+// Group posts into "recent" and per-year buckets
+const groups: { label: string; posts: CollectionEntry<'blog'>[] }[] = [];
+const recentPosts = posts.filter((p) => now - p.data.pubDate.valueOf() < THREE_MONTHS);
+const olderPosts = posts.filter((p) => now - p.data.pubDate.valueOf() >= THREE_MONTHS);
+
+if (recentPosts.length > 0) {
+	groups.push({ label: 'recent', posts: recentPosts });
+}
+
+const byYear = new Map<number, CollectionEntry<'blog'>[]>();
+for (const post of olderPosts) {
+	const year = post.data.pubDate.getFullYear();
+	if (!byYear.has(year)) byYear.set(year, []);
+	byYear.get(year)!.push(post);
+}
+for (const [year, yPosts] of [...byYear.entries()].sort((a, b) => b[0] - a[0])) {
+	groups.push({ label: String(year), posts: yPosts });
+}
+
+function pageURL(n: number) {
+	if (n <= 1) return baseURL;
+	const prefix = baseURL === '/' ? '' : baseURL;
+	return `${prefix}/page/${n}`;
+}
+---
+
+{groups.map((group) => (
+	<section class="timeline-group">
+		<h2 class="group-label">{group.label}</h2>
+		<ul class="post-list">
+			{group.posts.map((post) => (
+				<li>
+					<div class="post-meta">
+						<a href={`/blog/${post.id}/`} data-astro-prefetch>{post.data.title}</a>
+						{post.data.category && (
+							<a
+								href={`/category/${post.data.category.toLowerCase().replace(/\s+/g, '-')}`}
+								class="cat-badge"
+								data-astro-prefetch
+							>{post.data.category}</a>
+						)}
+					</div>
+					<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+				</li>
+			))}
+		</ul>
+	</section>
+))}
+
+{totalPages > 1 && (
+	<nav class="pagination">
+		{currentPage > 1
+			? <a href={pageURL(currentPage - 1)} data-astro-prefetch>← prev</a>
+			: <span class="disabled">← prev</span>
+		}
+		<span class="page-count">{currentPage} / {totalPages}</span>
+		{currentPage < totalPages
+			? <a href={pageURL(currentPage + 1)} data-astro-prefetch>next →</a>
+			: <span class="disabled">next →</span>
+		}
+	</nav>
+)}
+
+<style>
+	.timeline-group {
+		margin-bottom: 2rem;
+	}
+	.group-label {
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+		margin: 0 0 0.25rem;
+		font-weight: normal;
+	}
+	.post-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.post-list li {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		padding: 0.4rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+	.post-list li:first-child {
+		border-top: 1px solid var(--border);
+	}
+	.post-meta {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		min-width: 0;
+	}
+	.post-meta > a {
+		text-decoration: none;
+	}
+	.post-meta > a:hover {
+		text-decoration: underline;
+	}
+	.cat-badge {
+		font-size: 0.7rem;
+		border: 1px solid var(--border);
+		padding: 0 0.3rem;
+		color: var(--muted);
+		text-decoration: none;
+		white-space: nowrap;
+		flex-shrink: 0;
+	}
+	.cat-badge:hover {
+		color: var(--fg);
+		border-color: var(--fg);
+	}
+	.date {
+		color: var(--muted);
+		font-size: 0.85rem;
+		flex-shrink: 0;
+	}
+	.pagination {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		font-size: 0.9rem;
+		margin-top: 1rem;
+	}
+	.page-count {
+		color: var(--muted);
+	}
+	.disabled {
+		color: var(--border);
+	}
+	@media (max-width: 500px) {
+		.post-list li {
+			flex-direction: column;
+			gap: 0.15rem;
+		}
+		.date {
+			font-size: 0.75rem;
+		}
+	}
+</style>

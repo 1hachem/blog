@@ -1,0 +1,46 @@
+---
+interface Props {
+	categories: string[];
+	active?: string; // current category slug, undefined = all
+}
+
+const { categories, active } = Astro.props;
+
+function slug(cat: string) {
+	return cat.toLowerCase().replace(/\s+/g, '-');
+}
+---
+
+<nav class="filter">
+	<a href="/" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
+	{categories.map((cat) => (
+		<a
+			href={`/category/${slug(cat)}`}
+			class:list={[{ active: active === slug(cat) }]}
+			data-astro-prefetch
+		>
+			{cat}
+		</a>
+	))}
+</nav>
+
+<style>
+	.filter {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-bottom: 1.5rem;
+	}
+	.filter a {
+		font-size: 0.85rem;
+		text-decoration: none;
+		color: var(--muted);
+		border: 1px solid var(--border);
+		padding: 0.1rem 0.5rem;
+	}
+	.filter a:hover,
+	.filter a.active {
+		color: var(--fg);
+		border-color: var(--fg);
+	}
+</style>
