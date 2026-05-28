@@ -1,0 +1,9 @@
+personal blog built with astro.
+
+## todo
+
+- [ ] fill in about page
+- [ ] search (pagefind integrates with astro, zero JS until opened)
+- [ ] tag pagination (currently only first page is generated for tag archives)
+- [ ] category pagination (same — only first page generated)
+- [ ] author archive pages (author field exists in schema but no listing page)
