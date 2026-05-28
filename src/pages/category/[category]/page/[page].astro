@@ -3,7 +3,7 @@ import BaseHead from "../../../../components/BaseHead.astro";
 import CategoryFilter from "../../../../components/CategoryFilter.astro";
 import Footer from "../../../../components/Footer.astro";
 import Header from "../../../../components/Header.astro";
-import PostList from "../../../../components/PostList.astro";
+import TimelinePostList from "../../../../components/TimelinePostList.astro";
 import { POSTS_PER_PAGE, SITE_TITLE } from "../../../../consts";
 import { getAllPosts, getCategories } from "../../../../lib/posts";
 
@@ -46,7 +46,7 @@ const catSlug = Astro.params.category;
 		<Header />
 		<main>
 			<CategoryFilter categories={allCategories} active={catSlug} />
-			<PostList posts={posts} currentPage={currentPage} totalPages={totalPages} baseURL={`/category/${catSlug}`} />
+			<TimelinePostList posts={posts} currentPage={currentPage} totalPages={totalPages} baseURL={`/category/${catSlug}`} />
 		</main>
 		<Footer />
 	</body>
