@@ -7,12 +7,14 @@ const blog = defineCollection({
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
 	schema: ({ image }) =>
 		z.object({
+			draft: z.boolean().default(false),
 			title: z.string(),
 			description: z.string(),
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
 			category: z.enum(CATEGORY_KEYS as [string, ...string[]]).optional(),
+			tags: z.array(z.string()).optional(),
 			// SEO extras
 			keywords: z.array(z.string()).optional(),
 			canonicalURL: z.string().url().optional(),
