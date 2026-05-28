@@ -1,0 +1,46 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import TimelinePostList from '../../components/TimelinePostList.astro';
+import { POSTS_PER_PAGE, SITE_TITLE } from '../../consts';
+import { getAllPosts, getTags } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const allPosts = await getAllPosts();
+	const tags = getTags(allPosts);
+
+	return tags.map((tag) => {
+		const filtered = allPosts.filter((p) => p.data.tags?.includes(tag));
+		const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
+		return {
+			params: { tag },
+			props: { tag, posts: filtered.slice(0, POSTS_PER_PAGE), totalPages },
+		};
+	});
+}
+
+const { tag, posts, totalPages } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`#${tag} — ${SITE_TITLE}`} description={`Posts tagged #${tag}`} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p class="heading">#{tag}</p>
+			<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} baseURL={`/tag/${tag}`} />
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.heading {
+		margin-bottom: 1.5rem;
+		color: var(--muted);
+	}
+</style>
