@@ -1,9 +1,10 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { readingTime } from '../../lib/posts';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
+	const posts = await getCollection('blog', ({ data }) => !data.draft);
 	return posts.map((post) => {
 		const related = post.data.category
 			? posts
@@ -25,8 +26,9 @@ interface Props {
 
 const { post, related } = Astro.props;
 const { Content, headings } = await render(post);
+const rt = readingTime(post.body ?? '');
 ---
 
-<BlogPost {...post.data} related={related} headings={headings}>
+<BlogPost {...post.data} readingTime={rt} related={related} headings={headings}>
 	<Content />
 </BlogPost>

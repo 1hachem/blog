@@ -10,12 +10,13 @@ import TableOfContents from '../components/TableOfContents.astro';
 type Props = CollectionEntry<'blog'>['data'] & {
 	related?: CollectionEntry<'blog'>[];
 	headings?: MarkdownHeading[];
+	readingTime?: string;
 };
 
 const {
 	title, description, pubDate, updatedDate,
 	keywords, canonicalURL, noindex, ogTitle, ogDescription, ogImage, author,
-	category, related = [], headings = [],
+	category, tags = [], related = [], headings = [], readingTime,
 } = Astro.props;
 
 const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
@@ -46,8 +47,16 @@ const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
 						{category && (
 							<span> · <a href={`/category/${categorySlug}`} data-astro-prefetch>{category}</a></span>
 						)}
+						{readingTime && <span> · {readingTime}</span>}
 					</p>
 					<h1>{title}</h1>
+					{tags.length > 0 && (
+						<p class="post-tags">
+							{tags.map((tag: string) => (
+								<a href={`/tag/${tag}`} class="tag" data-astro-prefetch>#{tag}</a>
+							))}
+						</p>
+					)}
 					<hr />
 				</header>
 
@@ -89,6 +98,20 @@ const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
 		color: var(--muted);
 		font-size: 0.85rem;
 		margin: 0;
+	}
+	.post-tags {
+		margin: 0.4rem 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+	.tag {
+		font-size: 0.78rem;
+		color: var(--muted);
+		text-decoration: none;
+	}
+	.tag:hover {
+		color: var(--fg);
 	}
 	.updated {
 		font-style: italic;
