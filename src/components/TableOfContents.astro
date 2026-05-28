@@ -1,0 +1,84 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{toc.length >= 2 && (
+	<nav class="toc" aria-label="Table of contents">
+		<ol class="toc-list">
+			{toc.map((h) => (
+				<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'} data-id={h.slug}>
+					<a href={`#${h.slug}`}>{h.text}</a>
+				</li>
+			))}
+		</ol>
+	</nav>
+)}
+
+<script>
+	const list = document.querySelector('.toc-list');
+	if (list) {
+		const items = list.querySelectorAll<HTMLElement>('li[data-id]');
+		const idToItem = new Map<string, HTMLElement>();
+		for (const item of items) idToItem.set(item.dataset.id!, item);
+
+		let activeId = '';
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						idToItem.get(activeId)?.classList.remove('active');
+						activeId = entry.target.id;
+						idToItem.get(activeId)?.classList.add('active');
+					}
+				}
+			},
+			{ rootMargin: '0px 0px -70% 0px', threshold: 0 }
+		);
+
+		for (const id of idToItem.keys()) {
+			const el = document.getElementById(id);
+			if (el) io.observe(el);
+		}
+	}
+</script>
+
+<style>
+	.toc {
+		font-size: 0.78rem;
+		line-height: 1.4;
+		border-left: 2px solid var(--border);
+		padding-left: 0.75rem;
+	}
+	.toc-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.toc-list li {
+		padding: 0.18rem 0;
+	}
+	.toc-list li a {
+		text-decoration: none;
+		color: var(--muted);
+		display: block;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.toc-list li a:hover {
+		color: var(--fg);
+	}
+	.toc-list li.active > a {
+		color: var(--fg);
+	}
+	.toc-h3 {
+		padding-left: 0.8rem;
+	}
+</style>
