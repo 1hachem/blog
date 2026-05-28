@@ -1,4 +1,5 @@
 import { getCollection } from 'astro:content';
+import { CATEGORIES, type CategoryKey } from './categories';
 
 export async function getAllPosts() {
 	return (await getCollection('blog')).sort(
@@ -7,9 +8,9 @@ export async function getAllPosts() {
 }
 
 export function getCategories(posts: Awaited<ReturnType<typeof getAllPosts>>) {
-	const seen = new Set<string>();
+	const seen = new Set<CategoryKey>();
 	for (const post of posts) {
-		if (post.data.category) seen.add(post.data.category);
+		if (post.data.category) seen.add(post.data.category as CategoryKey);
 	}
-	return [...seen].sort();
+	return [...seen].sort().map((key) => CATEGORIES[key]);
 }

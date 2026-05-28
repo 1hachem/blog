@@ -12,24 +12,24 @@ export async function getStaticPaths() {
 	const categories = getCategories(allPosts);
 
 	return categories.map((cat) => {
-		const catSlug = cat.toLowerCase().replace(/\s+/g, '-');
-		const filtered = allPosts.filter((p) => p.data.category === cat);
+		const catSlug = cat.label.toLowerCase().replace(/\s+/g, '-');
+		const filtered = allPosts.filter((p) => p.data.category === cat.label);
 		const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
 		return {
 			params: { category: catSlug },
-			props: { label: cat, posts: filtered.slice(0, POSTS_PER_PAGE), totalPages, allCategories: categories },
+			props: { label: cat.label, description: cat.description, posts: filtered.slice(0, POSTS_PER_PAGE), totalPages, allCategories: categories },
 		};
 	});
 }
 
-const { label, posts, totalPages, allCategories } = Astro.props;
+const { label, description, posts, totalPages, allCategories } = Astro.props;
 const catSlug = Astro.params.category;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${label} — ${SITE_TITLE}`} description={`Posts in ${label}`} />
+		<BaseHead title={`${label} — ${SITE_TITLE}`} description={description} />
 	</head>
 	<body>
 		<Header />

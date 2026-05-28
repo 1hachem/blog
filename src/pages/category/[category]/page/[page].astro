@@ -13,15 +13,16 @@ export async function getStaticPaths() {
 	const paths = [];
 
 	for (const cat of categories) {
-		const catSlug = cat.toLowerCase().replace(/\s+/g, "-");
-		const filtered = allPosts.filter((p) => p.data.category === cat);
+		const catSlug = cat.label.toLowerCase().replace(/\s+/g, "-");
+		const filtered = allPosts.filter((p) => p.data.category === cat.label);
 		const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
 
 		for (let page = 2; page <= totalPages; page++) {
 			paths.push({
 				params: { category: catSlug, page: String(page) },
 				props: {
-					label: cat,
+					label: cat.label,
+					description: cat.description,
 					posts: filtered.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE),
 					currentPage: page,
 					totalPages,
@@ -33,14 +34,14 @@ export async function getStaticPaths() {
 	return paths;
 }
 
-const { label, posts, currentPage, totalPages, allCategories } = Astro.props;
+const { label, description, posts, currentPage, totalPages, allCategories } = Astro.props;
 const catSlug = Astro.params.category;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${label} — page ${currentPage} — ${SITE_TITLE}`} description={`Posts in ${label}`} />
+		<BaseHead title={`${label} — page ${currentPage} — ${SITE_TITLE}`} description={description} />
 	</head>
 	<body>
 		<Header />

@@ -1,6 +1,11 @@
 ---
+interface Category {
+	label: string;
+	description: string;
+}
+
 interface Props {
-	categories: string[];
+	categories: Category[];
 	active?: string; // current category slug, undefined = all
 }
 
@@ -15,11 +20,12 @@ function slug(cat: string) {
 	<a href="/" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
 	{categories.map((cat) => (
 		<a
-			href={`/category/${slug(cat)}`}
-			class:list={[{ active: active === slug(cat) }]}
+			href={`/category/${slug(cat.label)}`}
+			class:list={[{ active: active === slug(cat.label) }, 'has-cat-tooltip']}
 			data-astro-prefetch
 		>
-			{cat}
+			{cat.label}
+			<span class="cat-tooltip"><span class="cat-tooltip-text">{cat.description}</span></span>
 		</a>
 	))}
 </nav>
@@ -37,10 +43,64 @@ function slug(cat: string) {
 		color: var(--muted);
 		border: 1px solid var(--border);
 		padding: 0.1rem 0.5rem;
+		position: relative;
 	}
 	.filter a:hover,
 	.filter a.active {
 		color: var(--fg);
 		border-color: var(--fg);
 	}
+	.has-cat-tooltip .cat-tooltip {
+		position: fixed;
+		z-index: 10;
+		background: white;
+		border: 2px solid #aaa;
+		padding: 0.4rem 0.6rem;
+		font-size: 0.78rem;
+		color: black;
+		max-width: 280px;
+		pointer-events: none;
+		opacity: 0;
+		visibility: hidden;
+	}
+	.has-cat-tooltip .cat-tooltip.visible {
+		opacity: 1;
+		visibility: visible;
+	}
+	.cat-tooltip-text {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		white-space: normal;
+	}
 </style>
+
+<script>
+	let timer: ReturnType<typeof setTimeout> | null = null;
+
+	document.querySelectorAll<HTMLAnchorElement>('.has-cat-tooltip').forEach((link) => {
+		const tip = link.querySelector<HTMLElement>('.cat-tooltip');
+		if (!tip) return;
+
+		link.addEventListener('mouseenter', (e) => {
+			const me = e as MouseEvent;
+			timer = setTimeout(() => {
+				tip.style.left = me.clientX + 12 + 'px';
+				tip.style.top = me.clientY - 28 + 'px';
+				tip.classList.add('visible');
+			}, 700);
+		});
+
+		link.addEventListener('mousemove', (e) => {
+			const me = e as MouseEvent;
+			tip.style.left = me.clientX + 12 + 'px';
+			tip.style.top = me.clientY - 28 + 'px';
+		});
+
+		link.addEventListener('mouseleave', () => {
+			if (timer) { clearTimeout(timer); timer = null; }
+			tip.classList.remove('visible');
+		});
+	});
+</script>
