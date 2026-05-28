@@ -1,5 +1,4 @@
 ---
-import ClientRouter from 'astro/components/ClientRouter.astro';
 import '../styles/global.css';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
@@ -35,12 +34,6 @@ const resolvedOgImage = ogImage ?? image;
 ---
 
 <meta charset="utf-8" />
-<ClientRouter transition:animate="none" />
-<style is:global>
-	::view-transition-old(root), ::view-transition-new(root) {
-		animation: none;
-	}
-</style>
 <script is:inline>
   (function () {
     function applyTheme() {
@@ -53,7 +46,6 @@ const resolvedOgImage = ogImage ?? image;
       }
     }
     applyTheme();
-    document.addEventListener('astro:after-swap', applyTheme);
   })();
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
