@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { CATEGORIES } from './categories';
 import { getCategories } from './posts';
 
 type MockPost = Parameters<typeof getCategories>[0][number];
@@ -21,16 +22,16 @@ function makePost(overrides: Partial<MockPost['data']> = {}): MockPost {
 describe('getCategories', () => {
 	it('returns sorted unique categories', () => {
 		const posts = [
-			makePost({ category: 'zebra' }),
-			makePost({ category: 'apple' }),
-			makePost({ category: 'zebra' }),
+			makePost({ category: 'tech' }),
+			makePost({ category: 'general' }),
+			makePost({ category: 'tech' }),
 		];
-		expect(getCategories(posts)).toEqual(['apple', 'zebra']);
+		expect(getCategories(posts)).toEqual([CATEGORIES.general, CATEGORIES.tech]);
 	});
 
 	it('omits posts with no category', () => {
 		const posts = [makePost({ category: 'tech' }), makePost()];
-		expect(getCategories(posts)).toEqual(['tech']);
+		expect(getCategories(posts)).toEqual([CATEGORIES.tech]);
 	});
 
 	it('returns empty array for no posts', () => {
@@ -49,9 +50,7 @@ describe('post sorting', () => {
 			makePost({ pubDate: new Date('2025-06-01') }),
 			makePost({ pubDate: new Date('2024-03-15') }),
 		];
-		const sorted = [...posts].sort(
-			(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-		);
+		const sorted = [...posts].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 		expect(sorted[0].data.pubDate.getFullYear()).toBe(2025);
 		expect(sorted[1].data.pubDate.getFullYear()).toBe(2024);
 		expect(sorted[2].data.pubDate.getFullYear()).toBe(2023);
