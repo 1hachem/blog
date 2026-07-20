@@ -1,0 +1,33 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import PageNav from '../components/PageNav.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+interface NavLink {
+	href: string;
+	label: string;
+}
+interface Props {
+	title: string;
+	description: string;
+	navLinks?: NavLink[];
+}
+
+const { title, description, navLinks } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<ThemeToggle />
+		<main>
+			{navLinks && navLinks.length > 0 && <PageNav links={navLinks} />}
+			<slot />
+		</main>
+		<Footer />
+	</body>
+</html>

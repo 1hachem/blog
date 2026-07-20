@@ -1,9 +1,7 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
 import CategoryFilter from '../../components/CategoryFilter.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
 import TimelinePostList from '../../components/TimelinePostList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { POSTS_PER_PAGE, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 import { getAllPosts, getCategories } from '../../lib/posts';
 
@@ -27,19 +25,11 @@ export async function getStaticPaths() {
 const { posts, currentPage, totalPages } = Astro.props;
 const allPosts = await getAllPosts();
 const categories = getCategories(allPosts);
+
+const navLinks = [{ href: '/blog', label: '← blog' }, { href: '/', label: 'home' }];
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`page ${currentPage} — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<CategoryFilter categories={categories} />
-			<TimelinePostList posts={posts} currentPage={currentPage} totalPages={totalPages} />
-		</main>
-		<Footer />
-	</body>
-</html>
+<BaseLayout title={`page ${currentPage} — ${SITE_TITLE}`} description={SITE_DESCRIPTION} navLinks={navLinks}>
+	<CategoryFilter categories={categories} />
+	<TimelinePostList posts={posts} currentPage={currentPage} totalPages={totalPages} />
+</BaseLayout>

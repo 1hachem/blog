@@ -1,8 +1,6 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
 import TimelinePostList from '../../components/TimelinePostList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { POSTS_PER_PAGE, SITE_TITLE } from '../../consts';
 import { getAllPosts, getTags } from '../../lib/posts';
 
@@ -21,22 +19,14 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts, totalPages } = Astro.props;
+
+const navLinks = [{ href: '/blog', label: '← blog' }, { href: '/', label: 'home' }];
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`#${tag} — ${SITE_TITLE}`} description={`Posts tagged #${tag}`} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<p class="heading">#{tag}</p>
-			<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} baseURL={`/tag/${tag}`} />
-		</main>
-		<Footer />
-	</body>
-</html>
+<BaseLayout title={`#${tag} — ${SITE_TITLE}`} description={`Posts tagged #${tag}`} navLinks={navLinks}>
+	<p class="heading">#{tag}</p>
+	<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} baseURL={`/tag/${tag}`} />
+</BaseLayout>
 
 <style>
 	.heading {

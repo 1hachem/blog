@@ -1,0 +1,19 @@
+---
+import CategoryFilter from '../../components/CategoryFilter.astro';
+import TimelinePostList from '../../components/TimelinePostList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { POSTS_PER_PAGE, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { getAllPosts, getCategories } from '../../lib/posts';
+
+const allPosts = await getAllPosts();
+const categories = getCategories(allPosts);
+const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+const posts = allPosts.slice(0, POSTS_PER_PAGE);
+
+const navLinks = [{ href: '/', label: '← home' }, { href: '/about', label: 'about' }];
+---
+
+<BaseLayout title={`Blog · ${SITE_TITLE}`} description={SITE_DESCRIPTION} navLinks={navLinks}>
+	<CategoryFilter categories={categories} />
+	<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} />
+</BaseLayout>
