@@ -1,0 +1,44 @@
+---
+import Search from 'astro-pagefind/components/Search.astro';
+---
+
+<div class="search">
+	<Search
+		id="site-search"
+		className="pagefind-ui"
+		uiOptions={{ showImages: false, excerptLength: 15, resetStyles: false }}
+	/>
+</div>
+
+<style is:global>
+	/* Theme the Pagefind default UI to match the site */
+	.search {
+		margin-bottom: 2rem;
+	}
+	.search .pagefind-ui {
+		--pagefind-ui-primary: var(--fg);
+		--pagefind-ui-text: var(--fg);
+		--pagefind-ui-background: var(--bg);
+		--pagefind-ui-border: var(--border);
+		--pagefind-ui-tag: var(--code-bg);
+		--pagefind-ui-border-width: 1px;
+		--pagefind-ui-border-radius: 4px;
+		--pagefind-ui-font: var(--font-mono);
+	}
+	.search .pagefind-ui__search-input {
+		font-size: 0.95rem;
+		background: var(--bg);
+		color: var(--fg);
+	}
+	.search .pagefind-ui__result-title a {
+		color: var(--fg);
+	}
+	.search .pagefind-ui__result-excerpt {
+		color: var(--muted);
+	}
+	.search mark {
+		background: transparent;
+		color: var(--accent);
+		font-weight: 700;
+	}
+</style>
