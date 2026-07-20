@@ -11,24 +11,47 @@ import Search from 'astro-pagefind/components/Search.astro';
 </div>
 
 <style is:global>
-	/* Theme the Pagefind default UI to match the site */
+	/* Low-profile search: no border, same background as the app */
 	.search {
-		margin-bottom: 2rem;
+		width: 100%;
+		max-width: 18rem;
+		margin-bottom: 1.5rem;
 	}
 	.search .pagefind-ui {
 		--pagefind-ui-primary: var(--fg);
 		--pagefind-ui-text: var(--fg);
 		--pagefind-ui-background: var(--bg);
-		--pagefind-ui-border: var(--border);
-		--pagefind-ui-tag: var(--code-bg);
-		--pagefind-ui-border-width: 1px;
-		--pagefind-ui-border-radius: 4px;
+		--pagefind-ui-border: transparent;
+		--pagefind-ui-tag: var(--bg);
+		--pagefind-ui-border-width: 0px;
+		--pagefind-ui-border-radius: 0px;
 		--pagefind-ui-font: var(--font-mono);
 	}
+	.search .pagefind-ui__form::before {
+		opacity: 0.5;
+	}
 	.search .pagefind-ui__search-input {
-		font-size: 0.95rem;
+		font-size: 0.85rem;
+		padding: 0.1rem 0.5rem 0.1rem 1.8rem;
 		background: var(--bg);
 		color: var(--fg);
+		border: none;
+		border-bottom: 1px solid var(--border);
+	}
+	.search .pagefind-ui__search-input:focus {
+		border-bottom-color: var(--fg);
+		outline: none;
+	}
+	.search .pagefind-ui__search-clear {
+		background: transparent;
+		color: var(--muted);
+	}
+	/* Results drop below, aligned to the app background */
+	.search .pagefind-ui__results-area {
+		background: var(--bg);
+	}
+	.search .pagefind-ui__result {
+		border-top: 1px solid var(--border);
 	}
 	.search .pagefind-ui__result-title a {
 		color: var(--fg);
