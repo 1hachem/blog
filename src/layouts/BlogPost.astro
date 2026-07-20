@@ -59,7 +59,6 @@ const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
 							))}
 						</p>
 					)}
-					<hr />
 				</header>
 
 				<div class="post-body">
@@ -72,7 +71,6 @@ const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
 
 				{related.length > 0 && (
 					<aside class="related">
-						<hr />
 						<p class="related-heading">more in <a href={`/category/${categorySlug}`} data-astro-prefetch>{category}</a></p>
 						<ul>
 							{related.map((p) => (
