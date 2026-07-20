@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import PageNav from '../components/PageNav.astro';
+import Search from '../components/Search.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface NavLink {
@@ -23,7 +24,10 @@ const { title, description, navLinks } = Astro.props;
 		<BaseHead title={title} description={description} />
 	</head>
 	<body>
-		<ThemeToggle />
+		<div class="topbar">
+			<Search />
+			<ThemeToggle />
+		</div>
 		<main>
 			{navLinks && navLinks.length > 0 && <PageNav links={navLinks} />}
 			<slot />
@@ -31,3 +35,20 @@ const { title, description, navLinks } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
+<style is:global>
+	.topbar {
+		position: fixed;
+		top: 0.6rem;
+		right: 0.9rem;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		z-index: 10;
+	}
+	@media (max-width: 500px) {
+		.topbar .search {
+			width: 8.5rem;
+		}
+	}
+</style>

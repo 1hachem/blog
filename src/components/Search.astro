@@ -11,11 +11,9 @@ import Search from 'astro-pagefind/components/Search.astro';
 </div>
 
 <style is:global>
-	/* Low-profile search: no border, same background as the app */
+	/* Compact, low-profile search that lives in the top bar next to the toggle */
 	.search {
-		width: 100%;
-		max-width: 18rem;
-		margin-bottom: 1.5rem;
+		width: 12rem;
 	}
 	.search .pagefind-ui {
 		--pagefind-ui-primary: var(--fg);
@@ -28,11 +26,14 @@ import Search from 'astro-pagefind/components/Search.astro';
 		--pagefind-ui-font: var(--font-mono);
 	}
 	.search .pagefind-ui__form::before {
-		opacity: 0.5;
+		opacity: 0.45;
+		width: 0.85rem;
+		height: 0.85rem;
+		top: 0.35rem;
 	}
 	.search .pagefind-ui__search-input {
-		font-size: 0.85rem;
-		padding: 0.1rem 0.5rem 0.1rem 1.8rem;
+		font-size: 0.8rem;
+		padding: 0.15rem 0.5rem 0.15rem 1.6rem;
 		background: var(--bg);
 		color: var(--fg);
 		border: none;
@@ -45,10 +46,20 @@ import Search from 'astro-pagefind/components/Search.astro';
 	.search .pagefind-ui__search-clear {
 		background: transparent;
 		color: var(--muted);
+		font-size: 0.75rem;
 	}
-	/* Results drop below, aligned to the app background */
+	/* Results drop below the bar, over the app background */
 	.search .pagefind-ui__results-area {
+		position: absolute;
+		right: 0;
+		width: 22rem;
+		max-width: 80vw;
 		background: var(--bg);
+		border: 1px solid var(--border);
+		padding: 0.5rem 0.75rem;
+		max-height: 70vh;
+		overflow-y: auto;
+		z-index: 20;
 	}
 	.search .pagefind-ui__result {
 		border-top: 1px solid var(--border);

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import Search from '../components/Search.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getAllPosts } from '../lib/posts';
 
@@ -12,7 +11,6 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 	<section class="home">
 		<h1>{SITE_TITLE}</h1>
 		<p class="intro">{SITE_DESCRIPTION}</p>
-		<Search />
 		<nav class="hub" aria-label="site navigation">
 			<ul>
 				<li><a href="/blog" data-astro-prefetch>blog</a> — read the writing</li>

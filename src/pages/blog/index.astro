@@ -1,6 +1,5 @@
 ---
 import CategoryFilter from '../../components/CategoryFilter.astro';
-import Search from '../../components/Search.astro';
 import TimelinePostList from '../../components/TimelinePostList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { POSTS_PER_PAGE, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
@@ -15,32 +14,6 @@ const navLinks = [{ href: '/', label: '← home' }, { href: '/about', label: 'ab
 ---
 
 <BaseLayout title={`Blog · ${SITE_TITLE}`} description={SITE_DESCRIPTION} navLinks={navLinks}>
-	<div class="blog-controls">
-		<CategoryFilter categories={categories} />
-		<Search />
-	</div>
+	<CategoryFilter categories={categories} />
 	<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} />
 </BaseLayout>
-
-<style>
-	.blog-controls {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: flex-start;
-		justify-content: space-between;
-		gap: 1rem;
-		margin-bottom: 1.5rem;
-	}
-	/* CategoryFilter carries its own bottom margin; neutralize it inside the row */
-	.blog-controls :global(.filter) {
-		margin-bottom: 0;
-	}
-	.blog-controls :global(.search) {
-		margin-bottom: 0;
-	}
-	@media (max-width: 500px) {
-		.blog-controls {
-			flex-direction: column;
-		}
-	}
-</style>
