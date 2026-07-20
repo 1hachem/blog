@@ -7,3 +7,10 @@ personal blog built with astro.
 - [ ] tag pagination (currently only first page is generated for tag archives)
 - [ ] category pagination (same — only first page generated)
 - [ ] author archive pages (author field exists in schema but no listing page)
+
+
+blogs topics:
+
+- nixos for AI agents
+- ptc and lisp 
+- I want my AI agents: declarative, cloud native and neuro-symbolic
