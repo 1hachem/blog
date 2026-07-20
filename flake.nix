@@ -17,6 +17,8 @@
       devShells.default = pkgs.mkShell {
         buildInputs = with pkgs; [
           pre-commit
+          nodejs
+          pnpm
         ];
       };
     });

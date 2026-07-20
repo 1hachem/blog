@@ -4,3 +4,11 @@ repos:
     hooks:
       - id: commitizen
         stages: [commit-msg]
+  - repo: local
+    hooks:
+      - id: biome-check
+        name: biome check
+        entry: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true
+        language: system
+        files: \.(js|mjs|cjs|ts|tsx|jsx|json|jsonc)$
+        pass_filenames: true

@@ -16,10 +16,10 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Install dependencies
-        run: nix develop --command npm ci
+        run: nix develop --command pnpm install --frozen-lockfile
 
       - name: Build
-        run: nix develop --command npm run build
+        run: nix develop --command pnpm run build
 
       - name: Deploy
         env:

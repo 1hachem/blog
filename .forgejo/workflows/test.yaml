@@ -17,7 +17,10 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Install dependencies
-        run: nix develop --command npm ci
+        run: nix develop --command pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: nix develop --command pnpm lint
 
       - name: Test
-        run: nix develop --command npm test
+        run: nix develop --command pnpm test
