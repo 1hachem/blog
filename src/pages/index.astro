@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getAllPosts } from '../lib/posts';
+
+const latestPosts = (await getAllPosts()).slice(0, 5);
 ---
 
 <BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -13,6 +17,19 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 				<li><a href="/about" data-astro-prefetch>about</a> — who i am</li>
 			</ul>
 		</nav>
+		{latestPosts.length > 0 && (
+			<section class="latest" aria-label="latest posts">
+				<h2 class="latest-label">latest</h2>
+				<ul class="post-list">
+					{latestPosts.map((post) => (
+						<li>
+							<a href={`/blog/${post.id}/`} data-astro-prefetch>{post.data.title}</a>
+							<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
 	</section>
 </BaseLayout>
 
@@ -36,5 +53,48 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	}
 	.hub a {
 		font-weight: bold;
+	}
+	.latest {
+		margin-top: 2.5rem;
+	}
+	.latest-label {
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+		margin: 0 0 0.25rem;
+		font-weight: normal;
+	}
+	.post-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.post-list li {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		padding: 0.4rem 0;
+	}
+	.post-list a {
+		text-decoration: none;
+	}
+	.post-list a:hover {
+		text-decoration: underline;
+	}
+	.date {
+		color: var(--muted);
+		font-size: 0.85rem;
+		flex-shrink: 0;
+	}
+	@media (max-width: 500px) {
+		.post-list li {
+			flex-direction: column;
+			gap: 0.15rem;
+		}
+		.date {
+			font-size: 0.75rem;
+		}
 	}
 </style>
