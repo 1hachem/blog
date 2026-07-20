@@ -10,9 +10,7 @@ export function getGitInfo(cwd = process.cwd()): GitInfo {
 		const lastUpdated = execSync('git log -1 --format=%cd --date=format:"%m/%d/%y %H:%M"', { cwd })
 			.toString()
 			.trim();
-		const commitHash = execSync('git log -1 --format=%h', { cwd })
-			.toString()
-			.trim();
+		const commitHash = execSync('git log -1 --format=%h', { cwd }).toString().trim();
 		return { lastUpdated, commitHash };
 	} catch {
 		return { lastUpdated: '', commitHash: '' };

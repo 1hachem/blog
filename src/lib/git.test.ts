@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { execSync } from 'child_process';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('child_process');
 
@@ -37,7 +37,9 @@ describe('getGitInfo', () => {
 	});
 
 	it('returns empty strings when git is not available', () => {
-		mockExecSync.mockImplementation(() => { throw new Error('git not found'); });
+		mockExecSync.mockImplementation(() => {
+			throw new Error('git not found');
+		});
 
 		expect(getGitInfo('/no/git')).toEqual({ lastUpdated: '', commitHash: '' });
 	});

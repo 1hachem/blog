@@ -1,7 +1,7 @@
 export const CATEGORIES = {
 	general: {
 		label: 'general',
-		description: 'General thoughts, life updates, and things that don\'t fit elsewhere.',
+		description: "General thoughts, life updates, and things that don't fit elsewhere.",
 	},
 	tech: {
 		label: 'tech',
