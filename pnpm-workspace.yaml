@@ -1,0 +1,12 @@
+# Force pnpm to install the linux x64 platform binaries (e.g. @biomejs/cli-*)
+# regardless of libc auto-detection, which is unreliable inside the nixos/nix
+# CI container and otherwise skips the glibc-only package.
+supportedArchitectures:
+  os:
+    - current
+  cpu:
+    - current
+  libc:
+    - current
+    - glibc
+    - musl
