@@ -7,13 +7,11 @@ on:
 jobs:
   deploy:
     runs-on: codeberg-tiny
+    container:
+      image: nixos/nix
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: nix develop --command pnpm install --frozen-lockfile
