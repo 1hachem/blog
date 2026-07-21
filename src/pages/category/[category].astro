@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 const { label, description, posts, totalPages, allCategories } = Astro.props;
 const catSlug = Astro.params.category;
 
-const navLinks = [{ href: '/blog', label: '← blog' }, { href: '/', label: 'home' }];
+const navLinks = [{ href: '/', label: '← home' }, { href: '/about', label: 'about' }];
 ---
 
 <BaseLayout title={`${label} — ${SITE_TITLE}`} description={description} navLinks={navLinks}>
