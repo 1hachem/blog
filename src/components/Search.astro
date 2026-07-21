@@ -1,78 +1,212 @@
 ---
-import Search from 'astro-pagefind/components/Search.astro';
+import PagefindConfig from 'astro-pagefind/components/PagefindConfig.astro';
 ---
 
 <div class="search">
-	<Search
-		id="site-search"
-		className="pagefind-ui"
-		uiOptions={{ showImages: false, excerptLength: 15, resetStyles: false }}
-	/>
+	<PagefindConfig />
+	<pagefind-modal-trigger placeholder="Search"></pagefind-modal-trigger>
+	<pagefind-modal>
+		<pagefind-modal-header>
+			<pagefind-input placeholder="Search posts…" autofocus></pagefind-input>
+		</pagefind-modal-header>
+		<pagefind-modal-body>
+			<div class="search-empty search-empty-initial">
+				<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<circle cx="11" cy="11" r="7" />
+					<line x1="21" y1="21" x2="16.65" y2="16.65" />
+				</svg>
+				<p>Search posts by title, category, or content.</p>
+			</div>
+			<div class="search-empty search-empty-none">
+				<p>No results found.</p>
+			</div>
+			<pagefind-summary></pagefind-summary>
+			<pagefind-results></pagefind-results>
+		</pagefind-modal-body>
+		<pagefind-modal-footer>
+			<pagefind-keyboard-hints></pagefind-keyboard-hints>
+		</pagefind-modal-footer>
+	</pagefind-modal>
 </div>
 
 <style is:global>
-	/* Inline search on the blog listing, sitting above the category filter */
+	/* Map Pagefind's component-ui tokens onto the site's design tokens */
 	.search {
-		position: relative;
+		--pf-font: var(--font-mono);
+		--pf-background: var(--bg);
+		--pf-text: var(--fg);
+		--pf-text-muted: var(--muted);
+		--pf-text-secondary: var(--muted);
+		--pf-border: var(--border);
+		--pf-border-focus: var(--fg);
+		--pf-border-radius: 0px;
+		--pf-hover: transparent;
+		--pf-mark: var(--accent);
+		--pf-modal-max-width: 34rem;
+		--pf-modal-top: 12vh;
+		--pf-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.25);
 		margin-bottom: 1rem;
 	}
-	.search .pagefind-ui {
-		--pagefind-ui-primary: var(--fg);
-		--pagefind-ui-text: var(--fg);
-		--pagefind-ui-background: var(--bg);
-		--pagefind-ui-border: transparent;
-		--pagefind-ui-tag: var(--bg);
-		--pagefind-ui-border-width: 0px;
-		--pagefind-ui-border-radius: 0px;
-		--pagefind-ui-font: var(--font-mono);
-	}
-	.search .pagefind-ui__form::before {
-		opacity: 0.45;
-		width: 0.9rem;
-		height: 0.9rem;
-		top: 0.5rem;
-	}
-	.search .pagefind-ui__search-input {
-		font-size: 0.9rem;
-		padding: 0.35rem 0.5rem 0.35rem 1.8rem;
-		background: var(--bg);
-		color: var(--fg);
-		border: none;
-		border-bottom: 1px solid var(--border);
-	}
-	.search .pagefind-ui__search-input:focus {
-		border-bottom-color: var(--fg);
-		outline: none;
-	}
-	.search .pagefind-ui__search-clear {
+
+	/* Minimal trigger — matches the category-filter chips */
+	.search pagefind-modal-trigger .pf-trigger-btn {
+		width: auto;
+		height: auto;
+		gap: 0.4rem;
+		padding: 0.1rem 0.5rem;
+		font-size: 0.85rem;
 		background: transparent;
-		color: var(--muted);
-		font-size: 0.8rem;
-	}
-	/* Results drop below the input, over the app background */
-	.search .pagefind-ui__results-area {
-		position: absolute;
-		left: 0;
-		right: 0;
-		background: var(--bg);
 		border: 1px solid var(--border);
-		padding: 0.5rem 0.75rem;
-		max-height: 70vh;
-		overflow-y: auto;
-		z-index: 20;
-	}
-	.search .pagefind-ui__result {
-		border-top: 1px solid var(--border);
-	}
-	.search .pagefind-ui__result-title a {
-		color: var(--fg);
-	}
-	.search .pagefind-ui__result-excerpt {
 		color: var(--muted);
 	}
-	.search mark {
+	.search pagefind-modal-trigger .pf-trigger-btn:hover {
+		color: var(--fg);
+		border-color: var(--fg);
+		box-shadow: none;
+	}
+	.search pagefind-modal-trigger .pf-trigger-icon {
+		opacity: 0.7;
+	}
+	.search pagefind-modal-trigger .pf-trigger-key {
 		background: transparent;
-		color: var(--accent);
-		font-weight: 700;
+		border: none;
+		font-size: 0.7rem;
+		color: var(--muted);
+	}
+
+	/* Matched-term highlight uses the site link color */
+	.pf-result-excerpt mark,
+	.pf-heading-excerpt mark,
+	.pf-searchbox-result-excerpt mark {
+		color: var(--accent) !important;
+		background: transparent !important;
+	}
+
+	/* Empty states in the modal body */
+	.search-empty {
+		display: none;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		text-align: center;
+		padding: 2.5rem 1rem;
+		color: var(--muted);
+	}
+	.search-empty svg {
+		opacity: 0.4;
+	}
+	.search-empty p {
+		margin: 0;
+		font-size: 0.9rem;
+	}
+	.search-empty-none p {
+		color: var(--fg);
+	}
+
+	/* Nothing typed yet → prompt, and hide the results/summary chrome */
+	.pf-modal:has(.pf-input:placeholder-shown) .search-empty-initial {
+		display: flex;
+	}
+	.pf-modal:has(.pf-input:placeholder-shown) pagefind-summary,
+	.pf-modal:has(.pf-input:placeholder-shown) pagefind-results {
+		display: none;
+	}
+
+	/* Term typed but no matches (and not mid-search) → no-results state */
+	.pf-modal:has(.pf-input:not(:placeholder-shown)):has(.pf-results:empty:not([aria-busy="true"])) .search-empty-none {
+		display: flex;
+	}
+	.pf-modal:has(.pf-input:not(:placeholder-shown)):has(.pf-results:empty:not([aria-busy="true"])) pagefind-summary {
+		display: none;
 	}
 </style>
+
+<script>
+	const INITIAL = [
+		'Type something. I promise I read the docs on this.',
+		"Search is O(1) on an empty query. You're welcome.",
+		'grep, but make it aesthetic.',
+		'Nothing to see here. Literally. Start typing.',
+		'Ask me anything. Well — anything I wrote about.',
+		"Go on, type. The posts won't bite.",
+		'What are we looking for today, detective?',
+		'The search bar is lonely. Give it purpose.',
+		'Fun fact: this box works better with words in it.',
+		"Schrödinger's results: they exist and don't until you type.",
+	];
+
+	const NO_RESULTS = [
+		'404: brilliance not found. Try fewer big words.',
+		"No matches. Even I'm surprised — I wrote a lot of nonsense.",
+		'0 results. Have you tried turning the query off and on again?',
+		"Nothing. Either you're too specific or I'm too lazy a writer.",
+		'Nope. That topic lives in the drafts folder of my mind.',
+		"Couldn't find it. Maybe I haven't had that thought yet.",
+		'No results, but I admire your curiosity.',
+		'Swing and a miss. Try another word?',
+		'No results. Possibly because I never finish anything.',
+		'Searched the whole blog. Twice. Made you a coffee. Still nothing.',
+		'The posts you seek are in another castle. 🍄',
+	];
+
+	const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+	function initSearchCopy() {
+		const root = document.querySelector<HTMLElement>('.search');
+		if (!root || root.dataset.copyBound) return;
+		root.dataset.copyBound = 'true';
+
+		const setInitial = () => {
+			const el = root.querySelector<HTMLElement>('.search-empty-initial p');
+			if (el) el.textContent = pick(INITIAL);
+		};
+		const setNoResults = () => {
+			const el = root.querySelector<HTMLElement>('.search-empty-none p');
+			if (el) el.textContent = pick(NO_RESULTS);
+		};
+
+		// Re-roll the initial prompt every time the palette opens
+		root.querySelector('pagefind-modal-trigger')
+			?.addEventListener('click', () => setTimeout(setInitial));
+		document.addEventListener('keydown', (e) => {
+			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') setTimeout(setInitial);
+		});
+
+		// Re-roll the no-results line each time we enter that state
+		let wasNoResults = false;
+		const check = () => {
+			const input = root.querySelector<HTMLInputElement>('.pf-input');
+			const results = root.querySelector<HTMLElement>('.pf-results');
+			if (!input || !results) return;
+			const typed = input.value.trim().length > 0;
+			const busy = results.getAttribute('aria-busy') === 'true';
+			const noRes = typed && !busy && results.children.length === 0;
+			if (noRes && !wasNoResults) setNoResults();
+			wasNoResults = noRes;
+		};
+
+		const observer = new MutationObserver(check);
+		// The modal DOM is built asynchronously when component-ui upgrades
+		let tries = 0;
+		const wait = setInterval(() => {
+			const body = root.querySelector('.pf-modal-body');
+			if (body) {
+				observer.observe(body, {
+					childList: true,
+					subtree: true,
+					attributes: true,
+					attributeFilter: ['aria-busy'],
+				});
+				clearInterval(wait);
+			} else if (++tries > 30) {
+				clearInterval(wait);
+			}
+		}, 100);
+
+		setInitial();
+	}
+
+	initSearchCopy();
+	document.addEventListener('astro:after-swap', initSearchCopy);
+</script>

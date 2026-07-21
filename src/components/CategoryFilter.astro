@@ -1,4 +1,6 @@
 ---
+import Search from './Search.astro';
+
 interface Category {
 	label: string;
 	description: string;
@@ -16,26 +18,40 @@ function slug(cat: string) {
 }
 ---
 
-<nav class="filter">
-	<a href="/blog" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
-	{categories.map((cat) => (
-		<a
-			href={`/category/${slug(cat.label)}`}
-			class:list={[{ active: active === slug(cat.label) }, 'has-tooltip']}
-			data-astro-prefetch
-		>
-			{cat.label}
-			<span class="tooltip"><span class="tooltip-text">{cat.description}</span></span>
-		</a>
-	))}
-</nav>
+<div class="filter-row">
+	<nav class="filter">
+		<a href="/blog" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
+		{categories.map((cat) => (
+			<a
+				href={`/category/${slug(cat.label)}`}
+				class:list={[{ active: active === slug(cat.label) }, 'has-tooltip']}
+				data-astro-prefetch
+			>
+				{cat.label}
+				<span class="tooltip"><span class="tooltip-text">{cat.description}</span></span>
+			</a>
+		))}
+	</nav>
+	<Search />
+</div>
 
 <style>
+	.filter-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 0.5rem 1rem;
+		margin-bottom: 1.5rem;
+	}
+	/* Search carries its own bottom margin; neutralize it inside the row */
+	.filter-row :global(.search) {
+		margin-bottom: 0;
+	}
 	.filter {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
-		margin-bottom: 1.5rem;
 	}
 	.filter a {
 		font-size: 0.85rem;

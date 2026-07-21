@@ -1,6 +1,5 @@
 ---
 import CategoryFilter from '../../components/CategoryFilter.astro';
-import Search from '../../components/Search.astro';
 import TimelinePostList from '../../components/TimelinePostList.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { POSTS_PER_PAGE, SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
@@ -16,7 +15,6 @@ const navLinks = [{ href: '/', label: '← home' }, { href: '/about', label: 'ab
 
 <BaseLayout title={`Blog · ${SITE_TITLE}`} description={SITE_DESCRIPTION} navLinks={navLinks}>
 	<p class="welcome">{SITE_DESCRIPTION}</p>
-	<Search />
 	<CategoryFilter categories={categories} />
 	<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} />
 </BaseLayout>
