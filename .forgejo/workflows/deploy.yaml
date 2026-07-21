@@ -9,9 +9,19 @@ jobs:
     runs-on: codeberg-tiny
     container:
       image: nixos/nix
+    env:
+      NIX_CONFIG: "experimental-features = nix-command flakes"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        env:
+          FORGEJO_TOKEN: ${{ forgejo.token }}
+        run: |
+          nix-shell -p git --run '
+            git init -q .
+            git remote add origin "https://token:$FORGEJO_TOKEN@${FORGEJO_SERVER_URL#https://}/$FORGEJO_REPOSITORY"
+            git fetch -q --depth 1 origin "$FORGEJO_SHA"
+            git checkout -q FETCH_HEAD
+          '
 
       - name: Install dependencies
         run: nix develop --command pnpm install --frozen-lockfile
