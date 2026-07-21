@@ -166,12 +166,14 @@ import PagefindConfig from 'astro-pagefind/components/PagefindConfig.astro';
 			if (el) el.textContent = pick(NO_RESULTS);
 		};
 
-		// Re-roll the initial prompt every time the palette opens
+		// Re-roll the initial prompt before the palette paints, so it doesn't
+		// flash the previous message. Capture phase runs ahead of Pagefind's
+		// own open handler, and no setTimeout means the swap lands pre-paint.
 		root.querySelector('pagefind-modal-trigger')
-			?.addEventListener('click', () => setTimeout(setInitial));
+			?.addEventListener('click', setInitial, true);
 		document.addEventListener('keydown', (e) => {
-			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') setTimeout(setInitial);
-		});
+			if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') setInitial();
+		}, true);
 
 		// Re-roll the no-results line each time we enter that state
 		let wasNoResults = false;
