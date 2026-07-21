@@ -17,7 +17,7 @@ function slug(cat: string) {
 ---
 
 <nav class="filter">
-	<a href="/" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
+	<a href="/blog" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
 	{categories.map((cat) => (
 		<a
 			href={`/category/${slug(cat.label)}`}

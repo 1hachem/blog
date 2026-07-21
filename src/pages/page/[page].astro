@@ -30,6 +30,14 @@ const navLinks = [{ href: '/blog', label: '← blog' }, { href: '/', label: 'hom
 ---
 
 <BaseLayout title={`page ${currentPage} — ${SITE_TITLE}`} description={SITE_DESCRIPTION} navLinks={navLinks}>
+	<p class="welcome">{SITE_DESCRIPTION}</p>
 	<CategoryFilter categories={categories} />
 	<TimelinePostList posts={posts} currentPage={currentPage} totalPages={totalPages} />
 </BaseLayout>
+
+<style>
+	.welcome {
+		margin-bottom: 1.5rem;
+		color: var(--muted);
+	}
+</style>
