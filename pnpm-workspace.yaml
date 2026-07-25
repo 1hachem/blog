@@ -10,3 +10,8 @@ supportedArchitectures:
     - current
     - glibc
     - musl
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
