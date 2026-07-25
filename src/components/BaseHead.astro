@@ -2,6 +2,7 @@
 import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/700.css';
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
 interface Props {
@@ -48,8 +49,12 @@ const resolvedOgImage = ogImage ?? image;
       }
     }
     applyTheme();
+    // ClientRouter swaps the document but keeps <html>; re-apply so the
+    // theme never flashes to default during a view transition.
+    document.addEventListener('astro:after-swap', applyTheme);
   })();
 </script>
+<ClientRouter />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />

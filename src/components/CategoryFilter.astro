@@ -69,30 +69,35 @@ function slug(cat: string) {
 </style>
 
 <script>
-	let timer: ReturnType<typeof setTimeout> | null = null;
+	function initTooltips() {
+		let timer: ReturnType<typeof setTimeout> | null = null;
 
-	document.querySelectorAll<HTMLAnchorElement>('.filter .has-tooltip').forEach((link) => {
-		const tip = link.querySelector<HTMLElement>('.tooltip');
-		if (!tip) return;
+		document.querySelectorAll<HTMLAnchorElement>('.filter .has-tooltip').forEach((link) => {
+			const tip = link.querySelector<HTMLElement>('.tooltip');
+			if (!tip) return;
 
-		link.addEventListener('mouseenter', (e) => {
-			const me = e as MouseEvent;
-			timer = setTimeout(() => {
+			link.addEventListener('mouseenter', (e) => {
+				const me = e as MouseEvent;
+				timer = setTimeout(() => {
+					tip.style.left = me.clientX + 12 + 'px';
+					tip.style.top = me.clientY - 28 + 'px';
+					tip.classList.add('visible');
+				}, 700);
+			});
+
+			link.addEventListener('mousemove', (e) => {
+				const me = e as MouseEvent;
 				tip.style.left = me.clientX + 12 + 'px';
 				tip.style.top = me.clientY - 28 + 'px';
-				tip.classList.add('visible');
-			}, 700);
-		});
+			});
 
-		link.addEventListener('mousemove', (e) => {
-			const me = e as MouseEvent;
-			tip.style.left = me.clientX + 12 + 'px';
-			tip.style.top = me.clientY - 28 + 'px';
+			link.addEventListener('mouseleave', () => {
+				if (timer) { clearTimeout(timer); timer = null; }
+				tip.classList.remove('visible');
+			});
 		});
+	}
 
-		link.addEventListener('mouseleave', () => {
-			if (timer) { clearTimeout(timer); timer = null; }
-			tip.classList.remove('visible');
-		});
-	});
+	// Runs on first load and after every ClientRouter swap.
+	document.addEventListener('astro:page-load', initTooltips);
 </script>

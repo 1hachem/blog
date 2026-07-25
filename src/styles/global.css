@@ -22,6 +22,12 @@
 	box-sizing: border-box;
 }
 
+/* Speed up ClientRouter's default fade on page/category swaps */
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 0.08s;
+}
+
 html {
 	font-size: 16px;
 	height: 100%;

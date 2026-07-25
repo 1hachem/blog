@@ -11,6 +11,8 @@ export default defineConfig({
 	devToolbar: { enabled: false },
 	prefetch: {
 		prefetchAll: false,
-		defaultStrategy: 'hover',
+		// Links in the viewport (e.g. the category filter at the top of the
+		// page) prefetch on load, so the first category switch is instant.
+		defaultStrategy: 'viewport',
 	},
 });
