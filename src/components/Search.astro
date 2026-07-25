@@ -2,7 +2,7 @@
 import PagefindConfig from 'astro-pagefind/components/PagefindConfig.astro';
 ---
 
-<div class="search">
+<div class="search" transition:persist="search">
 	<PagefindConfig />
 	<pagefind-modal-trigger placeholder="Search"></pagefind-modal-trigger>
 	<pagefind-modal>
@@ -30,8 +30,11 @@ import PagefindConfig from 'astro-pagefind/components/PagefindConfig.astro';
 </div>
 
 <style is:global>
-	/* Map Pagefind's component-ui tokens onto the site's design tokens */
-	.search {
+	/* Map Pagefind's component-ui tokens onto the site's design tokens.
+	   These live at :root (not .search) because the modal is teleported to
+	   <body>, outside .search — so scoped overrides never reach it and it
+	   would fall back to Pagefind's light defaults (white in dark mode). */
+	:root {
 		--pf-font: var(--font-mono);
 		--pf-background: var(--bg);
 		--pf-text: var(--fg);
@@ -40,11 +43,13 @@ import PagefindConfig from 'astro-pagefind/components/PagefindConfig.astro';
 		--pf-border: var(--border);
 		--pf-border-focus: var(--fg);
 		--pf-border-radius: 0px;
-		--pf-hover: transparent;
+		--pf-hover: var(--code-bg);
 		--pf-mark: var(--accent);
 		--pf-modal-max-width: 34rem;
 		--pf-modal-top: 12vh;
 		--pf-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.25);
+	}
+	.search {
 		margin-bottom: 1rem;
 	}
 
