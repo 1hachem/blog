@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import CategoryFilter from '../components/CategoryFilter.astro';
+import TimelinePostList from '../components/TimelinePostList.astro';
+import BaseLayout from './BaseLayout.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+interface Category {
+	label: string;
+	description: string;
+}
+
+interface Props {
+	posts: CollectionEntry<'blog'>[];
+	currentPage: number;
+	totalPages: number;
+	categories: Category[];
+	active?: string; // current category slug, undefined = all
+	title: string;
+	description?: string;
+}
+
+const { posts, currentPage, totalPages, categories, active, title, description } = Astro.props;
+
+const baseURL = active ? `/blog/${active}` : '/blog';
+const navLinks = [{ href: '/', label: '← home' }, { href: '/about', label: 'about' }];
+---
+
+<BaseLayout title={`${title} · ${SITE_TITLE}`} description={description ?? SITE_DESCRIPTION} navLinks={navLinks}>
+	<p class="welcome">{SITE_DESCRIPTION}</p>
+	<CategoryFilter categories={categories} active={active} />
+	<TimelinePostList posts={posts} currentPage={currentPage} totalPages={totalPages} baseURL={baseURL} />
+</BaseLayout>
+
+<style>
+	.welcome {
+		margin-bottom: 1.5rem;
+		color: var(--muted);
+	}
+</style>

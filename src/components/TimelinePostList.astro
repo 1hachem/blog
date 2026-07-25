@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { categorySlug } from '../lib/posts';
 import FormattedDate from './FormattedDate.astro';
 
 interface Props {
@@ -9,7 +10,7 @@ interface Props {
 	baseURL?: string;
 }
 
-const { posts, currentPage, totalPages, baseURL = '/' } = Astro.props;
+const { posts, currentPage, totalPages, baseURL = '/blog' } = Astro.props;
 
 const THREE_MONTHS = 1000 * 60 * 60 * 24 * 90;
 const now = Date.now();
@@ -34,9 +35,7 @@ for (const [year, yPosts] of [...byYear.entries()].sort((a, b) => b[0] - a[0])) 
 }
 
 function pageURL(n: number) {
-	if (n <= 1) return baseURL;
-	const prefix = baseURL === '/' ? '' : baseURL;
-	return `${prefix}/page/${n}`;
+	return n <= 1 ? baseURL : `${baseURL}/page/${n}`;
 }
 ---
 
@@ -55,7 +54,7 @@ function pageURL(n: number) {
 						</a>
 						{post.data.category && (
 							<a
-								href={`/category/${post.data.category.toLowerCase().replace(/\s+/g, '-')}`}
+								href={`/blog/${categorySlug(post.data.category)}`}
 								class="cat-badge"
 								data-astro-prefetch
 							>{post.data.category}</a>

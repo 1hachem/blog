@@ -1,0 +1,36 @@
+---
+import BlogIndex from '../../../layouts/BlogIndex.astro';
+import { POSTS_PER_PAGE } from '../../../consts';
+import { categorySlug, getAllPosts, getCategories } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+	const allPosts = await getAllPosts();
+	const categories = getCategories(allPosts);
+
+	return categories.map((cat) => {
+		const filtered = allPosts.filter((p) => p.data.category === cat.label);
+		return {
+			params: { category: categorySlug(cat.label) },
+			props: {
+				label: cat.label,
+				description: cat.description,
+				posts: filtered.slice(0, POSTS_PER_PAGE),
+				totalPages: Math.ceil(filtered.length / POSTS_PER_PAGE),
+				categories,
+			},
+		};
+	});
+}
+
+const { label, description, posts, totalPages, categories } = Astro.props;
+---
+
+<BlogIndex
+	title={label}
+	description={description}
+	posts={posts}
+	currentPage={1}
+	totalPages={totalPages}
+	categories={categories}
+	active={Astro.params.category}
+/>

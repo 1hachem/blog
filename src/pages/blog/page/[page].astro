@@ -1,0 +1,33 @@
+---
+import BlogIndex from '../../../layouts/BlogIndex.astro';
+import { POSTS_PER_PAGE } from '../../../consts';
+import { getAllPosts, getCategories } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+	const allPosts = await getAllPosts();
+	const totalPages = Math.ceil(allPosts.length / POSTS_PER_PAGE);
+
+	return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => {
+		const page = i + 2;
+		return {
+			params: { page: String(page) },
+			props: {
+				posts: allPosts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE),
+				currentPage: page,
+				totalPages,
+				categories: getCategories(allPosts),
+			},
+		};
+	});
+}
+
+const { posts, currentPage, totalPages, categories } = Astro.props;
+---
+
+<BlogIndex
+	title={`Blog — page ${currentPage}`}
+	posts={posts}
+	currentPage={currentPage}
+	totalPages={totalPages}
+	categories={categories}
+/>

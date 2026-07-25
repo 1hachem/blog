@@ -15,6 +15,10 @@ export function getCategories(posts: Awaited<ReturnType<typeof getAllPosts>>) {
 	return [...seen].sort().map((key) => CATEGORIES[key]);
 }
 
+export function categorySlug(label: string) {
+	return label.toLowerCase().replace(/\s+/g, '-');
+}
+
 export function getTags(posts: Awaited<ReturnType<typeof getAllPosts>>) {
 	const seen = new Set<string>();
 	for (const post of posts) {

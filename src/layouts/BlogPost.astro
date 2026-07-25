@@ -7,6 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import PageNav from '../components/PageNav.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import { categorySlug as slugify } from '../lib/posts';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	related?: CollectionEntry<'blog'>[];
@@ -20,7 +21,7 @@ const {
 	category, tags = [], related = [], headings = [], readingTime,
 } = Astro.props;
 
-const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
+const categorySlug = category && slugify(category);
 ---
 
 <html lang="en">
@@ -49,7 +50,7 @@ const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
 						<FormattedDate date={pubDate} />
 						{updatedDate && <span class="updated"> · updated <FormattedDate date={updatedDate} /></span>}
 						{category && (
-							<span> · <a href={`/category/${categorySlug}`} data-astro-prefetch>{category}</a></span>
+							<span> · <a href={`/blog/${categorySlug}`} data-astro-prefetch>{category}</a></span>
 						)}
 						{readingTime && <span> · {readingTime}</span>}
 					</p>
@@ -73,7 +74,7 @@ const categorySlug = category?.toLowerCase().replace(/\s+/g, '-');
 
 				{related.length > 0 && (
 					<aside class="related">
-						<p class="related-heading">more in <a href={`/category/${categorySlug}`} data-astro-prefetch>{category}</a></p>
+						<p class="related-heading">more in <a href={`/blog/${categorySlug}`} data-astro-prefetch>{category}</a></p>
 						<ul>
 							{related.map((p) => (
 								<li>

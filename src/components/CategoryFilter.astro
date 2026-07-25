@@ -9,11 +9,9 @@ interface Props {
 	active?: string; // current category slug, undefined = all
 }
 
-const { categories, active } = Astro.props;
+import { categorySlug as slug } from '../lib/posts';
 
-function slug(cat: string) {
-	return cat.toLowerCase().replace(/\s+/g, '-');
-}
+const { categories, active } = Astro.props;
 ---
 
 <div class="filter-row">
@@ -21,7 +19,7 @@ function slug(cat: string) {
 		<a href="/blog" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
 		{categories.map((cat) => (
 			<a
-				href={`/category/${slug(cat.label)}`}
+				href={`/blog/${slug(cat.label)}`}
 				class:list={[{ active: active === slug(cat.label) }, 'has-tooltip']}
 				data-astro-prefetch
 			>
