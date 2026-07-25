@@ -10,7 +10,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 ---
 
 {toc.length >= 2 && (
-	<nav class="toc" aria-label="Table of contents" data-pagefind-ignore>
+	<nav class="toc" aria-label="Table of contents">
 		<ol class="toc-list">
 			{toc.map((h) => (
 				<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'} data-id={h.slug}>

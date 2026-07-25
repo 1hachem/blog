@@ -1,6 +1,4 @@
 ---
-import Search from './Search.astro';
-
 interface Category {
 	label: string;
 	description: string;
@@ -32,7 +30,6 @@ function slug(cat: string) {
 			</a>
 		))}
 	</nav>
-	<Search />
 </div>
 
 <style>
@@ -43,10 +40,6 @@ function slug(cat: string) {
 		flex-wrap: wrap;
 		gap: 0.5rem 1rem;
 		margin-bottom: 1.5rem;
-	}
-	/* Search carries its own bottom margin; neutralize it inside the row */
-	.filter-row :global(.search) {
-		margin-bottom: 0;
 	}
 	.filter {
 		display: flex;
