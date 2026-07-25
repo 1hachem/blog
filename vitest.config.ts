@@ -5,7 +5,7 @@ export default defineConfig({
 		environment: 'node',
 		include: ['src/**/*.test.ts'],
 		alias: {
-			'astro:content': '/home/hachem/blog/src/__mocks__/astro-content.ts',
+			'astro:content': new URL('./src/__mocks__/astro-content.ts', import.meta.url).pathname,
 		},
 	},
 });
