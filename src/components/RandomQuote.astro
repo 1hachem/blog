@@ -1,0 +1,51 @@
+---
+interface Props {
+	quotes: string[];
+}
+
+const { quotes } = Astro.props;
+---
+
+<blockquote class="random-quote" data-quotes={JSON.stringify(quotes)}>
+	<p>{`"${quotes[0]}"`}</p>
+</blockquote>
+
+<style>
+	.random-quote {
+		margin: 0 0 1.5rem;
+		padding: 0;
+		border: none;
+		font-style: italic;
+		color: var(--muted);
+	}
+	.random-quote p {
+		margin: 0;
+		/* Reserve two lines so swapping quotes of different length doesn't shift the layout. */
+		line-height: 1.5;
+		min-height: 4.5em;
+		display: flex;
+		align-items: center;
+	}
+</style>
+
+<script>
+	function pickQuote() {
+		document.querySelectorAll<HTMLElement>('.random-quote').forEach((el) => {
+			const raw = el.dataset.quotes;
+			if (!raw) return;
+			let quotes: string[];
+			try {
+				quotes = JSON.parse(raw);
+			} catch {
+				return;
+			}
+			if (!quotes.length) return;
+			const pick = quotes[Math.floor(Math.random() * quotes.length)];
+			const p = el.querySelector('p');
+			if (p) p.textContent = `"${pick}"`;
+		});
+	}
+
+	// Runs on first load and after every ClientRouter swap.
+	document.addEventListener('astro:page-load', pickQuote);
+</script>
