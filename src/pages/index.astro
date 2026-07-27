@@ -17,6 +17,13 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 				<a href="/about" data-astro-prefetch>about</a>
 			</nav>
 		</header>
+		<section class="about-me" aria-label="about me">
+			<p>
+				I build things, break them, and write about the wreckage. Software,
+				startups, hypnosis, and whatever else won't leave me alone lately.
+				This is where the loose thoughts land.
+			</p>
+		</section>
 		{latestPosts.length > 0 && (
 			<section class="latest" aria-label="latest posts">
 				<h2 class="latest-label">latest</h2>
@@ -64,6 +71,14 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 	}
 	.hub a:hover {
 		text-decoration: underline;
+	}
+	.about-me {
+		color: var(--muted);
+		line-height: 1.6;
+		margin-bottom: 2rem;
+	}
+	.about-me p {
+		margin: 0;
 	}
 	.latest {
 		margin-top: 1rem;
