@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const navLinks = [{ href: '/', label: '← home' }, { href: '/blog', label: 'blog' }];
+
+interface ListItem {
+	title: string;
+	note?: string;
+}
+interface List {
+	heading: string;
+	blurb?: string;
+	items: ListItem[];
+}
+
+const lists: List[] = [
+	{
+		heading: 'books',
+		blurb: 'things worth reading twice',
+		items: [
+			{ title: 'Add a book', note: 'author — why it stuck' },
+		],
+	},
+	{
+		heading: 'movies',
+		blurb: 'films I keep recommending',
+		items: [
+			{ title: 'Add a movie', note: 'director — one line' },
+		],
+	},
+	{
+		heading: 'camping spots',
+		blurb: 'places worth pitching a tent',
+		items: [
+			{ title: 'Add a spot', note: 'where — what makes it good' },
+		],
+	},
+];
+---
+
+<BaseLayout title="lists" description="books, movies, and camping spots I keep coming back to" navLinks={navLinks}>
+	<h1>lists</h1>
+	<p>Running lists of things I love. Perpetually unfinished.</p>
+
+	{lists.map((list) => (
+		<section class="list">
+			<h2>{list.heading}</h2>
+			{list.blurb && <p class="blurb">{list.blurb}</p>}
+			<ul>
+				{list.items.map((item) => (
+					<li>
+						<span class="title">{item.title}</span>
+						{item.note && <span class="note">{item.note}</span>}
+					</li>
+				))}
+			</ul>
+		</section>
+	))}
+</BaseLayout>
+
+<style>
+	.list {
+		margin: 2rem 0;
+	}
+	.list h2 {
+		margin-bottom: 0.25rem;
+	}
+	.blurb {
+		color: var(--muted);
+		font-size: 0.9rem;
+		margin: 0 0 0.75rem;
+	}
+	.list ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.list li {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+		padding: 0.4rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+	.title {
+		font-weight: 500;
+	}
+	.note {
+		color: var(--muted);
+		font-size: 0.85rem;
+		text-align: right;
+		flex-shrink: 0;
+	}
+	@media (max-width: 500px) {
+		.list li {
+			flex-direction: column;
+			gap: 0.15rem;
+		}
+		.note {
+			text-align: left;
+			font-size: 0.75rem;
+		}
+	}
+</style>
