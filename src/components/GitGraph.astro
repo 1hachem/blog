@@ -1,0 +1,682 @@
+---
+import 'devicon/devicon.min.css';
+
+// --- Tech / skill badge metadata -------------------------------------------
+// `dark: true`  -> solid dark brand color, white text, devicon glyph on the left.
+// `dark: false` -> light solid color, black text, no icon (soft skill / concept).
+const TECH = {
+	python:      { label: 'Python',      bg: '#3776AB', dark: true, icon: 'devicon-python-plain' },
+	docker:      { label: 'Docker',      bg: '#2496ED', dark: true, icon: 'devicon-docker-plain' },
+	kubernetes:  { label: 'Kubernetes',  bg: '#326CE5', dark: true, icon: 'devicon-kubernetes-plain' },
+	pytorch:     { label: 'PyTorch',     bg: '#EE4C2C', dark: true, icon: 'devicon-pytorch-plain' },
+	tensorflow:  { label: 'TensorFlow',  bg: '#FF6F00', dark: true, icon: 'devicon-tensorflow-original' },
+	fastapi:     { label: 'FastAPI',     bg: '#009688', dark: true, icon: 'devicon-fastapi-plain' },
+	nix:         { label: 'Nix',         bg: '#5277C3', dark: true, icon: 'devicon-nixos-plain' },
+	nixos:       { label: 'NixOS',       bg: '#4B6CB7', dark: true, icon: 'devicon-nixos-plain' },
+	terraform:   { label: 'Terraform',   bg: '#7B42BC', dark: true, icon: 'devicon-terraform-plain' },
+	typescript:  { label: 'TypeScript',  bg: '#3178C6', dark: true, icon: 'devicon-typescript-plain' },
+	lisp:        { label: 'Lisp',        bg: '#7c68ee', dark: true, icon: null },
+	react:       { label: 'React',       bg: '#087EA4', dark: true, icon: 'devicon-react-original' },
+	nextjs:      { label: 'Next.js',     bg: '#000000', dark: true, icon: 'devicon-nextjs-plain' },
+	reactflow:   { label: 'React Flow',  bg: '#ff0072', dark: true, icon: null },
+	langchain:   { label: 'LangChain',   bg: '#1c8c68', dark: true, icon: null },
+	redis:       { label: 'Redis',       bg: '#DC382D', dark: true, icon: 'devicon-redis-plain' },
+	rq:          { label: 'RQ',          bg: '#a4243b', dark: true, icon: null },
+	'earth-engine': { label: 'Earth Engine', bg: '#34A853', dark: true, icon: null },
+	latex:       { label: 'LaTeX',       bg: '#008080', dark: true, icon: 'devicon-latex-plain' },
+	mediapipe:   { label: 'MediaPipe',   bg: '#0097A7', dark: true, icon: null },
+	scrapy:      { label: 'Scrapy',      bg: '#60a839', dark: true, icon: null },
+	'claude-code': { label: 'Claude Code', bg: '#D97757', dark: true, icon: null },
+
+	'context-engineering': { label: 'context engineering', bg: '#dcd3f7', dark: false, icon: null },
+	asyncio:     { label: 'asyncio',       bg: '#cfe8dd', dark: false, icon: null },
+	dag:         { label: 'DAGs',          bg: '#f7e3c0', dark: false, icon: null },
+	gans:        { label: 'GANs',          bg: '#f5d0d6', dark: false, icon: null },
+	'ai-training':  { label: 'AI training',  bg: '#d0e4f5', dark: false, icon: null },
+	'ai-inference': { label: 'AI inference', bg: '#d9e9d0', dark: false, icon: null },
+	unet:        { label: 'U-Net',         bg: '#e6d9f0', dark: false, icon: null },
+	vae:         { label: 'VAE',           bg: '#f0e2d0', dark: false, icon: null },
+	photogrammetry: { label: 'photogrammetry', bg: '#e7dcc6', dark: false, icon: null },
+	'cellular-automata': { label: 'cellular automata', bg: '#dbeae0', dark: false, icon: null },
+};
+
+// --- The history as a git DAG ----------------------------------------------
+// Each entry is a commit. `parents` are other commit ids (a merge commit has
+// two+). `main` is the long-lived trunk; every side-episode lives on its own
+// branch that checks out from a commit and (sometimes) merges back later.
+type Commit = {
+	id: string;
+	branch: string;
+	parents: string[];
+	t: number;         // sortable time — drives the chronological (vertical) order
+	year: string;      // the label shown to the reader
+	type: 'main' | 'education' | 'accident' | 'travel' | 'side' | 'life';
+	title: string;
+	desc?: string;
+	tip?: string;
+	links?: { label: string; href: string }[];
+	tech?: (keyof typeof TECH)[];
+	root?: boolean;
+};
+
+const history: Commit[] = [
+	{ id: 'born', branch: 'main', parents: [], root: true, t: 2000, year: '2000', type: 'life',
+		title: 'Born in Algeria', desc: 'The initial commit.' },
+	{ id: 'uae', branch: 'main', parents: ['born'], t: 2001, year: '2000–12', type: 'life',
+		title: 'Raised in the UAE', desc: 'Arabic as mother tongue, English as a second language.' },
+	{ id: 'algeria', branch: 'main', parents: ['uae'], t: 2012, year: '2012', type: 'travel',
+		title: 'Back to Algeria', desc: 'Picked up French as a third language.' },
+
+	// branch: streets
+	{ id: 'parkour', branch: 'streets', parents: ['algeria'], t: 2013, year: 'teens', type: 'life',
+		title: 'Skating, urban exploring & parkour', desc: 'Reading the city as terrain.' },
+	{ id: 'kidney', branch: 'main', parents: ['algeria', 'parkour'], t: 2018, year: '~2018', type: 'accident',
+		title: 'Lost a kidney doing parkour', tip: 'The first reminder that gravity keeps score.' },
+
+	{ id: 'bacc', branch: 'main', parents: ['kidney'], t: 2019, year: '2019', type: 'education',
+		title: 'Baccalauréat — top ~10%', desc: '≈ 4.0 GPA / A.' },
+
+	// branch: wild — a gap of camping & hitchhiking, rejoins main at `enp`
+	{ id: 'camping', branch: 'wild', parents: ['bacc'], t: 2020, year: 'teens', type: 'travel',
+		title: 'Camping & hitchhiking', desc: 'Out with a tent and a thumb, no fixed plan.',
+		links: [
+			{ label: 'video 1', href: 'https://www.youtube.com/watch?v=eKSQqrXFplQ' },
+			{ label: 'video 2', href: 'https://www.youtube.com/watch?v=P8sBMrJ6b70' },
+			{ label: 'video 3', href: 'https://www.youtube.com/watch?v=iWC7_EyvELk' },
+		] },
+
+	{ id: 'enp', branch: 'main', parents: ['bacc', 'camping'], t: 2021, year: '2021', type: 'education',
+		title: 'AI & data science @ ENP',
+		desc: 'Entered the National Polytechnic School of Algiers via the top 2% of the national entrance exam, after two prep years.',
+		tip: 'Two preparatory years: calculus, linear algebra, thermodynamics, chemistry, classical & quantum physics, and computer science.' },
+
+	// closed social media — a commit on the main line, after joining ENP
+	{ id: 'social', branch: 'main', parents: ['enp'], t: 2021.1, year: '2021', type: 'life',
+		title: 'Closed Facebook, Instagram & Twitter', desc: 'Cut the feeds. Never looked back.',
+		links: [{ label: 'why you should quit social media', href: '/blog' }] },
+
+	// branch: contests
+	{ id: 'devfest', branch: 'contests', parents: ['enp'], t: 2021.3, year: '2021', type: 'side',
+		title: '3rd place — DevFest Algiers',
+		desc: 'With my team: using AI to monitor focus by reading posture and body-language signs of distraction.',
+		tip: "Google Developers Group's DevFest 2021.",
+		links: [{ label: 'demo', href: 'https://www.youtube.com/watch?v=t3VUSxtKLg4' }],
+		tech: ['mediapipe', 'python'] },
+	{ id: 'samsung', branch: 'contests', parents: ['devfest'], t: 2021.5, year: '2021', type: 'education',
+		title: 'Samsung AI & ML scholarship',
+		desc: 'Hands-on practice designing, implementing and communicating AI projects.',
+		tech: ['scrapy', 'python'] },
+	{ id: 'wildfire', branch: 'contests', parents: ['samsung'], t: 2021.7, year: '2021', type: 'side',
+		title: 'Pre-print: wildfire simulation on satellite data',
+		desc: 'Semi-empirical simulation of wildfire applied to real-world satellite imagery.',
+		links: [
+			{ label: 'repo', href: 'https://github.com/1hachem/semi-empirical-simulation-of-wildfire-on-satellite-data' },
+			{ label: 'ResearchGate', href: 'https://www.researchgate.net/publication/354678516_Applying_semi-empirical_simulation_of_wildfire_on_real_world_satellite_imagery_data' },
+			{ label: 'video', href: 'https://www.youtube.com/watch?v=nWCQPQSDtS4' },
+		], tech: ['earth-engine', 'cellular-automata', 'latex'] },
+	{ id: 'cliff', branch: 'main', parents: ['social', 'wildfire'], t: 2022, year: '2022', type: 'accident',
+		title: 'Fell from a 7 m cliff', desc: 'Broke my hip and left arm.',
+		tip: 'The second reminder that gravity keeps score.' },
+
+	// branch: freelance — Upwork gigs (many jobs), merges into masters
+	{ id: 'road', branch: 'freelance', parents: ['cliff'], t: 2022.3, year: '2022', type: 'side',
+		title: 'AI road-monitoring system',
+		desc: 'An AI-based road construction monitoring system — road photogrammetry from drone footage with U-Net segmentation.',
+		links: [{ label: 'profile', href: 'https://www.upwork.com/freelancers/~01b79e4e53cd1ca324' }],
+		tech: ['unet', 'photogrammetry', 'python'] },
+	{ id: 'vfae', branch: 'freelance', parents: ['road'], t: 2022.4, year: '2022', type: 'side',
+		title: 'Variational Fair Autoencoder',
+		desc: 'Implemented a Variational Fair Autoencoder from the paper.',
+		links: [{ label: 'VFAE paper', href: 'https://arxiv.org/abs/1511.00830' }],
+		tech: ['vae', 'python'] },
+	// branch: research — the InstaDeep internship, its own branch
+	{ id: 'instadeep', branch: 'research', parents: ['cliff'], t: 2022.6, year: '2022', type: 'side',
+		title: 'AI research intern @ InstaDeep',
+		desc: 'mutaGAN — generating plausible protein sequences with generative adversarial networks.',
+		links: [{ label: 'mutaGAN', href: 'https://github.com/1hachem/mutaGAN' }],
+		tech: ['pytorch', 'tensorflow', 'gans', 'ai-training', 'ai-inference'] },
+
+	// getting married — a commit on the main line, after the internship
+	{ id: 'married', branch: 'main', parents: ['cliff'], t: 2023, year: '2023', type: 'life',
+		title: 'Got married',
+		desc: 'Teamed up for life — married my favourite person at 23.' },
+
+	// backpacking in Ghana — a commit on the main line
+	{ id: 'ghana', branch: 'main', parents: ['married'], t: 2023.1, year: '2023', type: 'travel',
+		title: '30 days backpacking in Ghana' },
+
+	// branch: bigmama — the work "campaign". Forks off the InstaDeep internship
+	// (2023, before the Master's), runs in parallel, levels up intern -> CTO,
+	// and merges back into main at `now`.
+	{ id: 'bm_intern', branch: 'bigmama', parents: ['instadeep'], t: 2023.4, year: '2023', type: 'main',
+		title: 'Intern @ BIGmama technology',
+		desc: 'Built ML pipelines and prototypes.',
+		links: [{ label: 'big-mama.io', href: 'https://big-mama.io' }],
+		tech: ['python', 'pytorch'] },
+
+	{ id: 'masters', branch: 'main', parents: ['ghana', 'vfae', 'instadeep'], t: 2023.5, year: '2023', type: 'education',
+		title: "Master's in AI & machine learning",
+		desc: 'Thesis: document-based question answering — a benchmark of open-source LLMs and embedding models.',
+		links: [{ label: 'repo', href: 'https://github.com/1hachem/document-based-question-answering/' }] },
+
+	{ id: 'bm_backend', branch: 'bigmama', parents: ['bm_intern'], t: 2023.6, year: '2023', type: 'main',
+		title: 'Backend engineer & product designer',
+		desc: 'Shipped yourscrib.ai — owned the backend and the product design.',
+		links: [{ label: 'yourscrib.ai', href: 'https://yourscrib.ai' }],
+		tech: ['fastapi', 'python', 'docker'] },
+	{ id: 'bm_cto1', branch: 'bigmama', parents: ['bm_backend'], t: 2023.8, year: '2023–24', type: 'main',
+		title: 'CTO — hyko.ai workflows (v1)',
+		desc: 'Built hyko.ai v1: visual AI workflows.',
+		links: [{ label: 'hyko.ai', href: 'https://hyko.ai' }],
+		tech: ['typescript', 'react', 'nextjs', 'reactflow', 'fastapi', 'python', 'langchain', 'redis', 'rq', 'docker'] },
+
+	// Quit LinkedIn — a commit on the main line
+	{ id: 'linkedin', branch: 'main', parents: ['masters'], t: 2024, year: '2024', type: 'life',
+		title: 'Quit LinkedIn' },
+	// became a dad — a commit on the main line, just before Senegal
+	{ id: 'dad', branch: 'main', parents: ['linkedin'], t: 2024.4, year: '2024', type: 'life',
+		title: 'Became a dad', desc: 'Welcomed my first child.' },
+
+	// Senegal — a work trip on the bigmama branch: IndabaX product showcase
+	{ id: 'senegal', branch: 'bigmama', parents: ['bm_cto1'], t: 2024.5, year: '2024', type: 'travel',
+		title: 'Senegal — IndabaX', desc: 'Showcased our product at the IndabaX conference.' },
+
+	{ id: 'bm_cto2', branch: 'bigmama', parents: ['senegal'], t: 2025.4, year: '2024–26', type: 'main',
+		title: 'CTO — hyko.ai agents (v2)',
+		desc: 'Built hyko.ai v2: an agent platform.',
+		links: [{ label: 'hyko.ai', href: 'https://hyko.ai' }],
+		tech: ['typescript', 'kubernetes', 'context-engineering', 'nix', 'nixos'] },
+	// branch: ventures — the US trip (SF, GitHub hackathon, Boston)
+	{ id: 'sf', branch: 'ventures', parents: ['hypnosis'], t: 2025, year: '2025', type: 'travel',
+		title: 'San Francisco', desc: 'First time in the Bay Area.' },
+	{ id: 'hackathon', branch: 'ventures', parents: ['sf'], t: 2025.05, year: '2025', type: 'side',
+		title: 'GitHub hackathon', desc: 'Took part in a GitHub hackathon.' },
+	{ id: 'boston', branch: 'ventures', parents: ['hackathon'], t: 2025.1, year: '2025', type: 'travel',
+		title: 'Boston', desc: 'The US east coast.' },
+
+	// branch: oss — open-source agent experiments, their own branch, forked from
+	// the hyko agents work and left open (2026).
+	{ id: 'declarative', branch: 'oss', parents: ['bm_cto2'], t: 2026.15, year: '2026', type: 'side',
+		title: 'declarative-agents', desc: 'Agents defined as data, not code.',
+		links: [{ label: 'repo', href: 'https://github.com/1hachem/declarative-agents' }],
+		tech: ['terraform'] },
+	{ id: 'jailed', branch: 'oss', parents: ['declarative'], t: 2026.2, year: '2026', type: 'side',
+		title: 'jailed-agents', desc: 'Sandboxed execution for untrusted agent code.',
+		links: [{ label: 'repo', href: 'https://github.com/1hachem/jailed-agents' }] },
+	{ id: 'localai', branch: 'oss', parents: ['jailed'], t: 2026.25, year: '2026', type: 'side',
+		title: 'local-ai', desc: 'CLI helper for multi-agent orchestration over TCP / Unix sockets.',
+		links: [{ label: 'repo', href: 'https://github.com/1hachem/local-ai' }] },
+
+	// branch: lisptc — my latest work, its own branch, not merged yet; sits
+	// just below `now`.
+	{ id: 'lisptc', branch: 'lisptc', parents: ['bm_cto2'], t: 2026.4, year: '2026', type: 'side',
+		title: 'lisptc — neuro-symbolic architecture',
+		desc: 'A cognitive architecture for AI agents. Work in progress.',
+		tip: 'A symbolic reasoning core rather than pure prompt-glue.',
+		links: [{ label: 'writeup', href: '/blog' }],
+		tech: ['typescript', 'lisp', 'claude-code'] },
+
+	// first impromptu street hypnosis — a commit on the main line (before the US trip)
+	{ id: 'hypnosis', branch: 'main', parents: ['dad'], t: 2024.9, year: '2025', type: 'life',
+		title: 'First impromptu street hypnosis',
+		desc: 'Stopped a stranger on the street and put them under — for the first time.',
+		links: [{ label: 'read the story', href: '/blog/first-time-street-hypnosis' }] },
+
+	// HEAD: the travel + campaign branches merge back into main here
+	{ id: 'now', branch: 'main', parents: ['hypnosis', 'boston', 'bm_cto2'], t: 2026.5, year: 'now', type: 'main',
+		title: 'Founding engineer — next chapter',
+		desc: 'Looking for a remote founding-engineer role at an AI-native startup.',
+		links: [{ label: 'lisptc', href: '/blog' }] },
+];
+
+// Sort strictly by time so the vertical order is chronological — a 2023 event
+// never renders above a 2025 one — while parents still precede their children.
+const commits: Commit[] = [...history].sort((a, b) => a.t - b.t);
+
+// --- Branch & milestone flavour --------------------------------------------
+// Every branch gets its own RPG-style label, colour and icon (so no two
+// branches read alike). Commits on `main` instead take a chip derived from
+// their kind — accidents are "character development", degrees are "+1 XP", etc.
+type Chip = { label: string; icon: string; color: string };
+const BRANCH_META: Record<string, Chip> = {
+	streets:   { label: 'free roam',   icon: '🛹', color: '#e5722a' },
+	wild:      { label: 'wandering',   icon: '🏕️', color: '#96692e' },
+	contests:  { label: 'achievement', icon: '🏆', color: '#d99e00' },
+	freelance: { label: 'level up',    icon: '🛠️', color: '#2f7ee5' },
+	research:  { label: 'research',    icon: '🔬', color: '#0891b2' },
+	ventures:  { label: 'world map',   icon: '🧭', color: '#10a5a5' },
+	oss:       { label: 'crafting',    icon: '⚒️', color: '#9333ea' },
+	lisptc:    { label: 'crafting',    icon: '⚒️', color: '#9333ea' },
+	bigmama:   { label: 'campaign',    icon: '⚔️', color: '#5b5bd6' },
+};
+const TYPE_CHIP: Partial<Record<Commit['type'], Chip>> = {
+	accident:  { label: 'character development', icon: '💔', color: '#e5484d' },
+	education: { label: '+1 XP',                  icon: '🎓', color: '#8e4ec6' },
+	travel:    { label: 'world map',              icon: '🧭', color: '#10a5a5' },
+};
+// per-commit chip overrides — win over branch/type chips
+const CHIP_OVERRIDE: Record<string, Chip> = {
+	hackathon: { label: '+1 XP',   icon: '', color: '#8e4ec6' },
+	dad:       { label: '+∞ love', icon: '', color: '#db2777' },
+};
+const chipFor = (c: Commit): Chip | undefined =>
+	CHIP_OVERRIDE[c.id] ?? (c.branch !== 'main' ? BRANCH_META[c.branch] : TYPE_CHIP[c.type]);
+
+// --- Lane assignment (the "viz algo") --------------------------------------
+const indexOf: Record<string, number> = {};
+commits.forEach((c, i) => (indexOf[c.id] = i));
+
+type Span = { branch: string; start: number; end: number };
+const spans: Record<string, Span> = {};
+for (const c of commits) {
+	if (c.branch === 'main') continue;
+	if (!spans[c.branch]) spans[c.branch] = { branch: c.branch, start: indexOf[c.id], end: indexOf[c.id] };
+	spans[c.branch].end = indexOf[c.id];
+}
+// extend each span up to the merge commit that consumes its tip
+for (const c of commits) {
+	if (c.parents.length < 2) continue;
+	for (const p of c.parents) {
+		const pb = commits[indexOf[p]].branch;
+		if (pb !== 'main' && spans[pb]) spans[pb].end = Math.max(spans[pb].end, indexOf[c.id]);
+	}
+}
+// main holds lane 0. A branch off main alternates right (+) / left (-). A branch
+// off another branch stays on that parent's side, one lane further out. A branch
+// need not merge — its span just ends at its last commit. Concurrent branches on
+// the same side take the lowest free magnitude so they never collide.
+// pin specific branches to a side (1 = right, -1 = left) regardless of the
+// alternation, e.g. lisptc should sit on the left just under `now`.
+const FORCE_SIDE: Record<string, number> = { lisptc: -1 };
+const laneOf: Record<string, number> = { main: 0 };
+const freeOn: Record<string, number[]> = { '1': [], '-1': [] };
+let altSide = 1;
+for (const s of Object.values(spans).sort((a, b) => a.start - b.start)) {
+	const first = commits[s.start];
+	const parentBranch = first.parents.length ? commits[indexOf[first.parents[0]]].branch : 'main';
+	let sign: number;
+	let minMag: number;
+	if (FORCE_SIDE[s.branch] !== undefined) {
+		sign = FORCE_SIDE[s.branch];
+		minMag = 1;
+	} else if (parentBranch === 'main' || laneOf[parentBranch] === undefined) {
+		sign = altSide;
+		altSide = -altSide;
+		minMag = 1;
+	} else {
+		sign = Math.sign(laneOf[parentBranch]) || altSide;
+		minMag = Math.abs(laneOf[parentBranch]) + 1;
+	}
+	const free = freeOn[String(sign)];
+	let m = minMag;
+	while (free[m] !== undefined && free[m] > s.start) m++;
+	free[m] = s.end;
+	laneOf[s.branch] = sign * m;
+}
+const lanes = Object.values(laneOf);
+const minLane = Math.min(...lanes);
+const maxLane = Math.max(...lanes);
+const laneCount = maxLane - minLane + 1;
+
+// place a specific commit's card on a chosen side (its node stays on its lane)
+const CARD_SIDE: Record<string, 'left' | 'right'> = { social: 'left', masters: 'right', married: 'left', dad: 'left', ghana: 'left', hypnosis: 'left', linkedin: 'left' };
+
+// render newest -> oldest (top of page = latest)
+const rows = [...commits].reverse().map((c) => ({
+	...c,
+	lane: laneOf[c.branch] - minLane,
+	side: (CARD_SIDE[c.id] ?? (laneOf[c.branch] < 0 ? 'left' : 'right')) as 'left' | 'right',
+	chip: chipFor(c),
+}));
+
+// flat edge list for the client-side renderer: child -> parent, tinted with the
+// colour of whichever branch it belongs to; pure trunk edges stay null.
+const EDGES = commits.flatMap((c) =>
+	c.parents.map((p) => {
+		const parentBranch = commits[indexOf[p]].branch;
+		const b = c.branch !== 'main' ? c.branch : parentBranch !== 'main' ? parentBranch : null;
+		return { from: c.id, to: p, color: b ? BRANCH_META[b].color : null };
+	}),
+);
+
+const LEGEND = [
+	{ type: 'main', label: 'main' },
+	{ type: 'education', label: 'education' },
+	{ type: 'travel', label: 'travel' },
+	{ type: 'accident', label: 'accident' },
+	{ type: 'side', label: 'project' },
+	{ type: 'life', label: 'life' },
+];
+
+interface Props {
+	limit?: number;         // render only the newest N commits (a teaser)
+	showLegend?: boolean;   // show the colour key
+	preview?: boolean;      // non-interactive teaser mode
+}
+const { limit, showLegend = false, preview = false } = Astro.props;
+const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
+---
+
+{showLegend && (
+	<ul class="legend" aria-label="colour key">
+		{LEGEND.map((l) => (
+			<li class="legend-item"><span class={`dot ${l.type}`}></span>{l.label}</li>
+		))}
+	</ul>
+)}
+
+<div class:list={['gitgraph', { preview }]} style={`--lanes:${laneCount}`}>
+	<svg class="graph-edges" aria-hidden="true"></svg>
+	<script type="application/json" class="graph-edges-data" set:html={JSON.stringify(EDGES)} is:inline></script>
+	{visibleRows.map((c) => (
+		<div
+			class={['commit', c.type, c.branch === 'main' ? 'on-main' : 'on-branch', `side-${c.side}`, c.root ? 'is-root' : ''].join(' ')}
+			data-type={c.type}
+			data-id={c.id}
+		>
+			<div class="graph-cell">
+				<span class="node" data-node data-id={c.id} style={`--lane:${c.lane}`}></span>
+			</div>
+			<div class="card">
+				<h3 class="title">
+					<span class="yr">{c.year}</span>
+					{c.tip ? (
+						<span class="has-tooltip">
+							{c.title}
+							<span class="tooltip"><span class="tooltip-text">{c.tip}</span></span>
+						</span>
+					) : c.title}
+					{c.chip && (
+						<span class="chip" style={`--chip:${c.chip.color}`}>{c.chip.label}</span>
+					)}
+				</h3>
+				{c.desc && <p class="desc">{c.desc}</p>}
+				{c.links && (
+					<p class="links">
+						{c.links.map((lk) => {
+							const yt = lk.href.includes('youtube.com') || lk.href.includes('youtu.be');
+							return (
+								<a href={lk.href} class={yt ? 'yt-link' : undefined} target={lk.href.startsWith('http') ? '_blank' : undefined} rel={lk.href.startsWith('http') ? 'noopener' : undefined}>
+									{yt && (
+										<svg class="yt-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5 31 31 0 00.5 12 31 31 0 001 16.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5A3 3 0 0023 16.5 31 31 0 0023.5 12 31 31 0 0023 7.5z"/><path fill="#fff" d="M9.75 15.5v-7l6 3.5z"/></svg>
+									)}
+									{yt ? <span class="yt-label" title={lk.label}>{lk.label}</span> : lk.label}
+								</a>
+							);
+						})}
+					</p>
+				)}
+				{c.tech && (
+					<div class="badges">
+						{c.tech.map((k) => {
+							const t = TECH[k];
+							return (
+								<span class={`badge ${t.dark ? 'badge-dark' : 'badge-light'}`} style={`background:${t.bg}`}>
+									{t.icon && <i class={`logo ${t.icon}`} aria-hidden="true"></i>}
+									{t.label}
+								</span>
+							);
+						})}
+					</div>
+				)}
+			</div>
+		</div>
+	))}
+</div>
+
+<style is:global>
+	/* the full graph breaks out of the default reading column; the preview does not */
+	main:has(.gitgraph:not(.preview)) { max-width: 56rem; }
+</style>
+
+<style>
+	/* legend (static colour key) ------------------------------------------- */
+	.legend {
+		list-style: none;
+		padding: 0;
+		margin: 1.5rem 0 2rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 1rem;
+		font-size: 0.75rem;
+		color: var(--muted);
+	}
+	.legend-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+	.dot {
+		width: 0.7rem; height: 0.7rem; border-radius: 50%;
+		display: inline-block; flex-shrink: 0;
+	}
+	.dot.main { background: var(--c-main); }
+	.dot.education { background: var(--c-education); }
+	.dot.accident { background: var(--c-accident); }
+	.dot.travel { background: var(--c-travel); }
+	.dot.side { background: var(--c-side); }
+	.dot.life { background: var(--c-life); }
+
+	/* git graph ------------------------------------------------------------- */
+	.gitgraph {
+		position: relative;
+		margin: 0 0 2rem;
+		--lane-w: 1.35rem;
+		--node-y: 1rem;
+		--gutter: calc(var(--lanes) * var(--lane-w));
+	}
+	.gitgraph.preview { pointer-events: none; margin: 0; }
+	.graph-edges {
+		position: absolute;
+		inset: 0;
+		width: 100%; height: 100%;
+		pointer-events: none;
+		overflow: visible;
+		z-index: 0;
+	}
+	.graph-edges :global(path) {
+		fill: none;
+		stroke: var(--border);
+		stroke-width: 2;
+	}
+
+	.commit {
+		display: grid;
+		grid-template-columns: 1fr var(--gutter) 1fr;
+		align-items: start;
+	}
+
+	.graph-cell { grid-column: 2; position: relative; }
+	.card { grid-column: 3; min-width: 0; padding-bottom: 1.7rem; position: relative; z-index: 1; }
+	.commit.side-left .card { grid-column: 1; text-align: right; }
+	.commit.side-left .title,
+	.commit.side-left .links,
+	.commit.side-left .badges { justify-content: flex-end; }
+	.node {
+		position: absolute;
+		left: calc(var(--lane) * var(--lane-w) + var(--lane-w) / 2);
+		top: var(--node-y);
+		width: 0.55rem; height: 0.55rem;
+		border-radius: 50%;
+		transform: translate(-50%, -50%);
+		background: var(--bg);
+		box-shadow: 0 0 0 3px var(--bg);
+		z-index: 2;
+	}
+	.commit.main .node { border: 2px solid var(--c-main); }
+	.commit.education .node { border: 2px solid var(--c-education); }
+	.commit.accident .node { border: 2px solid var(--c-accident); }
+	.commit.travel .node { border: 2px solid var(--c-travel); }
+	.commit.side .node { border: 2px solid var(--c-side); }
+	.commit.life .node { border: 2px solid var(--c-life); }
+	.on-main.main .node { background: var(--c-main); }
+	.on-main.education .node { background: var(--c-education); }
+	.on-main.accident .node { background: var(--c-accident); }
+	.on-main.travel .node { background: var(--c-travel); }
+	.on-main.side .node { background: var(--c-side); }
+	.on-main.life .node { background: var(--c-life); }
+	.is-root .node { width: 0.9rem; height: 0.9rem; background: var(--c-life); }
+
+	/* the "now" commit pulses to signal it's the live HEAD */
+	.commit[data-id="now"] .node::after {
+		content: '';
+		position: absolute;
+		left: 50%; top: 50%;
+		width: 100%; height: 100%;
+		border-radius: 50%;
+		border: 2px solid var(--c-main);
+		transform: translate(-50%, -50%) scale(1);
+		animation: now-pulse 1.8s ease-out infinite;
+	}
+	@keyframes now-pulse {
+		0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+		100% { transform: translate(-50%, -50%) scale(3.4); opacity: 0; }
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.commit[data-id="now"] .node::after { animation: none; }
+	}
+
+	/* cards ----------------------------------------------------------------- */
+	.title {
+		font-size: 0.95rem;
+		margin: 0.15rem 0 0.25rem;
+		line-height: 1.35;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.4rem 0.5rem;
+	}
+	.is-root .title { font-weight: bold; }
+	.yr { font-size: 0.7rem; color: var(--muted); font-weight: normal; white-space: nowrap; }
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.62rem;
+		letter-spacing: 0.02em;
+		padding: 0.05rem 0.5rem;
+		border-radius: 999px;
+		font-weight: normal;
+		white-space: nowrap;
+		color: var(--chip);
+		border: 1px solid var(--chip);
+		background: color-mix(in srgb, var(--chip) 12%, transparent);
+	}
+	.desc { margin: 0 0 0.4rem; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+	.links {
+		margin: 0 0 0.5rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.15rem 0.8rem;
+		font-size: 0.78rem;
+	}
+	.yt-link { display: inline-flex; align-items: center; gap: 0.3rem; max-width: 14rem; min-width: 0; }
+	.yt-ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
+	.yt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+	.has-tooltip {
+		position: relative;
+		text-decoration: underline dotted;
+		text-underline-offset: 3px;
+		cursor: help;
+	}
+
+	/* skill / tech badges --------------------------------------------------- */
+	.badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		font-size: 0.68rem;
+		line-height: 1;
+		padding: 0.22rem 0.5rem;
+		border-radius: 4px;
+		white-space: nowrap;
+	}
+	.badge-dark { color: #fff; }
+	.badge-light { color: #111; }
+	.badge .logo { font-size: 0.85rem; line-height: 1; }
+
+	/* on narrow screens collapse to a single left rail with cards on the right */
+	@media (max-width: 680px) {
+		.gitgraph { --lane-w: 1.2rem; }
+		.commit { grid-template-columns: var(--gutter) 1fr; }
+		.graph-cell { grid-column: 1; }
+		.card, .commit.side-left .card { grid-column: 2; text-align: left; }
+		.commit.side-left .title,
+		.commit.side-left .links,
+		.commit.side-left .badges { justify-content: flex-start; }
+		.title { font-size: 0.9rem; }
+	}
+</style>
+
+<script>
+	function drawOne(graph: HTMLElement) {
+		const svg = graph.querySelector<SVGSVGElement>('.graph-edges');
+		const dataEl = graph.querySelector<HTMLElement>('.graph-edges-data');
+		if (!svg || !dataEl) return;
+		const edges: { from: string; to: string; color: string | null }[] = JSON.parse(dataEl.textContent || '[]');
+		const SVGNS = 'http://www.w3.org/2000/svg';
+
+		function draw() {
+			const box = graph.getBoundingClientRect();
+			const pos: Record<string, { x: number; y: number }> = {};
+			graph.querySelectorAll<HTMLElement>('[data-node]').forEach((n) => {
+				const r = n.getBoundingClientRect();
+				if (!r.width) return;
+				pos[n.dataset.id!] = { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+			});
+			svg!.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+			svg!.setAttribute('width', String(box.width));
+			svg!.setAttribute('height', String(box.height));
+			while (svg!.firstChild) svg!.removeChild(svg!.firstChild);
+
+			for (const e of edges) {
+				const a = pos[e.from];
+				const b = pos[e.to];
+				if (!a || !b) continue; // an endpoint isn't rendered (e.g. teaser)
+				const p = document.createElementNS(SVGNS, 'path');
+				let d: string;
+				if (Math.abs(a.x - b.x) < 0.5) {
+					d = `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
+				} else {
+					const bend = Math.min(22, Math.abs(b.y - a.y) * 0.5);
+					d = `M ${a.x} ${a.y} L ${a.x} ${b.y - bend} C ${a.x} ${b.y}, ${b.x} ${b.y - bend}, ${b.x} ${b.y}`;
+				}
+				p.setAttribute('d', d);
+				if (e.color) p.style.stroke = e.color;
+				svg!.appendChild(p);
+			}
+		}
+
+		let raf = 0;
+		const schedule = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
+		draw();
+		if (document.fonts?.ready) document.fonts.ready.then(draw);
+		window.addEventListener('resize', schedule);
+		window.addEventListener('load', draw);
+
+		// tooltips (skipped in preview mode — pointer events are disabled there)
+		let timer: ReturnType<typeof setTimeout> | null = null;
+		graph.querySelectorAll<HTMLElement>('.has-tooltip').forEach((trigger) => {
+			const tip = trigger.querySelector<HTMLElement>('.tooltip');
+			if (!tip) return;
+			const place = (e: MouseEvent) => {
+				tip.style.left = e.clientX + 12 + 'px';
+				tip.style.top = e.clientY - 28 + 'px';
+			};
+			trigger.addEventListener('mouseenter', (e) => {
+				const me = e as MouseEvent;
+				timer = setTimeout(() => { place(me); tip.classList.add('visible'); }, 400);
+			});
+			trigger.addEventListener('mousemove', (e) => place(e as MouseEvent));
+			trigger.addEventListener('mouseleave', () => {
+				if (timer) { clearTimeout(timer); timer = null; }
+				tip.classList.remove('visible');
+			});
+		});
+	}
+
+	function initGraphs() {
+		document.querySelectorAll<HTMLElement>('.gitgraph').forEach(drawOne);
+	}
+
+	initGraphs();
+	document.addEventListener('astro:page-load', initGraphs);
+</script>

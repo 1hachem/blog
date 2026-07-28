@@ -7,6 +7,13 @@
 	--code-bg: #f0ede9;
 	--max-width: 34rem;
 	--font-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+	/* git-graph category colours (shared by the about graph + its landing preview) */
+	--c-main: #3b82f6;
+	--c-education: #8e4ec6;
+	--c-accident: #e5484d;
+	--c-travel: #30a46c;
+	--c-side: #f5a524;
+	--c-life: #e93d82;
 }
 
 [data-theme="dark"] {
