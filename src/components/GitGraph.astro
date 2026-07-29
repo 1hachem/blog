@@ -514,33 +514,30 @@ const yearMark = yearMarks(visibleRows);
 		.photo { transition: none; }
 	}
 
-	/* on narrow screens collapse to a single left rail with cards on the right */
+	/* on narrow screens collapse every branch onto a single left rail with cards
+	   on the right — the multi-lane layout is too wide for a phone */
 	@media (max-width: 680px) {
 		.year-sep { margin-left: 0; margin-right: 0; }
-		/* no outer gutter on mobile: drop the tip note below the card, always shown */
-		.commit .tip-note,
-		.commit.side-left .tip-note,
-		.commit.side-right .tip-note {
-			position: static; transform: none; width: auto; opacity: 1;
-			left: auto; right: auto; margin: -0.2rem 0 1rem; text-align: left;
-			grid-column: 2;
-		}
-		.gitgraph { --lane-w: 1.2rem; }
+		.gitgraph { --lane-w: 1.2rem; --gutter: var(--lane-w); }
 		.commit { grid-template-columns: var(--gutter) 1fr; }
 		.graph-cell { grid-column: 1; }
+		.node,
+		.commit.side-left .node,
+		.commit.side-right .node { left: calc(var(--lane-w) / 2); }
 		.card, .commit.side-left .card { grid-column: 2; text-align: left; }
 		.commit.side-left .title,
 		.commit.side-left .links,
 		.commit.side-left .badges { justify-content: flex-start; }
 		.title { font-size: 0.9rem; }
-		/* no outer column (or hover) on mobile: drop photos below the card, always shown */
+		/* margin annotations and edge photos have no room on a phone */
+		.tip-note,
+		.commit .tip-note,
+		.commit.side-left .tip-note,
+		.commit.side-right .tip-note { display: none; }
+		.photos,
 		.commit .photos,
 		.commit.side-left .photos,
-		.commit.side-right .photos {
-			position: static; transform: none; width: 100%; max-width: 16rem; margin: 0 0 1rem;
-			grid-column: 2; grid-row: auto; left: auto; right: auto;
-		}
-		.commit .photo { opacity: 1; transform: translateX(var(--dx)) rotate(var(--tilt)); }
+		.commit.side-right .photos { display: none; }
 	}
 </style>
 

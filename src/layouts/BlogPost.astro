@@ -182,7 +182,7 @@ const categorySlug = category && slugify(category);
 	/* Mobile: single column, TOC above prose */
 	@media (max-width: 700px) {
 		article {
-			grid-template-columns: 1fr;
+			grid-template-columns: minmax(0, 1fr);
 		}
 		article :global(.toc) {
 			grid-column: 1;
