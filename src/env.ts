@@ -15,7 +15,7 @@ const options = {
 // from astro.config.mjs (see the env-validation integration) so a missing or
 // malformed var fails the dev server / build immediately, not on first render.
 export function validateEnv(runtimeEnv: Record<string, string | undefined>) {
-	return createEnv({ ...options, runtimeEnv });
+	return createEnv({ ...options, runtimeEnv, skipValidation: !!process.env.VITEST });
 }
 
 // App-facing, typed accessor. Lazily validated on first property access so

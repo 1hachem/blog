@@ -18,6 +18,8 @@ jobs:
         run: nix develop --command pnpm install --frozen-lockfile
 
       - name: Build
+        env:
+          PUBLIC_R2_URL: ${{ secrets.PUBLIC_R2_URL }}
         run: nix develop --command pnpm run build
 
       - name: Deploy
