@@ -9,7 +9,7 @@ const { lastUpdated, commitHash } = getGitInfo();
 <footer>
 	<div>
 		{lastUpdated && (
-			<span>updated {lastUpdated} <code>{commitHash}</code></span>
+			<span class="updated">updated {lastUpdated} <code>{commitHash}</code></span>
 		)}
 		<span class="right">
 			<a href="/rss.xml">rss</a>
@@ -48,5 +48,10 @@ const { lastUpdated, commitHash } = getGitInfo();
 	code {
 		font-size: 0.8em;
 		opacity: 0.6;
+	}
+	@media (max-width: 640px) {
+		.updated {
+			display: none;
+		}
 	}
 </style>
