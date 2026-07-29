@@ -76,7 +76,7 @@ export type Category = keyof typeof CATEGORY_LABEL;
 // Each entry is a commit. `parents` are other commit ids (a merge commit has
 // two+). `main` is the long-lived trunk; every side-episode lives on its own
 // branch that checks out from a commit and (sometimes) merges back later.
-export type Commit = {
+type BaseCommit = {
 	id: string;
 	branch: string;
 	parents: string[];
@@ -85,14 +85,17 @@ export type Commit = {
 	type: Category;
 	title: string;
 	desc?: string;
-	tip?: string;
 	links?: { label: string; href: string }[];
 	tech?: (keyof typeof TECH)[];
 	card?: 'left' | 'right'; // force the card to a side (its node stays on its lane)
-	photos?: string[]; // optional images (public/ paths or URLs); revealed on hover at the outer edge
 	hidden?: boolean; // a bare merge junction on the trunk: no card, just a dot (+ any links)
 	root?: boolean;
 };
+
+// The outer gutter fits one decoration per commit, so `tip` (typed margin note)
+// and `photos` (hover gallery) are mutually exclusive — a commit is one or the other.
+export type Commit = BaseCommit &
+	({ tip?: string; photos?: never } | { photos?: string[]; tip?: never });
 
 export const history: Commit[] = [
 	{
