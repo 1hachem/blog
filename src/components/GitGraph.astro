@@ -1,6 +1,6 @@
 ---
 import 'devicon/devicon.min.css';
-import { TECH, history, type Commit } from '../data/graph';
+import { TECH, history, CATEGORY_LABEL, type Commit, type Category } from '../data/graph';
 
 // Sort strictly by time so the vertical order is chronological — a 2023 event
 // never renders above a 2025 one — while parents still precede their children.
@@ -15,7 +15,7 @@ const BRANCH_META: Record<string, Chip> = {
 	streets:   { label: 'free roam',   color: '#e5722a' },
 	wild:      { label: 'wandering',   color: '#96692e' },
 	contests:  { label: 'achievement', color: '#d99e00' },
-	freelance: { label: 'level up',    color: '#2f7ee5' },
+	freelance: { label: 'freelance',   color: '#2f7ee5' },
 	research:  { label: 'research',    color: '#0891b2' },
 	ventures:  { label: 'world map',   color: '#10a5a5' },
 	oss:       { label: 'crafting',    color: '#9333ea' },
@@ -31,6 +31,7 @@ const TYPE_CHIP: Partial<Record<Commit['type'], Chip>> = {
 const CHIP_OVERRIDE: Record<string, Chip> = {
 	hackathon: { label: '+1 XP',   color: '#8e4ec6' },
 	dad:       { label: '+∞ love', color: '#db2777' },
+	tedx:      { label: 'on stage', color: '#E62B1E' },
 };
 const chipFor = (c: Commit): Chip | undefined =>
 	CHIP_OVERRIDE[c.id] ?? (c.branch !== 'main' ? BRANCH_META[c.branch] : TYPE_CHIP[c.type]);
@@ -58,9 +59,23 @@ for (const c of commits) {
 // off another branch stays on that parent's side, one lane further out. A branch
 // need not merge — its span just ends at its last commit. Concurrent branches on
 // the same side take the lowest free magnitude so they never collide.
-// pin specific branches to a side (1 = right, -1 = left) regardless of the
-// alternation, e.g. lisptc should sit on the left just under `now`.
-const FORCE_SIDE: Record<string, number> = { lisptc: -1 };
+// pin every branch to a deliberate side (1 = right, -1 = left) so the two
+// gutters stay balanced and each branch reads as one coherent block. Career
+// (contests, research, bigmama, lisptc) lives on the right; the wandering /
+// personal / oss branches live on the left.
+const FORCE_SIDE: Record<string, number> = {
+	contests: 1,
+	// research is intentionally NOT pinned: it forks from `devfest` (a contests
+	// commit), so the nesting logic must place it one lane further out (+2) on
+	// the same side — otherwise its checkout edge runs down the contests lane.
+	bigmama: 1,
+	lisptc: 1,
+	streets: -1,
+	wild: -1,
+	freelance: -1,
+	ventures: -1,
+	oss: -1,
+};
 const laneOf: Record<string, number> = { main: 0 };
 const freeOn: Record<string, number[]> = { '1': [], '-1': [] };
 let altSide = 1;
@@ -106,18 +121,15 @@ const EDGES = commits.flatMap((c) =>
 	c.parents.map((p) => {
 		const parentBranch = commits[indexOf[p]].branch;
 		const b = c.branch !== 'main' ? c.branch : parentBranch !== 'main' ? parentBranch : null;
-		return { from: c.id, to: p, color: b ? BRANCH_META[b].color : null };
+		// `railFrom` marks which end sits on the coloured branch: the child on a
+		// checkout, the parent on a merge. The drawer keeps the vertical in that
+		// lane so a branch's colour never bleeds onto the trunk past its merge.
+		return { from: c.id, to: p, color: b ? BRANCH_META[b].color : null, railFrom: c.branch !== 'main' };
 	}),
 );
 
-const LEGEND = [
-	{ type: 'main', label: 'main' },
-	{ type: 'education', label: 'education' },
-	{ type: 'travel', label: 'travel' },
-	{ type: 'accident', label: 'accident' },
-	{ type: 'side', label: 'project' },
-	{ type: 'life', label: 'life' },
-];
+// derived from the category source of truth so it can never drift
+const LEGEND = (Object.keys(CATEGORY_LABEL) as Category[]).map((type) => ({ type, label: CATEGORY_LABEL[type] }));
 
 interface Props {
 	limit?: number;         // render only the newest N commits (a teaser)
@@ -141,7 +153,7 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 	<script type="application/json" class="graph-edges-data" set:html={JSON.stringify(EDGES)} is:inline></script>
 	{visibleRows.map((c) => (
 		<div
-			class={['commit', c.type, c.branch === 'main' ? 'on-main' : 'on-branch', `side-${c.side}`, c.root ? 'is-root' : ''].join(' ')}
+			class={['commit', c.type, c.branch === 'main' ? 'on-main' : 'on-branch', `side-${c.side}`, c.root ? 'is-root' : '', c.hidden ? 'is-junction' : ''].join(' ')}
 			data-type={c.type}
 			data-id={c.id}
 		>
@@ -149,6 +161,7 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 				<span class="node" data-node data-id={c.id} style={`--lane:${c.lane}`}></span>
 			</div>
 			<div class="card">
+				{!c.hidden && (
 				<h3 class="title">
 					<span class="yr">{c.year}</span>
 					{c.tip ? (
@@ -161,7 +174,8 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 						<span class="chip" style={`--chip:${c.chip.color}`}>{c.chip.label}</span>
 					)}
 				</h3>
-				{c.desc && <p class="desc">{c.desc}</p>}
+				)}
+				{!c.hidden && c.desc && <p class="desc">{c.desc}</p>}
 				{c.links && (
 					<p class="links">
 						{c.links.map((lk) => {
@@ -177,7 +191,7 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 						})}
 					</p>
 				)}
-				{c.tech && (
+				{!c.hidden && c.tech && (
 					<div class="badges">
 						{c.tech.map((k) => {
 							const t = TECH[k];
@@ -282,25 +296,44 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 	.on-main.travel .node { background: var(--c-travel); }
 	.on-main.side .node { background: var(--c-side); }
 	.on-main.life .node { background: var(--c-life); }
-	.is-root .node { width: 0.9rem; height: 0.9rem; background: var(--c-life); }
+	.on-main.is-root .node { width: 0.5rem; height: 0.5rem; background: var(--c-travel); border: 2px solid var(--c-travel); }
+	/* hidden merge junction: a small neutral dot on the trunk (links only, no card) */
+	.commit.is-junction .node { border: 2px solid var(--border); background: var(--border); width: 0.4rem; height: 0.4rem; }
+	.commit.is-junction .card { padding-bottom: 1.2rem; }
+	.commit.is-junction .links { margin-top: -0.15rem; font-size: 0.72rem; }
 
-	/* the "now" commit pulses to signal it's the live HEAD */
-	.commit[data-id="now"] .node::after {
+	/* pulsing rings — inset:0 so the ring is exactly concentric with the node */
+	.commit[data-id="now"] .node::after,
+	.commit[data-id="dad"] .node::after,
+	.commit[data-id="married"] .node::after,
+	.commit[data-id="born"] .node::after {
 		content: '';
 		position: absolute;
-		left: 50%; top: 50%;
-		width: 100%; height: 100%;
+		inset: 0;
 		border-radius: 50%;
 		border: 2px solid var(--c-main);
-		transform: translate(-50%, -50%) scale(1);
-		animation: now-pulse 1.8s ease-out infinite;
+		animation: pulse-ring 1.8s ease-out infinite;
 	}
-	@keyframes now-pulse {
-		0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-		100% { transform: translate(-50%, -50%) scale(3.4); opacity: 0; }
+	.commit[data-id="born"] .node::after { border-color: var(--c-travel); }
+	@keyframes pulse-ring {
+		0%   { transform: scale(1);   opacity: 0.8; }
+		100% { transform: scale(3.4); opacity: 0;   }
+	}
+	/* the two life-defining moments: gold dots (same size as the HEAD) */
+	.commit[data-id="dad"] .node,
+	.commit[data-id="married"] .node {
+		border: 2px solid #f0b90b;
+		background: #f0b90b;
+	}
+	.commit[data-id="dad"] .node::after,
+	.commit[data-id="married"] .node::after {
+		border-color: #f0b90b;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.commit[data-id="now"] .node::after { animation: none; }
+		.commit[data-id="now"] .node::after,
+		.commit[data-id="dad"] .node::after,
+		.commit[data-id="married"] .node::after,
+		.commit[data-id="born"] .node::after { animation: none; }
 	}
 
 	/* cards ----------------------------------------------------------------- */
@@ -382,7 +415,7 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 		const svg = graph.querySelector<SVGSVGElement>('.graph-edges');
 		const dataEl = graph.querySelector<HTMLElement>('.graph-edges-data');
 		if (!svg || !dataEl) return;
-		const edges: { from: string; to: string; color: string | null }[] = JSON.parse(dataEl.textContent || '[]');
+		const edges: { from: string; to: string; color: string | null; railFrom: boolean }[] = JSON.parse(dataEl.textContent || '[]');
 		const SVGNS = 'http://www.w3.org/2000/svg';
 
 		function draw() {
@@ -407,8 +440,18 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 				if (Math.abs(a.x - b.x) < 0.5) {
 					d = `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
 				} else {
-					const bend = Math.min(22, Math.abs(b.y - a.y) * 0.5);
-					d = `M ${a.x} ${a.y} L ${a.x} ${b.y - bend} C ${a.x} ${b.y}, ${b.x} ${b.y - bend}, ${b.x} ${b.y}`;
+					// keep the vertical in the branch lane (`rail`) and bend into the
+					// trunk-ward endpoint (`junc`) only next to it.
+					const rail = e.railFrom ? a : b;
+					const junc = e.railFrom ? b : a;
+					const bend = Math.min(22, Math.abs(a.y - b.y) * 0.5);
+					if (junc.y > rail.y) {
+						// checkout: down the rail lane, then bend into the junction below
+						d = `M ${rail.x} ${rail.y} L ${rail.x} ${junc.y - bend} C ${rail.x} ${junc.y}, ${junc.x} ${junc.y - bend}, ${junc.x} ${junc.y}`;
+					} else {
+						// merge: bend out of the junction above, then down the rail lane
+						d = `M ${junc.x} ${junc.y} C ${junc.x} ${junc.y + bend}, ${rail.x} ${junc.y}, ${rail.x} ${junc.y + bend} L ${rail.x} ${rail.y}`;
+					}
 				}
 				p.setAttribute('d', d);
 				if (e.color) p.style.stroke = e.color;

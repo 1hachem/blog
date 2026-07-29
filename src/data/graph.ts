@@ -39,6 +39,11 @@ export const TECH = {
 	drizzle: { label: 'Drizzle', bg: '#2d7a2d', dark: true, icon: null },
 	vite: { label: 'Vite', bg: '#646CFF', dark: true, icon: 'devicon-vite-plain' },
 	vitest: { label: 'Vitest', bg: '#6E9F18', dark: true, icon: 'devicon-vitest-plain' },
+	node: { label: 'Node.js', bg: '#5FA04E', dark: true, icon: 'devicon-nodejs-plain' },
+	kubevirt: { label: 'KubeVirt', bg: '#00AAB2', dark: true, icon: null },
+	linux: { label: 'Linux', bg: '#1A1A1A', dark: true, icon: 'devicon-linux-plain' },
+	fedora: { label: 'Fedora', bg: '#294172', dark: true, icon: 'devicon-fedora-plain' },
+	popos: { label: 'Pop!_OS', bg: '#48B9C7', dark: true, icon: null },
 
 	'context-engineering': { label: 'context engineering', bg: '#dcd3f7', dark: false, icon: null },
 	asyncio: { label: 'asyncio', bg: '#cfe8dd', dark: false, icon: null },
@@ -50,7 +55,22 @@ export const TECH = {
 	vae: { label: 'VAE', bg: '#f0e2d0', dark: false, icon: null },
 	photogrammetry: { label: 'photogrammetry', bg: '#e7dcc6', dark: false, icon: null },
 	'cellular-automata': { label: 'cellular automata', bg: '#dbeae0', dark: false, icon: null },
+	'unix-sockets': { label: 'Unix sockets', bg: '#d7d2c8', dark: false, icon: null },
 };
+
+// --- Commit categories (the legend) ----------------------------------------
+// Single source of truth: keys are the category ids (used as `Commit.type`
+// and as the node-colour class), values are the legend labels. `Category`
+// is derived from the keys so the history and the legend can never drift.
+export const CATEGORY_LABEL = {
+	main: 'main',
+	education: 'education',
+	travel: 'travel',
+	accident: 'accident',
+	side: 'project',
+	life: 'life',
+} as const;
+export type Category = keyof typeof CATEGORY_LABEL;
 
 // --- The history as a git DAG ----------------------------------------------
 // Each entry is a commit. `parents` are other commit ids (a merge commit has
@@ -62,13 +82,14 @@ export type Commit = {
 	parents: string[];
 	t: number; // sortable time — drives the chronological (vertical) order
 	year: string; // the label shown to the reader
-	type: 'main' | 'education' | 'accident' | 'travel' | 'side' | 'life';
+	type: Category;
 	title: string;
 	desc?: string;
 	tip?: string;
 	links?: { label: string; href: string }[];
 	tech?: (keyof typeof TECH)[];
 	card?: 'left' | 'right'; // force the card to a side (its node stays on its lane)
+	hidden?: boolean; // a bare merge junction on the trunk: no card, just a dot (+ any links)
 	root?: boolean;
 };
 
@@ -117,7 +138,7 @@ export const history: Commit[] = [
 	{
 		id: 'kidney',
 		branch: 'main',
-		parents: ['algeria', 'parkour'],
+		parents: ['merge_streets'],
 		t: 2018,
 		year: '~2018',
 		type: 'accident',
@@ -161,7 +182,7 @@ export const history: Commit[] = [
 	{
 		id: 'enp',
 		branch: 'main',
-		parents: ['bacc', 'camping'],
+		parents: ['merge_wild'],
 		t: 2021,
 		year: '2021',
 		type: 'education',
@@ -189,8 +210,8 @@ export const history: Commit[] = [
 	{
 		id: 'devfest',
 		branch: 'contests',
-		parents: ['enp'],
-		t: 2021.3,
+		parents: ['samsung'],
+		t: 2021.5,
 		year: '2021',
 		type: 'side',
 		title: '3rd place — DevFest Algiers',
@@ -207,8 +228,8 @@ export const history: Commit[] = [
 	{
 		id: 'samsung',
 		branch: 'contests',
-		parents: ['devfest'],
-		t: 2021.5,
+		parents: ['enp'],
+		t: 2021.3,
 		year: '2021',
 		type: 'education',
 		title: 'Samsung AI & ML scholarship',
@@ -218,9 +239,9 @@ export const history: Commit[] = [
 	{
 		id: 'wildfire',
 		branch: 'contests',
-		parents: ['samsung'],
-		t: 2021.7,
-		year: '2021',
+		parents: ['devfest'],
+		t: 2022.3,
+		year: '2022',
 		type: 'side',
 		title: 'Pre-print: wildfire simulation on satellite data',
 		desc: 'Semi-empirical simulation of wildfire applied to real-world satellite imagery.',
@@ -243,19 +264,20 @@ export const history: Commit[] = [
 	{
 		id: 'cliff',
 		branch: 'main',
-		parents: ['social', 'wildfire'],
+		parents: ['fork_freelance'],
 		t: 2022,
 		year: '2022',
 		type: 'accident',
 		title: 'Fell from a 7 m cliff',
+		card: 'left',
 		desc: 'Broke my hip and left arm.',
 		tip: 'The second reminder that gravity keeps score.',
 	},
 	{
 		id: 'road',
 		branch: 'freelance',
-		parents: ['cliff'],
-		t: 2022.3,
+		parents: ['fork_freelance'],
+		t: 2021.4,
 		year: '2022',
 		type: 'side',
 		title: 'AI road-monitoring system',
@@ -272,7 +294,7 @@ export const history: Commit[] = [
 		id: 'vfae',
 		branch: 'freelance',
 		parents: ['road'],
-		t: 2022.4,
+		t: 2021.6,
 		year: '2022',
 		type: 'side',
 		title: 'Variational Fair Autoencoder',
@@ -288,7 +310,7 @@ export const history: Commit[] = [
 	{
 		id: 'instadeep',
 		branch: 'research',
-		parents: ['cliff'],
+		parents: ['devfest'],
 		t: 2022.6,
 		year: '2022',
 		type: 'side',
@@ -303,15 +325,26 @@ export const history: Commit[] = [
 		tech: ['pytorch', 'tensorflow', 'gans', 'ai-training', 'ai-inference'],
 	},
 	{
+		id: 'tedx',
+		branch: 'main',
+		parents: ['merge_work'],
+		t: 2022.8,
+		year: '2022',
+		type: 'side',
+		title: 'TEDx talk, Algeria',
+		card: 'left',
+		desc: '"One million reasons why I never owned a smartphone."',
+	},
+	{
 		id: 'married',
 		branch: 'main',
-		parents: ['cliff'],
+		parents: ['tedx'],
 		t: 2023,
 		year: '2023',
 		type: 'life',
 		title: 'Got married',
-		desc: 'Teamed up for life — married my favourite person at 23.',
 		card: 'left',
+		desc: 'Teamed up for life — married my favourite person at 23.',
 	},
 	{
 		id: 'ghana',
@@ -326,7 +359,7 @@ export const history: Commit[] = [
 	{
 		id: 'bm_intern',
 		branch: 'bigmama',
-		parents: ['instadeep'],
+		parents: ['tedx'],
 		t: 2023.4,
 		year: '2023',
 		type: 'main',
@@ -343,11 +376,12 @@ export const history: Commit[] = [
 	{
 		id: 'masters',
 		branch: 'main',
-		parents: ['ghana', 'vfae', 'instadeep'],
+		parents: ['ghana'],
 		t: 2023.5,
 		year: '2023',
 		type: 'education',
 		title: "Master's in AI & machine learning",
+		card: 'left',
 		desc: 'Thesis: document-based question answering — a benchmark of open-source LLMs and embedding models.',
 		links: [
 			{
@@ -355,7 +389,6 @@ export const history: Commit[] = [
 				href: 'https://github.com/1hachem/document-based-question-answering/',
 			},
 		],
-		card: 'left',
 	},
 	{
 		id: 'bm_backend',
@@ -422,8 +455,8 @@ export const history: Commit[] = [
 		year: '2024',
 		type: 'life',
 		title: 'Became a dad',
-		desc: 'Welcomed my first child.',
 		card: 'left',
+		desc: 'Welcomed my first child.',
 	},
 	{
 		id: 'senegal',
@@ -501,8 +534,8 @@ export const history: Commit[] = [
 	{
 		id: 'declarative',
 		branch: 'oss',
-		parents: ['bm_cto2'],
-		t: 2026.15,
+		parents: ['nixos_switch'],
+		t: 2025.6,
 		year: '2026',
 		type: 'side',
 		title: 'declarative-agents',
@@ -519,7 +552,7 @@ export const history: Commit[] = [
 		id: 'jailed',
 		branch: 'oss',
 		parents: ['declarative'],
-		t: 2026.2,
+		t: 2025.7,
 		year: '2026',
 		type: 'side',
 		title: 'jailed-agents',
@@ -535,7 +568,7 @@ export const history: Commit[] = [
 		id: 'localai',
 		branch: 'oss',
 		parents: ['jailed'],
-		t: 2026.25,
+		t: 2025.8,
 		year: '2026',
 		type: 'side',
 		title: 'local-ai',
@@ -546,11 +579,12 @@ export const history: Commit[] = [
 				href: 'https://github.com/1hachem/local-ai',
 			},
 		],
+		tech: ['node', 'unix-sockets'],
 	},
 	{
 		id: 'lisptc',
 		branch: 'lisptc',
-		parents: ['bm_cto2'],
+		parents: ['leave_bigmama'],
 		t: 2026.4,
 		year: '2026',
 		type: 'side',
@@ -573,6 +607,7 @@ export const history: Commit[] = [
 		year: '2025',
 		type: 'life',
 		title: 'First impromptu street hypnosis',
+		card: 'left',
 		desc: 'Stopped a stranger on the street and put them under — for the first time.',
 		links: [
 			{
@@ -580,16 +615,28 @@ export const history: Commit[] = [
 				href: '/blog/first-time-street-hypnosis',
 			},
 		],
+	},
+	{
+		id: 'leave_bigmama',
+		branch: 'main',
+		parents: ['merge_oss', 'bm_cto2'],
+		t: 2026,
+		year: '2026',
+		type: 'main',
+		title: 'Left BIGmama after 4 years',
 		card: 'left',
+		desc: 'Stepped away from the CTO seat to build my own thing.',
+		links: [{ label: 'Why I quit BIGmama after 4 years', href: '/blog' }],
 	},
 	{
 		id: 'now',
 		branch: 'main',
-		parents: ['hypnosis', 'boston', 'bm_cto2'],
+		parents: ['leave_bigmama'],
 		t: 2026.5,
 		year: 'now',
 		type: 'main',
 		title: 'Founding engineer — next chapter',
+		card: 'left',
 		desc: 'Looking for a remote founding-engineer role at an AI-native startup.',
 		links: [
 			{
@@ -597,5 +644,97 @@ export const history: Commit[] = [
 				href: 'mailto:test@example.com',
 			},
 		],
+	},
+	{
+		id: 'merge_streets',
+		branch: 'main',
+		hidden: true,
+		parents: ['algeria', 'parkour'],
+		t: 2013.5,
+		year: '',
+		type: 'main',
+		title: 'merge streets',
+	},
+	{
+		id: 'merge_wild',
+		branch: 'main',
+		hidden: true,
+		parents: ['bacc', 'camping'],
+		t: 2020.5,
+		year: '',
+		type: 'main',
+		title: 'merge wild',
+	},
+	{
+		id: 'merge_contests',
+		branch: 'main',
+		hidden: true,
+		parents: ['cliff', 'wildfire'],
+		t: 2022.4,
+		year: '',
+		type: 'main',
+		title: 'merge contests',
+	},
+	{
+		id: 'merge_work',
+		branch: 'main',
+		hidden: true,
+		parents: ['merge_contests', 'linux', 'vfae'],
+		t: 2022.7,
+		year: '',
+		type: 'main',
+		title: 'merge work',
+	},
+	{
+		id: 'merge_ventures',
+		branch: 'main',
+		hidden: true,
+		parents: ['hypnosis', 'boston'],
+		t: 2025.3,
+		year: '',
+		type: 'main',
+		title: 'merge ventures',
+	},
+	{
+		id: 'linux',
+		branch: 'research',
+		parents: ['instadeep'],
+		t: 2022.65,
+		year: '2022',
+		type: 'side',
+		title: 'Switched to Linux full-time',
+		desc: 'Daily driver: Fedora, then Pop!_OS.',
+		tech: ['linux', 'fedora', 'popos'],
+	},
+	{
+		id: 'nixos_switch',
+		branch: 'main',
+		parents: ['merge_ventures'],
+		t: 2025.5,
+		year: '2025',
+		type: 'side',
+		title: 'Switched to NixOS full-time',
+		desc: 'The whole machine, declarative.',
+		tech: ['nixos', 'nix'],
+	},
+	{
+		id: 'merge_oss',
+		branch: 'main',
+		hidden: true,
+		parents: ['nixos_switch', 'localai'],
+		t: 2025.9,
+		year: '',
+		type: 'main',
+		title: 'merge oss',
+	},
+	{
+		id: 'fork_freelance',
+		branch: 'main',
+		hidden: true,
+		parents: ['social'],
+		t: 2021.2,
+		year: '',
+		type: 'main',
+		title: 'freelance fork',
 	},
 ];
