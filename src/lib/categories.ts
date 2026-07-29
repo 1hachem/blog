@@ -3,9 +3,9 @@ export const CATEGORIES = {
 		label: 'general',
 		description: "General thoughts, life updates, and things that don't fit elsewhere.",
 		quotes: [
-			'I have no idea what I\'m doing, but I\'m doing it with confidence.',
+			"I have no idea what I'm doing, but I'm doing it with confidence.",
 			'Life is short. So is this quote.',
-			'I\'m not procrastinating, I\'m marinating ideas.',
+			"I'm not procrastinating, I'm marinating ideas.",
 			'Adulthood is just googling how to do things.',
 		],
 	},
@@ -14,9 +14,9 @@ export const CATEGORIES = {
 		description: 'Software engineering, tools, and technical deep-dives.',
 		quotes: [
 			'It works on my machine, which is technically a place.',
-			'I don\'t always test my code, but when I do, I do it in production.',
+			"I don't always test my code, but when I do, I do it in production.",
 			'99 little bugs in the code... take one down, patch it around, 127 little bugs in the code.',
-			'My code doesn\'t have bugs, it develops random unexpected features.',
+			"My code doesn't have bugs, it develops random unexpected features.",
 		],
 	},
 } as const;
@@ -27,6 +27,7 @@ export const ALL_QUOTES = [
 	'A blog nobody asked for, delivered anyway.',
 	'Half of these posts are excuses to avoid real work.',
 	'Thoughts assembled with more caffeine than caution.',
+	'Blame the wizard, not the wand.',
 ];
 
 /** Quotes for a category slug, or the "all" set when no category is active. */
