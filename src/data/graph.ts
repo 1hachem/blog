@@ -58,6 +58,9 @@ export const TECH = {
 	photogrammetry: { label: 'photogrammetry', bg: '#e7dcc6', dark: false, icon: null },
 	'cellular-automata': { label: 'cellular automata', bg: '#dbeae0', dark: false, icon: null },
 	'unix-sockets': { label: 'Unix sockets', bg: '#d7d2c8', dark: false, icon: null },
+	playwright: { label: 'Playwright', bg: '#2EAD33', dark: true, icon: 'devicon-playwright-plain' },
+	rpc: { label: 'RPC', bg: '#d7dde8', dark: false, icon: null },
+	mcp: { label: 'MCP', bg: '#e8ddd3', dark: false, icon: null },
 };
 
 // --- Commit categories (the legend) ----------------------------------------
@@ -517,6 +520,9 @@ export const history: Commit[] = [
 			'drizzle',
 			'vite',
 			'vitest',
+			'playwright',
+			'rpc',
+			'mcp',
 		],
 	},
 	{
