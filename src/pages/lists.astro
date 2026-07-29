@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { lists, PREVIEW_COUNT } from '../data/lists';
+import { lists, previewTitles, PREVIEW_COUNT } from '../data/lists';
 
 const navLinks = [{ href: '/', label: '← home' }, { href: '/blog', label: 'blog' }];
 ---
@@ -10,95 +10,52 @@ const navLinks = [{ href: '/', label: '← home' }, { href: '/blog', label: 'blo
 	<p>Running lists of things I love. Perpetually unfinished.</p>
 
 	{lists.map((list) => {
-		const preview = list.items.slice(0, PREVIEW_COUNT);
-		const remaining = list.items.length - preview.length;
+		const titles = previewTitles(list);
+		const preview = titles.slice(0, PREVIEW_COUNT);
+		const truncated = titles.length > PREVIEW_COUNT;
 		return (
-			<section class="list">
-				<a class="list-head" href={`/lists/${list.slug}`}>
-					<h2>{list.heading}</h2>
-					<span class="see-all">see all →</span>
-				</a>
-				{list.blurb && <p class="blurb">{list.blurb}</p>}
-				<ul>
-					{preview.map((item) => (
-						<li>
-							<span class="title">{item.title}</span>
-							{item.note && <span class="note">{item.note}</span>}
-						</li>
-					))}
-				</ul>
-				{remaining > 0 && (
-					<a class="more" href={`/lists/${list.slug}`}>{remaining} more →</a>
-				)}
-			</section>
+			<a class="list" href={`/lists/${list.slug}`}>
+				<span class="heading">{list.heading}</span>
+				<span class="preview">{preview.join(', ')}{truncated && '…'}</span>
+			</a>
 		);
 	})}
 </BaseLayout>
 
 <style>
 	.list {
-		margin: 2rem 0;
-	}
-	.list-head {
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
-		gap: 1rem;
+		gap: 1.5rem;
+		margin: 1rem 0;
 		text-decoration: none;
 		color: inherit;
 	}
-	.list-head h2 {
-		margin: 0 0 0.25rem;
+	.heading {
+		font-weight: 600;
+		color: var(--accent);
+		flex-shrink: 0;
 	}
-	.list-head:hover h2 {
+	.list:hover .heading {
 		text-decoration: underline;
 	}
-	.see-all {
-		font-size: 0.8rem;
-		color: var(--accent);
-		flex-shrink: 0;
-	}
-	.blurb {
+	.preview {
 		color: var(--muted);
 		font-size: 0.9rem;
-		margin: 0 0 0.75rem;
-	}
-	.list ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-	.list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 1rem;
-		padding: 0.4rem 0;
-		border-bottom: 1px solid var(--border);
-	}
-	.title {
-		font-weight: 500;
-	}
-	.note {
-		color: var(--muted);
-		font-size: 0.85rem;
 		text-align: right;
-		flex-shrink: 0;
-	}
-	.more {
-		display: inline-block;
-		margin-top: 0.6rem;
-		font-size: 0.85rem;
-		color: var(--accent);
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 	@media (max-width: 500px) {
-		.list li {
+		.list {
 			flex-direction: column;
 			gap: 0.15rem;
 		}
-		.note {
+		.preview {
 			text-align: left;
-			font-size: 0.75rem;
 		}
 	}
 </style>

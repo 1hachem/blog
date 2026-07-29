@@ -20,14 +20,16 @@ const navLinks = [
 	<h1>{list.heading}</h1>
 	{list.blurb && <p class="blurb">{list.blurb}</p>}
 
-	<ul>
-		{list.items.map((item) => (
-			<li>
-				<span class="title">{item.title}</span>
-				{item.note && <span class="note">{item.note}</span>}
-			</li>
-		))}
-	</ul>
+	{list.categories.map((category) => (
+		<section class="category">
+			<h2>{category.name}</h2>
+			<ul>
+				{category.items.map((item) => (
+					<li>{item.title}</li>
+				))}
+			</ul>
+		</section>
+	))}
 </BaseLayout>
 
 <style>
@@ -35,36 +37,22 @@ const navLinks = [
 		color: var(--muted);
 		margin: 0 0 1.5rem;
 	}
+	.category {
+		margin: 1.5rem 0;
+	}
+	.category h2 {
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+		margin: 0 0 0.5rem;
+	}
 	ul {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
 	li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 1rem;
-		padding: 0.5rem 0;
-		border-bottom: 1px solid var(--border);
-	}
-	.title {
-		font-weight: 500;
-	}
-	.note {
-		color: var(--muted);
-		font-size: 0.85rem;
-		text-align: right;
-		flex-shrink: 0;
-	}
-	@media (max-width: 500px) {
-		li {
-			flex-direction: column;
-			gap: 0.15rem;
-		}
-		.note {
-			text-align: left;
-			font-size: 0.75rem;
-		}
+		padding: 0.35rem 0;
 	}
 </style>
