@@ -14,7 +14,8 @@
 		"test:watch": "vitest",
 		"lint": "biome check .",
 		"format": "biome check --write .",
-		"deploy": "wrangler deploy"
+		"deploy": "wrangler deploy",
+		"optimize:photos": "node scripts/optimize-photos.mjs"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^5.0.6",

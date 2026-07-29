@@ -226,7 +226,6 @@ export const history: Commit[] = [
 		type: 'side',
 		title: '3rd place — DevFest Algiers',
 		desc: "With my team, at Google Developers Group's DevFest 2021: using AI to monitor focus by reading posture and body-language signs of distraction.",
-		photos: [photo('focus')],
 		links: [
 			{
 				label: 'demo',
@@ -438,6 +437,7 @@ export const history: Commit[] = [
 				href: 'https://hyko.ai',
 			},
 		],
+		photos: [photo('focus')],
 		tech: [
 			'typescript',
 			'react',
@@ -635,6 +635,7 @@ export const history: Commit[] = [
 				href: '/blog/first-time-street-hypnosis',
 			},
 		],
+		photos: [photo('hypnosis')],
 	},
 	{
 		id: 'leave_bigmama',
