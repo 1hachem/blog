@@ -81,7 +81,7 @@ export type Commit = {
 	branch: string;
 	parents: string[];
 	t: number; // sortable time — drives the chronological (vertical) order
-	year: string; // the label shown to the reader
+	year?: string; // the label shown to the reader (omit to skip the year divider)
 	type: Category;
 	title: string;
 	desc?: string;
@@ -89,6 +89,7 @@ export type Commit = {
 	links?: { label: string; href: string }[];
 	tech?: (keyof typeof TECH)[];
 	card?: 'left' | 'right'; // force the card to a side (its node stays on its lane)
+	photos?: string[]; // optional images (public/ paths or URLs); revealed on hover at the outer edge
 	hidden?: boolean; // a bare merge junction on the trunk: no card, just a dot (+ any links)
 	root?: boolean;
 };
@@ -104,6 +105,7 @@ export const history: Commit[] = [
 		type: 'life',
 		title: 'Born in Algeria',
 		desc: 'The initial commit.',
+		photos: ['https://picsum.photos/seed/algeria3/300/380'],
 	},
 	{
 		id: 'uae',
@@ -130,7 +132,6 @@ export const history: Commit[] = [
 		branch: 'streets',
 		parents: ['algeria'],
 		t: 2013,
-		year: 'teens',
 		type: 'life',
 		title: 'Skating, urban exploring & parkour',
 		desc: 'Reading the city as terrain.',
@@ -160,7 +161,6 @@ export const history: Commit[] = [
 		branch: 'wild',
 		parents: ['bacc'],
 		t: 2020,
-		year: 'teens',
 		type: 'travel',
 		title: 'Camping & hitchhiking',
 		desc: 'Out with a tent and a thumb, no fixed plan.',
@@ -355,6 +355,11 @@ export const history: Commit[] = [
 		type: 'travel',
 		title: '30 days backpacking in Ghana',
 		card: 'left',
+		photos: [
+			'https://picsum.photos/seed/ghana1/300/380',
+			'https://picsum.photos/seed/ghana2/300/380',
+			'https://picsum.photos/seed/ghana3/300/380',
+		],
 	},
 	{
 		id: 'bm_intern',

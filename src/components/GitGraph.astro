@@ -106,6 +106,22 @@ const minLane = Math.min(...lanes);
 const maxLane = Math.max(...lanes);
 const laneCount = maxLane - minLane + 1;
 
+// a stable pseudo-random tilt (deg) per commit id, so photos look casually pinned
+// without shifting on every rebuild. Range ~ -7deg .. +7deg.
+const tiltOf = (id: string) => {
+	let h = 0;
+	for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) & 0xffff;
+	return (h % 15) - 7;
+};
+
+// a stable pseudo-random horizontal nudge (px) per id, so photos scatter a little
+// left/right instead of stacking in a perfect column. Range ~ -14px .. +14px.
+const shiftOf = (id: string) => {
+	let h = 0;
+	for (const ch of id) h = (h * 37 + ch.charCodeAt(0) + 13) & 0xffff;
+	return (h % 29) - 14;
+};
+
 // render newest -> oldest (top of page = latest). A commit's card follows its
 // lane by default; `card` in the data (graph.json) overrides that side.
 const rows = [...commits].reverse().map((c) => ({
@@ -121,10 +137,13 @@ const EDGES = commits.flatMap((c) =>
 	c.parents.map((p) => {
 		const parentBranch = commits[indexOf[p]].branch;
 		const b = c.branch !== 'main' ? c.branch : parentBranch !== 'main' ? parentBranch : null;
+		// the branch this edge visually belongs to (trunk edges fall back to 'main'),
+		// so a card hover can light up its whole branch in the path.
+		const branch = b ?? 'main';
 		// `railFrom` marks which end sits on the coloured branch: the child on a
 		// checkout, the parent on a merge. The drawer keeps the vertical in that
 		// lane so a branch's colour never bleeds onto the trunk past its merge.
-		return { from: c.id, to: p, color: b ? BRANCH_META[b].color : null, railFrom: c.branch !== 'main' };
+		return { from: c.id, to: p, branch, color: b ? BRANCH_META[b].color : null, railFrom: c.branch !== 'main' };
 	}),
 );
 
@@ -138,24 +157,50 @@ interface Props {
 }
 const { limit, showLegend = false, preview = false } = Astro.props;
 const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
+
+// one dotted divider per distinct year: track the last year actually shown and skip
+// commits that carry no year (branch episodes), so a year isn't repeated when one of
+// them interrupts a run of same-year commits.
+let seenYear = '';
+const yearMark = visibleRows.map((c) => {
+	if (c.year && c.year !== seenYear) {
+		seenYear = c.year;
+		return c.year;
+	}
+	return null;
+});
 ---
 
-{showLegend && (
-	<ul class="legend" aria-label="colour key">
-		{LEGEND.map((l) => (
-			<li class="legend-item"><span class={`dot ${l.type}`}></span>{l.label}</li>
-		))}
-	</ul>
+{(showLegend || !preview) && (
+	<div class="graph-head">
+		{showLegend && (
+			<ul class="legend" aria-label="colour key">
+				{LEGEND.map((l) => (
+					<li class="legend-item"><span class={`dot ${l.type}`}></span>{l.label}</li>
+				))}
+			</ul>
+		)}
+		{!preview && (
+			<button type="button" class="flip-toggle" aria-pressed="false">
+				<span class="flip-label">start from birth</span>
+			</button>
+		)}
+	</div>
 )}
 
 <div class:list={['gitgraph', { preview }]} style={`--lanes:${laneCount}`}>
 	<svg class="graph-edges" aria-hidden="true"></svg>
 	<script type="application/json" class="graph-edges-data" set:html={JSON.stringify(EDGES)} is:inline></script>
-	{visibleRows.map((c) => (
+	{visibleRows.map((c, i) => (
+		<>
+		{yearMark[i] && (
+			<div class="year-sep" aria-hidden="true"><span class="year-sep-label">{yearMark[i]}</span></div>
+		)}
 		<div
 			class={['commit', c.type, c.branch === 'main' ? 'on-main' : 'on-branch', `side-${c.side}`, c.root ? 'is-root' : '', c.hidden ? 'is-junction' : ''].join(' ')}
 			data-type={c.type}
 			data-id={c.id}
+			data-branch={c.branch}
 		>
 			<div class="graph-cell">
 				<span class="node" data-node data-id={c.id} style={`--lane:${c.lane}`}></span>
@@ -164,14 +209,19 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 				{!c.hidden && (
 				<h3 class="title">
 					<span class="yr">{c.year}</span>
-					{c.tip ? (
-						<span class="has-tooltip">
-							{c.title}
-							<span class="tooltip"><span class="tooltip-text">{c.tip}</span></span>
-						</span>
-					) : c.title}
+					{c.title}
 					{c.chip && (
 						<span class="chip" style={`--chip:${c.chip.color}`}>{c.chip.label}</span>
+					)}
+					{c.photos && c.photos.length > 0 && (
+						<span class="photo-badge" title={`${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`} aria-label={`${c.photos.length} photos, hover to view`}>
+							{c.photos.length}
+							<svg class="photo-ico" viewBox="0 0 24 24" aria-hidden="true">
+								<rect x="3" y="5" width="18" height="14" rx="2" />
+								<circle cx="8.5" cy="10" r="1.6" />
+								<path d="M21 16l-5-5-4 4-2-2-4 4" />
+							</svg>
+						</span>
 					)}
 				</h3>
 				)}
@@ -205,7 +255,20 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 					</div>
 				)}
 			</div>
+			{c.photos && c.photos.length > 0 && !c.hidden && (
+				<div class="photos" data-count={c.photos.length}>
+					{c.photos.map((src, i) => (
+						<figure class="photo" style={`--tilt:${tiltOf(c.id + i)}deg; --dx:${shiftOf(c.id + i)}px; --i:${i}`}>
+							<img src={src} alt="" loading="lazy" decoding="async" />
+						</figure>
+					))}
+				</div>
+			)}
+			{c.tip && !c.hidden && (
+				<p class="tip-note" data-tip={c.tip} aria-hidden="true"></p>
+			)}
 		</div>
+		</>
 	))}
 </div>
 
@@ -216,10 +279,18 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 
 <style>
 	/* legend (static colour key) ------------------------------------------- */
+	.graph-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+		flex-wrap: wrap;
+		margin: 1.25rem 0 1.75rem;
+	}
 	.legend {
 		list-style: none;
 		padding: 0;
-		margin: 1.5rem 0 2rem;
+		margin: 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.4rem 1rem;
@@ -247,6 +318,29 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 		--gutter: calc(var(--lanes) * var(--lane-w));
 	}
 	.gitgraph.preview { pointer-events: none; margin: 0; }
+	/* birth-first view: reverse the vertical stack (edges redraw from live positions) */
+	.gitgraph.flipped { display: flex; flex-direction: column-reverse; }
+
+	.flip-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		margin-left: auto;
+		flex-shrink: 0;
+		padding: 0.2rem 0.55rem;
+		font: inherit;
+		font-size: 0.72rem;
+		line-height: 1.2;
+		color: var(--muted);
+		background: transparent;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		cursor: pointer;
+		transition: color 0.15s ease, border-color 0.15s ease;
+	}
+	.flip-toggle::before { content: '⇅'; font-size: 0.9em; line-height: 1; }
+	.flip-toggle:hover { color: var(--c-main); border-color: var(--c-main); }
+	.flip-toggle[aria-pressed='true'] { color: var(--c-main); border-color: var(--c-main); }
 	.graph-edges {
 		position: absolute;
 		inset: 0;
@@ -259,12 +353,45 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 		fill: none;
 		stroke: var(--border);
 		stroke-width: 2;
+		transition: opacity 0.15s ease, stroke-width 0.15s ease;
+	}
+	/* hovering a card dims the graph and lights up that commit's branch */
+	.gitgraph.hover-active .graph-edges :global(path) { opacity: 0.2; }
+	.gitgraph.hover-active .graph-edges :global(path.hl) { opacity: 1; stroke-width: 3.5; }
+
+	/* full-width dotted rule between years, year label pinned to the far left */
+	.year-sep {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 0.6rem -3.5rem 1.1rem;
+	}
+	.year-sep-label {
+		flex-shrink: 0;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--muted);
+		opacity: 0.65;
+	}
+	.year-sep::after {
+		content: '';
+		flex: 1;
+		height: 1px;
+		/* dashed rule with wide gaps: 6px dash, 8px gap */
+		background: repeating-linear-gradient(
+			to right,
+			color-mix(in srgb, var(--border) 60%, transparent) 0 6px,
+			transparent 6px 14px
+		);
 	}
 
 	.commit {
 		display: grid;
 		grid-template-columns: 1fr var(--gutter) 1fr;
 		align-items: start;
+		position: relative;
 	}
 
 	.graph-cell { grid-column: 2; position: relative; }
@@ -283,7 +410,9 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 		background: var(--bg);
 		box-shadow: 0 0 0 3px var(--bg);
 		z-index: 2;
+		transition: transform 0.15s ease;
 	}
+	.node.hl { transform: translate(-50%, -50%) scale(1.35); z-index: 3; }
 	.commit.main .node { border: 2px solid var(--c-main); }
 	.commit.education .node { border: 2px solid var(--c-education); }
 	.commit.accident .node { border: 2px solid var(--c-accident); }
@@ -374,12 +503,36 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 	.yt-ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
 	.yt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-	.has-tooltip {
-		position: relative;
-		text-decoration: underline dotted;
-		text-underline-offset: 3px;
-		cursor: help;
+	/* margin annotation: the old tooltip text, pushed into the outer gutter (like the
+	   photos) and typed out char-by-char on hover. small, secondary, understated. */
+	.tip-note {
+		position: absolute;
+		top: 0;
+		z-index: 5;
+		width: 14rem;
+		margin: 0;
+		font-size: 0.72rem;
+		line-height: 1.7;
+		font-style: italic;
+		color: var(--muted);
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease;
 	}
+	/* shown via JS while the card OR the note itself is hovered (so it can be read/kept) */
+	.tip-note.show { opacity: 1; pointer-events: auto; }
+	/* blinking caret while the text is being typed */
+	.tip-note.typing::after {
+		content: '▏';
+		margin-left: -0.1em;
+		animation: tip-caret 0.8s steps(1) infinite;
+	}
+	@keyframes tip-caret { 50% { opacity: 0; } }
+	/* the padding (not margin) pushes the text out into the gutter while keeping the
+	   box flush against the card, so there is no dead gap to cross — hovering can move
+	   continuously from the card onto the note without it vanishing. */
+	.commit.side-right .tip-note { left: 100%; padding: 1.4rem 0 1.4rem 7rem; text-align: left; }
+	.commit.side-left .tip-note { right: 100%; padding: 1.4rem 7rem 1.4rem 0; text-align: right; }
 
 	/* skill / tech badges --------------------------------------------------- */
 	.badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }
@@ -397,8 +550,93 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 	.badge-light { color: #111; }
 	.badge .logo { font-size: 0.85rem; line-height: 1; }
 
+	/* a small "has photos" marker in the title, e.g. "3 [icon]" */
+	.photo-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.2rem;
+		font-size: 0.62rem;
+		font-weight: normal;
+		color: var(--muted);
+		white-space: nowrap;
+	}
+	.photo-ico {
+		width: 0.95em;
+		height: 0.95em;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	/* edge photos: land in the outer column opposite the card, casually tilted, and
+	   pop from 80% -> 100% when the card is hovered */
+	.photos {
+		position: absolute;
+		/* `.commit` is centred in the viewport, so its 50% == the page centre; offset by
+		   a third of the page width to sit the photo group in the middle of the outer
+		   third of the page (out in the margin, clear of the content column) */
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 5;
+		width: 19rem;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.6rem;
+		pointer-events: none;
+	}
+	/* a single photo takes one narrow column */
+	.photos[data-count='1'] { width: 13rem; grid-template-columns: 1fr; }
+	/* three photos form a triangle: one tall on the side, two stacked beside it */
+	.photos[data-count='3'] { grid-template-rows: repeat(2, 1fr); }
+	.photos[data-count='3'] .photo:nth-child(1) { grid-row: 1 / span 2; align-self: center; }
+	.photos[data-count='3'] .photo:nth-child(2) { grid-column: 2; grid-row: 1; }
+	.photos[data-count='3'] .photo:nth-child(3) { grid-column: 2; grid-row: 2; }
+	.photo {
+		margin: 0;
+		--tilt: 0deg;
+		--dx: 0px;
+		--i: 0;
+		opacity: 0;
+		transform: translateX(var(--dx)) rotate(var(--tilt)) scale(0.8);
+		transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+	}
+	.card:hover ~ .photos .photo,
+	.card:focus-within ~ .photos .photo {
+		opacity: 1;
+		transform: translateX(var(--dx)) rotate(var(--tilt)) scale(1);
+		transition-delay: calc(var(--i) * 0.06s);
+	}
+	.photo img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 8px;
+		background: var(--bg);
+		box-shadow: 0 3px 14px rgba(0, 0, 0, 0.18);
+	}
+	/* push photos out past the card, on the SAME side as the card, into the page
+	   margin so they never overlap other cards' content */
+	.commit.side-right .photos { left: calc(50% + 100vw / 3); }
+	.commit.side-left .photos { left: calc(50% - 100vw / 3); }
+	@media (prefers-reduced-motion: reduce) {
+		.photo { transition: none; }
+		.commit:hover .photo, .commit:focus-within .photo { transition: none; }
+	}
+
 	/* on narrow screens collapse to a single left rail with cards on the right */
 	@media (max-width: 680px) {
+		.year-sep { margin-left: 0; margin-right: 0; }
+		/* no outer gutter on mobile: drop the tip note below the card, always shown */
+		.commit .tip-note,
+		.commit.side-left .tip-note,
+		.commit.side-right .tip-note {
+			position: static; transform: none; width: auto; opacity: 1;
+			left: auto; right: auto; margin: -0.2rem 0 1rem; text-align: left;
+			grid-column: 2;
+		}
 		.gitgraph { --lane-w: 1.2rem; }
 		.commit { grid-template-columns: var(--gutter) 1fr; }
 		.graph-cell { grid-column: 1; }
@@ -407,15 +645,28 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 		.commit.side-left .links,
 		.commit.side-left .badges { justify-content: flex-start; }
 		.title { font-size: 0.9rem; }
+		/* no outer column (or hover) on mobile: drop photos below the card, always shown */
+		.commit .photos,
+		.commit.side-left .photos,
+		.commit.side-right .photos {
+			position: static; transform: none; width: 100%; max-width: 16rem; margin: 0 0 1rem;
+			grid-column: 2; grid-row: auto; left: auto; right: auto;
+		}
+		.commit .photo { opacity: 1; transform: translateX(var(--dx)) rotate(var(--tilt)); }
 	}
 </style>
 
 <script>
 	function drawOne(graph: HTMLElement) {
+		// ClientRouter fires astro:page-load on the initial load too, so initGraphs()
+		// runs twice — guard against binding duplicate listeners (which would make the
+		// flip toggle fire twice per click and cancel itself out).
+		if (graph.dataset.ginit) return;
+		graph.dataset.ginit = '1';
 		const svg = graph.querySelector<SVGSVGElement>('.graph-edges');
 		const dataEl = graph.querySelector<HTMLElement>('.graph-edges-data');
 		if (!svg || !dataEl) return;
-		const edges: { from: string; to: string; color: string | null; railFrom: boolean }[] = JSON.parse(dataEl.textContent || '[]');
+		const edges: { from: string; to: string; branch: string; color: string | null; railFrom: boolean }[] = JSON.parse(dataEl.textContent || '[]');
 		const SVGNS = 'http://www.w3.org/2000/svg';
 
 		function draw() {
@@ -455,6 +706,9 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 				}
 				p.setAttribute('d', d);
 				if (e.color) p.style.stroke = e.color;
+				p.dataset.branch = e.branch;
+				p.dataset.from = e.from;
+				p.dataset.to = e.to;
 				svg!.appendChild(p);
 			}
 		}
@@ -466,25 +720,72 @@ const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 		window.addEventListener('resize', schedule);
 		window.addEventListener('load', draw);
 
-		// tooltips (skipped in preview mode — pointer events are disabled there)
-		let timer: ReturnType<typeof setTimeout> | null = null;
-		graph.querySelectorAll<HTMLElement>('.has-tooltip').forEach((trigger) => {
-			const tip = trigger.querySelector<HTMLElement>('.tooltip');
-			if (!tip) return;
-			const place = (e: MouseEvent) => {
-				tip.style.left = e.clientX + 12 + 'px';
-				tip.style.top = e.clientY - 28 + 'px';
+		// margin tip notes: type the text out char-by-char on first hover of the card,
+		// then leave it on screen for good (never cleared).
+		// (on mobile / reduced-motion we just show the full text, no typing.)
+		const noAnim = window.matchMedia('(max-width: 680px)').matches
+			|| window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		graph.querySelectorAll<HTMLElement>('.tip-note').forEach((note) => {
+			const full = note.dataset.tip || '';
+			if (noAnim) { note.textContent = full; note.classList.add('show'); return; }
+			const card = note.closest<HTMLElement>('.commit')?.querySelector<HTMLElement>('.card');
+			if (!card) return;
+			note.textContent = '';
+			let typed = false;
+			const show = () => {
+				if (typed) return;
+				typed = true;
+				note.classList.add('show', 'typing');
+				let i = 0;
+				const typer = setInterval(() => {
+					note.textContent = full.slice(0, ++i);
+					if (i >= full.length) { clearInterval(typer); note.classList.remove('typing'); }
+				}, 22);
 			};
-			trigger.addEventListener('mouseenter', (e) => {
-				const me = e as MouseEvent;
-				timer = setTimeout(() => { place(me); tip.classList.add('visible'); }, 400);
+			card.addEventListener('mouseenter', show);
+		});
+
+		// hover a card -> highlight its commit node and the branch it lives on in the path.
+		// bind to the card (not the full-width .commit row) so hovering the empty space on
+		// the opposite side at the same level doesn't trigger a highlight.
+		graph.querySelectorAll<HTMLElement>('.commit').forEach((commit) => {
+			const id = commit.dataset.id;
+			const branch = commit.dataset.branch;
+			const onMain = commit.classList.contains('on-main');
+			const node = commit.querySelector<HTMLElement>('.node');
+			const card = commit.querySelector<HTMLElement>('.card');
+			if (!card) return;
+			card.addEventListener('mouseenter', () => {
+				graph.classList.add('hover-active');
+				node?.classList.add('hl');
+				svg!.querySelectorAll<SVGPathElement>('path').forEach((p) => {
+					// edges belonging to this commit's branch, plus edges touching this node —
+					// but for a commit on `main`, don't light a branch's checkout/merge edge
+					// just because it connects here; those aren't part of main.
+					const touches = p.dataset.from === id || p.dataset.to === id;
+					if (p.dataset.branch === branch || (touches && !(onMain && p.dataset.branch !== 'main'))) p.classList.add('hl');
+				});
 			});
-			trigger.addEventListener('mousemove', (e) => place(e as MouseEvent));
-			trigger.addEventListener('mouseleave', () => {
-				if (timer) { clearTimeout(timer); timer = null; }
-				tip.classList.remove('visible');
+			card.addEventListener('mouseleave', () => {
+				graph.classList.remove('hover-active');
+				node?.classList.remove('hl');
+				svg!.querySelectorAll<SVGPathElement>('path.hl').forEach((p) => p.classList.remove('hl'));
 			});
 		});
+
+		// "start from birth" flips the timeline (oldest at top); edges follow because
+		// draw() reads the live node positions after the reorder.
+		const head = graph.previousElementSibling as HTMLElement | null;
+		const toggle = head?.querySelector<HTMLElement>('.flip-toggle') ?? null;
+		if (toggle) {
+			const label = toggle.querySelector<HTMLElement>('.flip-label');
+			toggle.addEventListener('click', () => {
+				const flipped = graph.classList.toggle('flipped');
+				toggle.setAttribute('aria-pressed', String(flipped));
+				if (label) label.textContent = flipped ? 'start from now' : 'start from birth';
+				draw();
+			});
+		}
 	}
 
 	function initGraphs() {
