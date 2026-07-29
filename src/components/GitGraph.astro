@@ -618,19 +618,21 @@ const yearMark = yearMarks(visibleRows);
 			const card = note.closest<HTMLElement>('.commit')?.querySelector<HTMLElement>('.card');
 			if (!card) return;
 			note.textContent = '';
-			let typed = false;
+			let typer: ReturnType<typeof setInterval> | undefined;
 			card.addEventListener('mouseenter', () => {
-				note.classList.add('show');
-				if (typed) return;
-				typed = true;
-				note.classList.add('typing');
+				note.classList.add('show', 'typing');
+				clearInterval(typer);
+				note.textContent = '';
 				let i = 0;
-				const typer = setInterval(() => {
+				typer = setInterval(() => {
 					note.textContent = full.slice(0, ++i);
 					if (i >= full.length) { clearInterval(typer); note.classList.remove('typing'); }
 				}, 22);
 			});
-			card.addEventListener('mouseleave', () => note.classList.remove('show'));
+			card.addEventListener('mouseleave', () => {
+				clearInterval(typer);
+				note.classList.remove('show', 'typing');
+			});
 		});
 
 		// hover a card -> highlight its commit node and the branch it lives on in the path.
