@@ -25,3 +25,7 @@ pnpm-debug.log*
 .idea/
 
 .claude/
+
+# R2 bucket mirror (synced to Cloudflare separately; keep the dir, ignore contents)
+public/r2/**
+!public/r2/.gitkeep

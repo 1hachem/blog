@@ -1,3 +1,5 @@
+import { env } from '../env';
+
 // --- Tech / skill badge metadata -------------------------------------------
 // `dark: true`  -> solid dark brand color, white text, devicon glyph on the left.
 // `dark: false` -> light solid color, black text, no icon (soft skill / concept).
@@ -96,6 +98,11 @@ type BaseCommit = {
 // and `photos` (hover gallery) are mutually exclusive — a commit is one or the other.
 export type Commit = BaseCommit &
 	({ tip?: string; photos?: never } | { photos?: string[]; tip?: never });
+
+// --- Photo assets ----------------------------------------------------------
+// Photos live in a Cloudflare R2 bucket (mirrored locally under public/r2/,
+// which is gitignored). Base URL is validated in src/env.ts (PUBLIC_R2_URL).
+const photo = (name: string) => `${env.PUBLIC_R2_URL}/about/${name}.webp`;
 
 export const history: Commit[] = [
 	{
@@ -218,8 +225,8 @@ export const history: Commit[] = [
 		year: '2021',
 		type: 'side',
 		title: '3rd place — DevFest Algiers',
-		desc: 'With my team: using AI to monitor focus by reading posture and body-language signs of distraction.',
-		tip: "Google Developers Group's DevFest 2021.",
+		desc: "With my team, at Google Developers Group's DevFest 2021: using AI to monitor focus by reading posture and body-language signs of distraction.",
+		photos: [photo('focus')],
 		links: [
 			{
 				label: 'demo',
@@ -373,6 +380,7 @@ export const history: Commit[] = [
 		type: 'main',
 		title: 'Intern @ BIGmama technology',
 		desc: 'Built ML pipelines and prototypes.',
+		photos: [photo('team')],
 		links: [
 			{
 				label: 'big-mama.io',
@@ -465,6 +473,7 @@ export const history: Commit[] = [
 		title: 'Became a dad',
 		card: 'left',
 		desc: 'Welcomed my first child.',
+		photos: [photo('son')],
 	},
 	{
 		id: 'senegal',
@@ -475,6 +484,7 @@ export const history: Commit[] = [
 		type: 'travel',
 		title: 'Senegal — IndabaX',
 		desc: 'Showcased our product at the IndabaX conference.',
+		photos: [photo('indaba')],
 	},
 	{
 		id: 'bm_cto2',
@@ -528,6 +538,7 @@ export const history: Commit[] = [
 		type: 'side',
 		title: 'GitHub hackathon',
 		desc: 'Took part in a GitHub hackathon.',
+		photos: [photo('github')],
 	},
 	{
 		id: 'boston',
@@ -538,6 +549,7 @@ export const history: Commit[] = [
 		type: 'travel',
 		title: 'Boston',
 		desc: 'The US east coast.',
+		photos: [photo('mit'), photo('mit-student')],
 	},
 	{
 		id: 'declarative',
@@ -712,6 +724,7 @@ export const history: Commit[] = [
 		type: 'side',
 		title: 'Switched to Linux full-time',
 		desc: 'Daily driver: Fedora, then Pop!_OS.',
+		photos: [photo('kernel')],
 		tech: ['linux', 'fedora', 'popos'],
 	},
 	{
