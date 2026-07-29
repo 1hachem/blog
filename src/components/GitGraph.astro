@@ -1,15 +1,13 @@
 ---
 import 'devicon/devicon.min.css';
 import { TECH, history, CATEGORY_LABEL, type Commit, type Category } from '../data/graph';
+import { assignLanes, buildEdges, tiltOf, shiftOf, yearMarks } from '../lib/graph-layout';
 
-// Sort strictly by time so the vertical order is chronological — a 2023 event
-// never renders above a 2025 one — while parents still precede their children.
+// chronological order, parents before children — the lane algorithm relies on it
 const commits: Commit[] = [...history].sort((a, b) => a.t - b.t);
 
-// --- Branch & milestone flavour --------------------------------------------
-// Every branch gets its own RPG-style label, colour and icon (so no two
-// branches read alike). Commits on `main` instead take a chip derived from
-// their kind — accidents are "character development", degrees are "+1 XP", etc.
+// Every branch gets its own label + colour; commits on `main` take a chip derived
+// from their kind, overridable per-commit.
 type Chip = { label: string; color: string };
 const BRANCH_META: Record<string, Chip> = {
 	streets:   { label: 'free roam',   color: '#e5722a' },
@@ -27,7 +25,6 @@ const TYPE_CHIP: Partial<Record<Commit['type'], Chip>> = {
 	education: { label: '+1 XP',                  color: '#8e4ec6' },
 	travel:    { label: 'world map',              color: '#10a5a5' },
 };
-// per-commit chip overrides — win over branch/type chips
 const CHIP_OVERRIDE: Record<string, Chip> = {
 	hackathon: { label: '+1 XP',   color: '#8e4ec6' },
 	dad:       { label: '+∞ love', color: '#db2777' },
@@ -36,94 +33,9 @@ const CHIP_OVERRIDE: Record<string, Chip> = {
 const chipFor = (c: Commit): Chip | undefined =>
 	CHIP_OVERRIDE[c.id] ?? (c.branch !== 'main' ? BRANCH_META[c.branch] : TYPE_CHIP[c.type]);
 
-// --- Lane assignment (the "viz algo") --------------------------------------
-const indexOf: Record<string, number> = {};
-commits.forEach((c, i) => (indexOf[c.id] = i));
+const { laneOf, minLane, laneCount } = assignLanes(commits);
 
-type Span = { branch: string; start: number; end: number };
-const spans: Record<string, Span> = {};
-for (const c of commits) {
-	if (c.branch === 'main') continue;
-	if (!spans[c.branch]) spans[c.branch] = { branch: c.branch, start: indexOf[c.id], end: indexOf[c.id] };
-	spans[c.branch].end = indexOf[c.id];
-}
-// extend each span up to the merge commit that consumes its tip
-for (const c of commits) {
-	if (c.parents.length < 2) continue;
-	for (const p of c.parents) {
-		const pb = commits[indexOf[p]].branch;
-		if (pb !== 'main' && spans[pb]) spans[pb].end = Math.max(spans[pb].end, indexOf[c.id]);
-	}
-}
-// main holds lane 0. A branch off main alternates right (+) / left (-). A branch
-// off another branch stays on that parent's side, one lane further out. A branch
-// need not merge — its span just ends at its last commit. Concurrent branches on
-// the same side take the lowest free magnitude so they never collide.
-// pin every branch to a deliberate side (1 = right, -1 = left) so the two
-// gutters stay balanced and each branch reads as one coherent block. Career
-// (contests, research, bigmama, lisptc) lives on the right; the wandering /
-// personal / oss branches live on the left.
-const FORCE_SIDE: Record<string, number> = {
-	contests: 1,
-	// research is intentionally NOT pinned: it forks from `devfest` (a contests
-	// commit), so the nesting logic must place it one lane further out (+2) on
-	// the same side — otherwise its checkout edge runs down the contests lane.
-	bigmama: 1,
-	lisptc: 1,
-	streets: -1,
-	wild: -1,
-	freelance: -1,
-	ventures: -1,
-	oss: -1,
-};
-const laneOf: Record<string, number> = { main: 0 };
-const freeOn: Record<string, number[]> = { '1': [], '-1': [] };
-let altSide = 1;
-for (const s of Object.values(spans).sort((a, b) => a.start - b.start)) {
-	const first = commits[s.start];
-	const parentBranch = first.parents.length ? commits[indexOf[first.parents[0]]].branch : 'main';
-	let sign: number;
-	let minMag: number;
-	if (FORCE_SIDE[s.branch] !== undefined) {
-		sign = FORCE_SIDE[s.branch];
-		minMag = 1;
-	} else if (parentBranch === 'main' || laneOf[parentBranch] === undefined) {
-		sign = altSide;
-		altSide = -altSide;
-		minMag = 1;
-	} else {
-		sign = Math.sign(laneOf[parentBranch]) || altSide;
-		minMag = Math.abs(laneOf[parentBranch]) + 1;
-	}
-	const free = freeOn[String(sign)];
-	let m = minMag;
-	while (free[m] !== undefined && free[m] > s.start) m++;
-	free[m] = s.end;
-	laneOf[s.branch] = sign * m;
-}
-const lanes = Object.values(laneOf);
-const minLane = Math.min(...lanes);
-const maxLane = Math.max(...lanes);
-const laneCount = maxLane - minLane + 1;
-
-// a stable pseudo-random tilt (deg) per commit id, so photos look casually pinned
-// without shifting on every rebuild. Range ~ -7deg .. +7deg.
-const tiltOf = (id: string) => {
-	let h = 0;
-	for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) & 0xffff;
-	return (h % 15) - 7;
-};
-
-// a stable pseudo-random horizontal nudge (px) per id, so photos scatter a little
-// left/right instead of stacking in a perfect column. Range ~ -14px .. +14px.
-const shiftOf = (id: string) => {
-	let h = 0;
-	for (const ch of id) h = (h * 37 + ch.charCodeAt(0) + 13) & 0xffff;
-	return (h % 29) - 14;
-};
-
-// render newest -> oldest (top of page = latest). A commit's card follows its
-// lane by default; `card` in the data (graph.json) overrides that side.
+// newest -> oldest (top of page = latest); `card` overrides the default side
 const rows = [...commits].reverse().map((c) => ({
 	...c,
 	lane: laneOf[c.branch] - minLane,
@@ -131,23 +43,8 @@ const rows = [...commits].reverse().map((c) => ({
 	chip: chipFor(c),
 }));
 
-// flat edge list for the client-side renderer: child -> parent, tinted with the
-// colour of whichever branch it belongs to; pure trunk edges stay null.
-const EDGES = commits.flatMap((c) =>
-	c.parents.map((p) => {
-		const parentBranch = commits[indexOf[p]].branch;
-		const b = c.branch !== 'main' ? c.branch : parentBranch !== 'main' ? parentBranch : null;
-		// the branch this edge visually belongs to (trunk edges fall back to 'main'),
-		// so a card hover can light up its whole branch in the path.
-		const branch = b ?? 'main';
-		// `railFrom` marks which end sits on the coloured branch: the child on a
-		// checkout, the parent on a merge. The drawer keeps the vertical in that
-		// lane so a branch's colour never bleeds onto the trunk past its merge.
-		return { from: c.id, to: p, branch, color: b ? BRANCH_META[b].color : null, railFrom: c.branch !== 'main' };
-	}),
-);
+const EDGES = buildEdges(commits, (branch) => BRANCH_META[branch]?.color ?? null);
 
-// derived from the category source of truth so it can never drift
 const LEGEND = (Object.keys(CATEGORY_LABEL) as Category[]).map((type) => ({ type, label: CATEGORY_LABEL[type] }));
 
 interface Props {
@@ -157,18 +54,7 @@ interface Props {
 }
 const { limit, showLegend = false, preview = false } = Astro.props;
 const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
-
-// one dotted divider per distinct year: track the last year actually shown and skip
-// commits that carry no year (branch episodes), so a year isn't repeated when one of
-// them interrupts a run of same-year commits.
-let seenYear = '';
-const yearMark = visibleRows.map((c) => {
-	if (c.year && c.year !== seenYear) {
-		seenYear = c.year;
-		return c.year;
-	}
-	return null;
-});
+const yearMark = yearMarks(visibleRows);
 ---
 
 {(showLegend || !preview) && (
@@ -208,7 +94,7 @@ const yearMark = visibleRows.map((c) => {
 			<div class="card">
 				{!c.hidden && (
 				<h3 class="title">
-					<span class="yr">{c.year}</span>
+					{c.year && <span class="yr">{c.year}</span>}
 					{c.title}
 					{c.chip && (
 						<span class="chip" style={`--chip:${c.chip.color}`}>{c.chip.label}</span>
@@ -359,6 +245,11 @@ const yearMark = visibleRows.map((c) => {
 	.gitgraph.hover-active .graph-edges :global(path) { opacity: 0.2; }
 	.gitgraph.hover-active .graph-edges :global(path.hl) { opacity: 1; stroke-width: 3.5; }
 
+	/* dim every commit slightly while hovering, keeping the hovered one full */
+	.commit { transition: opacity 0.15s ease; }
+	.gitgraph.hover-active .commit { opacity: 0.55; }
+	.gitgraph.hover-active .commit:has(.card:hover) { opacity: 1; }
+
 	/* full-width dotted rule between years, year label pinned to the far left */
 	.year-sep {
 		position: relative;
@@ -503,8 +394,8 @@ const yearMark = visibleRows.map((c) => {
 	.yt-ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
 	.yt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-	/* margin annotation: the old tooltip text, pushed into the outer gutter (like the
-	   photos) and typed out char-by-char on hover. small, secondary, understated. */
+	/* margin annotation: pushed into the outer gutter and typed out char-by-char while
+	   the card is hovered (JS toggles .show). */
 	.tip-note {
 		position: absolute;
 		top: 0;
@@ -519,8 +410,7 @@ const yearMark = visibleRows.map((c) => {
 		pointer-events: none;
 		transition: opacity 0.2s ease;
 	}
-	/* shown via JS while the card OR the note itself is hovered (so it can be read/kept) */
-	.tip-note.show { opacity: 1; pointer-events: auto; }
+	.tip-note.show { opacity: 1; }
 	/* blinking caret while the text is being typed */
 	.tip-note.typing::after {
 		content: '▏';
@@ -528,9 +418,8 @@ const yearMark = visibleRows.map((c) => {
 		animation: tip-caret 0.8s steps(1) infinite;
 	}
 	@keyframes tip-caret { 50% { opacity: 0; } }
-	/* the padding (not margin) pushes the text out into the gutter while keeping the
-	   box flush against the card, so there is no dead gap to cross — hovering can move
-	   continuously from the card onto the note without it vanishing. */
+	/* padding (not margin) pushes the text into the gutter while the box stays flush
+	   against the card */
 	.commit.side-right .tip-note { left: 100%; padding: 1.4rem 0 1.4rem 7rem; text-align: left; }
 	.commit.side-left .tip-note { right: 100%; padding: 1.4rem 7rem 1.4rem 0; text-align: right; }
 
@@ -561,8 +450,8 @@ const yearMark = visibleRows.map((c) => {
 		white-space: nowrap;
 	}
 	.photo-ico {
-		width: 0.95em;
-		height: 0.95em;
+		width: 1.15em;
+		height: 1.15em;
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 2;
@@ -623,7 +512,6 @@ const yearMark = visibleRows.map((c) => {
 	.commit.side-left .photos { left: calc(50% - 100vw / 3); }
 	@media (prefers-reduced-motion: reduce) {
 		.photo { transition: none; }
-		.commit:hover .photo, .commit:focus-within .photo { transition: none; }
 	}
 
 	/* on narrow screens collapse to a single left rail with cards on the right */
@@ -658,14 +546,14 @@ const yearMark = visibleRows.map((c) => {
 
 <script>
 	function drawOne(graph: HTMLElement) {
+		const svg = graph.querySelector<SVGSVGElement>('.graph-edges');
+		const dataEl = graph.querySelector<HTMLElement>('.graph-edges-data');
+		if (!svg || !dataEl) return;
 		// ClientRouter fires astro:page-load on the initial load too, so initGraphs()
 		// runs twice — guard against binding duplicate listeners (which would make the
 		// flip toggle fire twice per click and cancel itself out).
 		if (graph.dataset.ginit) return;
 		graph.dataset.ginit = '1';
-		const svg = graph.querySelector<SVGSVGElement>('.graph-edges');
-		const dataEl = graph.querySelector<HTMLElement>('.graph-edges-data');
-		if (!svg || !dataEl) return;
 		const edges: { from: string; to: string; branch: string; color: string | null; railFrom: boolean }[] = JSON.parse(dataEl.textContent || '[]');
 		const SVGNS = 'http://www.w3.org/2000/svg';
 
@@ -720,9 +608,8 @@ const yearMark = visibleRows.map((c) => {
 		window.addEventListener('resize', schedule);
 		window.addEventListener('load', draw);
 
-		// margin tip notes: type the text out char-by-char on first hover of the card,
-		// then leave it on screen for good (never cleared).
-		// (on mobile / reduced-motion we just show the full text, no typing.)
+		// margin tip notes: shown while the card is hovered, typed out char-by-char the
+		// first time. On mobile / reduced-motion the full text is shown with no typing.
 		const noAnim = window.matchMedia('(max-width: 680px)').matches
 			|| window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		graph.querySelectorAll<HTMLElement>('.tip-note').forEach((note) => {
@@ -732,17 +619,18 @@ const yearMark = visibleRows.map((c) => {
 			if (!card) return;
 			note.textContent = '';
 			let typed = false;
-			const show = () => {
+			card.addEventListener('mouseenter', () => {
+				note.classList.add('show');
 				if (typed) return;
 				typed = true;
-				note.classList.add('show', 'typing');
+				note.classList.add('typing');
 				let i = 0;
 				const typer = setInterval(() => {
 					note.textContent = full.slice(0, ++i);
 					if (i >= full.length) { clearInterval(typer); note.classList.remove('typing'); }
 				}, 22);
-			};
-			card.addEventListener('mouseenter', show);
+			});
+			card.addEventListener('mouseleave', () => note.classList.remove('show'));
 		});
 
 		// hover a card -> highlight its commit node and the branch it lives on in the path.
