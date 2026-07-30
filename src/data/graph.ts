@@ -1,4 +1,4 @@
-import { env } from '../env';
+import { PUBLIC_R2_URL } from 'astro:env/client';
 
 // --- Tech / skill badge metadata -------------------------------------------
 // `dark: true`  -> solid dark brand color, white text, devicon glyph on the left.
@@ -105,7 +105,7 @@ export type Commit = BaseCommit &
 // --- Photo assets ----------------------------------------------------------
 // Photos live in a Cloudflare R2 bucket (mirrored locally under public/r2/,
 // which is gitignored). Base URL is validated in src/env.ts (PUBLIC_R2_URL).
-const photo = (name: string) => `${env.PUBLIC_R2_URL}/about/${name}.webp`;
+const photo = (name: string) => `${PUBLIC_R2_URL}/about/${name}.webp`;
 
 export const history: Commit[] = [
 	{
@@ -572,7 +572,7 @@ export const history: Commit[] = [
 				href: 'https://github.com/1hachem/declarative-agents',
 			},
 		],
-		tech: ['terraform'],
+		tech: ['terraform', 'kubevirt'],
 	},
 	{
 		id: 'jailed',
