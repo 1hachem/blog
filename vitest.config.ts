@@ -6,6 +6,7 @@ export default defineConfig({
 		include: ['src/**/*.test.ts'],
 		alias: {
 			'astro:content': new URL('./src/__mocks__/astro-content.ts', import.meta.url).pathname,
+			'astro:env/client': new URL('./src/__mocks__/astro-env-client.ts', import.meta.url).pathname,
 		},
 	},
 });
