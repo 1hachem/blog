@@ -22,31 +22,68 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 )}
 
 <script>
-	const list = document.querySelector('.toc-list');
-	if (list) {
+	let io: IntersectionObserver | undefined;
+
+	function setupToc() {
+		// Tear down any observer from a previous page (ClientRouter reuses the JS context).
+		io?.disconnect();
+
+		const list = document.querySelector('.toc-list');
+		if (!list) return;
+
 		const items = list.querySelectorAll<HTMLElement>('li[data-id]');
 		const idToItem = new Map<string, HTMLElement>();
 		for (const item of items) idToItem.set(item.dataset.id!, item);
 
+		const ids = [...idToItem.keys()];
+		const headings = ids
+			.map((id) => document.getElementById(id))
+			.filter((el): el is HTMLElement => el !== null);
+
 		let activeId = '';
-		const io = new IntersectionObserver(
+		const setActive = (id: string) => {
+			if (id === activeId) return;
+			idToItem.get(activeId)?.classList.remove('active');
+			activeId = id;
+			idToItem.get(activeId)?.classList.add('active');
+		};
+
+		const visible = new Set<string>();
+
+		const update = () => {
+			if (visible.size > 0) {
+				// Highlight the first visible heading in document order.
+				const first = ids.find((id) => visible.has(id));
+				if (first) setActive(first);
+				return;
+			}
+			// Nothing visible (e.g. scrolled past a long section):
+			// highlight the last heading above the viewport top.
+			let current = ids[0] ?? '';
+			for (const el of headings) {
+				if (el.getBoundingClientRect().top <= 100) current = el.id;
+				else break;
+			}
+			setActive(current);
+		};
+
+		io = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						idToItem.get(activeId)?.classList.remove('active');
-						activeId = entry.target.id;
-						idToItem.get(activeId)?.classList.add('active');
-					}
+					if (entry.isIntersecting) visible.add(entry.target.id);
+					else visible.delete(entry.target.id);
 				}
+				update();
 			},
 			{ rootMargin: '0px 0px -70% 0px', threshold: 0 }
 		);
 
-		for (const id of idToItem.keys()) {
-			const el = document.getElementById(id);
-			if (el) io.observe(el);
-		}
+		for (const el of headings) io.observe(el);
+		update();
 	}
+
+	// Runs on first load and after every ClientRouter navigation.
+	document.addEventListener('astro:page-load', setupToc);
 </script>
 
 <style>
