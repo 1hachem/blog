@@ -25,7 +25,14 @@ const navLinks = [
 			<h2>{category.name}</h2>
 			<ul>
 				{category.items.map((item) => (
-					<li>{item.title}</li>
+					<li>
+						{item.href ? (
+							<a href={item.href} target="_blank" rel="noopener noreferrer">{item.title}</a>
+						) : (
+							item.title
+						)}
+						{item.note && <span class="note"> — {item.note}</span>}
+					</li>
 				))}
 			</ul>
 		</section>
@@ -54,5 +61,9 @@ const navLinks = [
 	}
 	li {
 		padding: 0.35rem 0;
+	}
+	.note {
+		color: var(--muted);
+		font-size: 0.9rem;
 	}
 </style>

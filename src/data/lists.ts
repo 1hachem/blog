@@ -1,6 +1,7 @@
 export interface ListItem {
 	title: string;
 	note?: string;
+	href?: string;
 }
 
 export interface Category {
@@ -99,6 +100,23 @@ export const lists: List[] = [
 			{
 				name: 'desert',
 				items: [{ title: 'Tassili dunes', note: 'Djanet — silence and an ocean of stars' }],
+			},
+		],
+	},
+	{
+		slug: 'series',
+		heading: 'series',
+		blurb: 'shows on my radar',
+		categories: [
+			{
+				name: 'excited for',
+				items: [
+					{
+						title: 'Neuromancer',
+						note: 'Apple TV — Gibson’s cyberpunk classic, finally on screen',
+						href: 'https://www.youtube.com/watch?v=g79GPZSQHBk',
+					},
+				],
 			},
 		],
 	},
