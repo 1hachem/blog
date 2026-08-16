@@ -1,9 +1,13 @@
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField } from 'astro/config';
+import rehypeLinkFavicons from './src/lib/rehype-link-favicons.mjs';
 
 export default defineConfig({
 	site: 'https://example.com',
+	markdown: {
+		rehypePlugins: [rehypeLinkFavicons],
+	},
 	env: {
 		schema: {
 			PUBLIC_R2_URL: envField.string({

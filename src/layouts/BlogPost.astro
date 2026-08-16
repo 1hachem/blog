@@ -150,6 +150,19 @@ const categorySlug = category && slugify(category);
 		min-width: 0;
 	}
 
+	/* Favicon prepended to external links by the rehype-link-favicons plugin.
+	   Sits just left of the link title, sized to the surrounding text. */
+	.prose :global(.link-favicon) {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		margin-right: 0.3em;
+		vertical-align: -0.15em;
+		border-radius: 2px;
+		/* keep the icon crisp and unaffected by link color/underline */
+		text-decoration: none;
+	}
+
 	.prose :global(h2),
 	.prose :global(h3),
 	.prose :global(h4) {

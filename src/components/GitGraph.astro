@@ -116,11 +116,20 @@ const yearMark = yearMarks(visibleRows);
 					<p class="links">
 						{c.links.map((lk) => {
 							const yt = lk.href.includes('youtube.com') || lk.href.includes('youtu.be');
+							// External (non-YouTube) links get the destination site's favicon,
+							// matching the blog's rehype-link-favicons plugin.
+							let favicon;
+							if (!yt && lk.href.startsWith('http')) {
+								try {
+									favicon = `https://icons.duckduckgo.com/ip3/${new URL(lk.href).hostname}.ico`;
+								} catch { /* leave undecorated */ }
+							}
 							return (
-								<a href={lk.href} class={yt ? 'yt-link' : undefined} target={lk.href.startsWith('http') ? '_blank' : undefined} rel={lk.href.startsWith('http') ? 'noopener' : undefined}>
+								<a href={lk.href} class={yt ? 'yt-link' : (favicon ? 'fav-link' : undefined)} target={lk.href.startsWith('http') ? '_blank' : undefined} rel={lk.href.startsWith('http') ? 'noopener' : undefined}>
 									{yt && (
 										<svg class="yt-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5 31 31 0 00.5 12 31 31 0 001 16.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5A3 3 0 0023 16.5 31 31 0 0023.5 12 31 31 0 0023 7.5z"/><path fill="#fff" d="M9.75 15.5v-7l6 3.5z"/></svg>
 									)}
+									{favicon && <img class="link-favicon" src={favicon} alt="" aria-hidden="true" loading="lazy" width="16" height="16" />}
 									{yt ? <span class="yt-label" title={lk.label}>{lk.label}</span> : lk.label}
 								</a>
 							);
@@ -393,6 +402,9 @@ const yearMark = yearMarks(visibleRows);
 	.yt-link { display: inline-flex; align-items: center; gap: 0.3rem; max-width: 14rem; min-width: 0; }
 	.yt-ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
 	.yt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	/* external links carry the destination site's favicon (see the map above) */
+	.fav-link { display: inline-flex; align-items: center; gap: 0.3rem; }
+	.link-favicon { width: 1em; height: 1em; flex-shrink: 0; border-radius: 2px; }
 
 	/* margin annotation: pushed into the outer gutter and typed out char-by-char while
 	   the card is hovered (JS toggles .show). */
