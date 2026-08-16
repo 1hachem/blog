@@ -6,7 +6,6 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PageNav from '../components/PageNav.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-import ThemeToggle from '../components/ThemeToggle.astro';
 import { categorySlug as slugify } from '../lib/posts';
 
 type Props = CollectionEntry<'blog'>['data'] & {
@@ -39,9 +38,6 @@ const categorySlug = category && slugify(category);
 		/>
 	</head>
 	<body>
-		<div class="topbar">
-			<ThemeToggle />
-		</div>
 		<main>
 			<article>
 				<header class="post-header">
@@ -92,15 +88,6 @@ const categorySlug = category && slugify(category);
 </html>
 
 <style is:global>
-	.topbar {
-		position: fixed;
-		top: 0.6rem;
-		right: 0.9rem;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		z-index: 10;
-	}
 	/* Blog post widens the global main so the prose + TOC grid has room,
 	   while keeping the side padding so content isn't flush to the edges */
 	body:has(article) main {

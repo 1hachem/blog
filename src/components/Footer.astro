@@ -1,6 +1,7 @@
 ---
 import { SITE_AUTHOR } from '../consts';
 import { getGitInfo } from '../lib/git';
+import ThemeToggle from './ThemeToggle.astro';
 
 const year = new Date().getFullYear();
 const { lastUpdated, commitHash } = getGitInfo();
@@ -15,6 +16,8 @@ const { lastUpdated, commitHash } = getGitInfo();
 			<a href="/rss.xml">rss</a>
 			<span>·</span>
 			<span>&copy; {year} {SITE_AUTHOR}</span>
+			<span>·</span>
+			<ThemeToggle />
 		</span>
 	</div>
 </footer>
