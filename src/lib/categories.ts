@@ -19,6 +19,14 @@ export const CATEGORIES = {
 			"My code doesn't have bugs, it develops random unexpected features.",
 		],
 	},
+	startup: {
+		label: 'startup',
+		description: 'Startups, founders, equity, and lessons learned the hard way.',
+		quotes: [
+			"We're pre-revenue, post-savings.",
+			'We disrupted an industry. The industry did not notice.',
+		],
+	},
 } as const;
 
 /** Quotes shown on the "all" view (no category active). */
