@@ -263,7 +263,7 @@ export const history: Commit[] = [
 				href: 'https://github.com/1hachem/semi-empirical-simulation-of-wildfire-on-satellite-data',
 			},
 			{
-				label: 'ResearchGate',
+				label: 'preprint',
 				href: 'https://www.researchgate.net/publication/354678516_Applying_semi-empirical_simulation_of_wildfire_on_real_world_satellite_imagery_data',
 			},
 			{
