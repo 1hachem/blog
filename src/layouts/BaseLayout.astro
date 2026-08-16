@@ -23,7 +23,7 @@ const { title, description, navLinks } = Astro.props;
 	</head>
 	<body>
 		<main>
-			<PageNav links={navLinks} />
+			{navLinks && <PageNav links={navLinks} />}
 			<slot />
 		</main>
 		<Footer />
