@@ -6,15 +6,13 @@ category: 'tech'
 tags: ['ai', 'agents', 'lisp', 'interpreters', 'neuro-symbolic', 'mcp']
 ---
 
-Anthropic's blog post about programmatic tool calling shed light on a better
+Anthropic's [blog post](https://www.anthropic.com/engineering/advanced-tool-use) about programmatic tool calling shed light on a better
 way to use AI agents. Instead of calling tools in a loop, the agent becomes a
 programmer: it writes function calls and logic in a language of its choice, and
 the runtime executes them.
 
-Once you sit with that idea, it's hard to unsee. This is the story of how it
-sent me down a rabbit hole — through sandboxing, interpreter design, and a
-language from 1958 — and out the other side with a Lisp I built specifically
-for AI agents.
+This is the story of how I went down a rabbit hole of sandboxing, interpreter design, and LISP (a
+programming language from 1958), out the other side with an interpreter, a lsp, a formatter, and REPL built specifically for AI agents.
 
 ## Why programmatic tool calling wins
 
@@ -26,6 +24,7 @@ The advantages compound quickly:
   relying on the model to fire off N separate calls by hand.
 - **Variables.** Intermediate data can be stored and passed around without
   ever loading it back into the model's context.
+- **Integration.** Huge eco-systemsof of libraries and sdks that the agent can use.
 
 The only serious downside I can think of is security. The code the agent
 executes can be malicious in many ways — the user might *want* it to be, a
@@ -36,6 +35,7 @@ stops eating host resources.
 
 That's the well-known problem of untrusted code execution, and it leads you
 straight down a rabbit hole of decades of work on sandboxing and isolation.
+
 It's still a standing problem — only ever *mitigated*, never solved — and every
 current solution adds a considerable amount of complexity to your stack.
 
@@ -43,14 +43,16 @@ The root difficulty is this: trying to limit the power and access of a
 *general-purpose* programming language is a hard task, and there is always a
 workaround.
 
+This is what [cloudflare](https://developers.cloudflare.com/agents/tools/sandbox/), [e2b](https://e2b.dev/) and [exe.dev](https://exe.dev/) try to provide.
+
 But there's another way to get exactly what you want. Instead of fighting to
 strip capabilities *out* of an existing language, you build a language from the
 ground up that never had the access you didn't want in the first place.
 
-When Vercel (FU vercel) announced they'd built a language destined for AI agents, I got
+When Vercel (FU vercel) [announced zerolang](https://github.com/vercel-labs/zerolang) they'd built a language destined for AI agents, I got
 geniunly excited for the tech. I hoped they'd optimized for prompt usage, designed around
 zero-trust permissions, and baked in memory and MCP support. Instead it was a
-flop — a side project the marketing team made a big deal of.
+flop — an internal side project the marketing team made a big deal of.
 
 Nobody I knew of had built the thing I needed. So I stepped out of my comfort
 zone and started reading about interpreters and programming-language design.
@@ -75,13 +77,14 @@ the language inside out.
 
 So I did exactly that. I cloned a TypeScript implementation, and with Claude
 Code started modifying it into an in-memory REPL that I hooked up to a
-[PI agent](https://github.com/parallel-ai). Along the way I needed a language
-server — surprisingly easy with [vscode-languageserver](https://github.com/microsoft/vscode-languageserver-node) which unlike the name suggests can be used with any modern code editors — and a formatter, where
+[PI agent](https://github.com/parallel-ai).
+
+Along the way I needed a language server — surprisingly easy with [vscode-languageserver](https://github.com/microsoft/vscode-languageserver-node) which unlike the name suggests can be used with any modern code editors — and a formatter, where
 [Topiary](https://topiary.tweag.io/) gave me a spec-driven one. Everything got
 packaged into a Nix flake.
 
-I was genuinely impressed by how easy it was to build a language, a formatter,
-and an interpreter — all thanks to the genius minimalism of Lisp's design.
+I was genuinely impressed by how easy it was to build a interpreter, a formatter,
+and an lsp — all thanks to the genius minimalism of Lisp's design.
 
 ## Constraining the model to valid syntax
 
@@ -91,9 +94,10 @@ grammars — you describe the language's grammar and generation rules, pass it i
 with your API call, and the model can only emit a token that satisfies the
 grammar.
 
-Not all model provider supports this passthrough — only a handful of open models providers. 
-[Fireworks AI](https://docs.fireworks.ai/structured-responses/structured-output-grammar-based) is one of the few I can name. At some
-point I may have to self-host these models myself.
+Not all model provider supports this passthrough, only a handful. 
+[Fireworks AI](https://docs.fireworks.ai/structured-responses/structured-output-grammar-based) is one of the few I can name.
+
+At some point I may have to self-host these models myself.
 
 ## Rediscovering the REPL
 
@@ -144,7 +148,7 @@ training data is JS and Python.
 
 It turned out fine. The proprietary models did remarkably well with the whole
 interpreter sitting in the system prompt, and the open models did well when
-their output was constrained by the grammar. Claude made at most one mistake
+their output was constrained by the grammar. Claude opus made at most one mistake
 before correcting its calls to the Lisp REPL; with the interpreter in the
 system prompt, it was smooth.
 
