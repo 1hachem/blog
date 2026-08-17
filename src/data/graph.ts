@@ -376,11 +376,7 @@ export const history: Commit[] = [
 		type: 'travel',
 		title: '30 days backpacking in Ghana',
 		card: 'left',
-		photos: [
-			'https://picsum.photos/seed/ghana1/300/380',
-			'https://picsum.photos/seed/ghana2/300/380',
-			'https://picsum.photos/seed/ghana3/300/380',
-		],
+		photos: [photo('ghana-1'), photo('ghana-2'), photo('ghana-3')],
 	},
 	{
 		id: 'bm_intern',

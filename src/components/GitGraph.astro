@@ -67,9 +67,11 @@ const yearMark = yearMarks(visibleRows);
 			</ul>
 		)}
 		{!preview && (
-			<button type="button" class="flip-toggle" aria-pressed="false">
-				<span class="flip-label">start from birth</span>
-			</button>
+			<div class="graph-buttons">
+				<button type="button" class="flip-toggle" aria-pressed="false">
+					<span class="flip-label">start from birth</span>
+				</button>
+			</div>
 		)}
 	</div>
 )}
@@ -216,11 +218,17 @@ const yearMark = yearMarks(visibleRows);
 	/* birth-first view: reverse the vertical stack (edges redraw from live positions) */
 	.gitgraph.flipped { display: flex; flex-direction: column-reverse; }
 
+	.graph-buttons {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-left: auto;
+		flex-shrink: 0;
+	}
 	.flip-toggle {
 		display: inline-flex;
 		align-items: center;
 		gap: 0.3rem;
-		margin-left: auto;
 		flex-shrink: 0;
 		padding: 0.2rem 0.55rem;
 		font: inherit;
@@ -685,6 +693,7 @@ const yearMark = yearMarks(visibleRows);
 				draw();
 			});
 		}
+
 	}
 
 	function initGraphs() {
