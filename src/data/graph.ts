@@ -12,6 +12,7 @@ export const TECH = {
 		dark: true,
 		icon: 'devicon-docker-plain',
 	},
+	vnc: { label: 'VNC' },
 	traefik: { label: 'Traefik', bg: '#24A1C1', dark: true, icon: 'devicon-traefikproxy-plain' },
 	coolify: { label: 'Coolify', bg: '#8B5CF6', dark: true, icon: null },
 	kubernetes: { label: 'Kubernetes', bg: '#326CE5', dark: true, icon: 'devicon-kubernetes-plain' },
@@ -55,6 +56,7 @@ export const TECH = {
 	linux: { label: 'Linux', bg: '#1A1A1A', dark: true, icon: 'devicon-linux-plain' },
 	fedora: { label: 'Fedora', bg: '#294172', dark: true, icon: 'devicon-fedora-plain' },
 	popos: { label: 'Pop!_OS', bg: '#48B9C7', dark: true, icon: null },
+	systemd: { label: 'systemd', bg: '#dd8c31', dark: true, icon: null },
 
 	'context-engineering': { label: 'context engineering', bg: '#dcd3f7', dark: false, icon: null },
 	asyncio: { label: 'asyncio', bg: '#cfe8dd', dark: false, icon: null },
@@ -70,6 +72,10 @@ export const TECH = {
 	playwright: { label: 'Playwright', bg: '#2EAD33', dark: true, icon: 'devicon-playwright-plain' },
 	rpc: { label: 'RPC', bg: '#d7dde8', dark: false, icon: null },
 	mcp: { label: 'MCP', bg: '#e8ddd3', dark: false, icon: null },
+
+	arabic: { label: 'Arabic — native', bg: '#f0e2c0', dark: false, icon: null },
+	english: { label: 'English — fluent', bg: '#c9e4f5', dark: false, icon: null },
+	french: { label: 'French — working', bg: '#e3d5f0', dark: false, icon: null },
 };
 
 // --- Commit categories (the legend) ----------------------------------------
@@ -138,6 +144,7 @@ export const history: Commit[] = [
 		type: 'life',
 		title: 'Raised in the UAE',
 		desc: 'Arabic as mother tongue, English as a second language.',
+		tech: ['arabic', 'english'],
 	},
 	{
 		id: 'algeria',
@@ -148,6 +155,7 @@ export const history: Commit[] = [
 		type: 'travel',
 		title: 'Back to Algeria',
 		desc: 'Picked up French as a third language.',
+		tech: ['french'],
 	},
 	{
 		id: 'parkour',
@@ -539,6 +547,7 @@ export const history: Commit[] = [
 			'better-auth',
 			'bullmq',
 			'drizzle',
+			'vnc',
 			'vite',
 			'vitest',
 			'playwright',
@@ -764,7 +773,7 @@ export const history: Commit[] = [
 		type: 'side',
 		title: 'Switched to NixOS as my daily driver',
 		desc: 'The whole machine, declarative.',
-		tech: ['nixos', 'nix'],
+		tech: ['nixos', 'nix', 'systemd'],
 	},
 	{
 		id: 'merge_oss',
