@@ -27,6 +27,11 @@ export const CATEGORIES = {
 			'We disrupted an industry. The industry did not notice.',
 		],
 	},
+	lifestyle: {
+		label: 'lifestyle',
+		description: '',
+		quotes: [],
+	},
 } as const;
 
 /** Quotes shown on the "all" view (no category active). */
