@@ -29,8 +29,8 @@ export const CATEGORIES = {
 	},
 	lifestyle: {
 		label: 'lifestyle',
-		description: '',
-		quotes: [],
+		description: 'Minimalism, well-being, and living without a smartphone.',
+		quotes: ["No, I don't have your number. I don't have anyone's number."],
 	},
 } as const;
 

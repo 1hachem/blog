@@ -6,6 +6,14 @@ import { PUBLIC_R2_URL } from 'astro:env/client';
 export const TECH = {
 	python: { label: 'Python', bg: '#3776AB', dark: true, icon: 'devicon-python-plain' },
 	docker: { label: 'Docker', bg: '#2496ED', dark: true, icon: 'devicon-docker-plain' },
+	'docker-compose': {
+		label: 'Docker Compose',
+		bg: '#1D63ED',
+		dark: true,
+		icon: 'devicon-docker-plain',
+	},
+	traefik: { label: 'Traefik', bg: '#24A1C1', dark: true, icon: 'devicon-traefikproxy-plain' },
+	coolify: { label: 'Coolify', bg: '#8B5CF6', dark: true, icon: null },
 	kubernetes: { label: 'Kubernetes', bg: '#326CE5', dark: true, icon: 'devicon-kubernetes-plain' },
 	pytorch: { label: 'PyTorch', bg: '#EE4C2C', dark: true, icon: 'devicon-pytorch-plain' },
 	tensorflow: {
@@ -14,6 +22,7 @@ export const TECH = {
 		dark: true,
 		icon: 'devicon-tensorflow-original',
 	},
+	huggingface: { label: 'Hugging Face', bg: '#FFD21E', dark: false, icon: null },
 	fastapi: { label: 'FastAPI', bg: '#009688', dark: true, icon: 'devicon-fastapi-plain' },
 	nix: { label: 'Nix', bg: '#5277C3', dark: true, icon: 'devicon-nixos-plain' },
 	nixos: { label: 'NixOS', bg: '#4B6CB7', dark: true, icon: 'devicon-nixos-plain' },
@@ -415,20 +424,36 @@ export const history: Commit[] = [
 		t: 2023.6,
 		year: '2023',
 		type: 'main',
-		title: 'Backend engineer & product designer',
-		desc: 'Shipped yourscrib.ai — owned the backend and the product design.',
+		title: 'Backend engineer',
+		desc: 'Built MVPs and prototypes for clients, wiring Hugging Face models into shippable backends.',
+		tech: ['python', 'pytorch', 'huggingface', 'fastapi', 'docker'],
+	},
+	{
+		id: 'yourscrib',
+		branch: 'bigmama',
+		parents: ['bm_backend'],
+		t: 2023.7,
+		year: '2023',
+		type: 'main',
+		title: 'yourscrib.ai — AI ghostwriter for aspiring authors',
+		desc: "Novelist Alexandre Jardin's method as a product. It won over French writers telling their own stories — and our first revenue.",
+		tip: 'The interviewer chatbot worked a little too well — users wrote in to say the session had left them in tears.',
 		links: [
 			{
 				label: 'yourscrib.ai',
 				href: 'https://yourscrib.ai',
 			},
+			{
+				label: 'Alexandre Jardin',
+				href: 'https://fr.wikipedia.org/wiki/Alexandre_Jardin',
+			},
 		],
-		tech: ['fastapi', 'python', 'docker'],
+		tech: ['react', 'reactflow', 'fastapi', 'python', 'docker-compose', 'traefik', 'coolify'],
 	},
 	{
 		id: 'bm_cto1',
 		branch: 'bigmama',
-		parents: ['bm_backend'],
+		parents: ['yourscrib'],
 		t: 2023.8,
 		year: '2023–24',
 		type: 'main',
@@ -620,7 +645,7 @@ export const history: Commit[] = [
 		links: [
 			{
 				label: 'writeup',
-				href: '/blog',
+				href: '/blog/lisptc',
 			},
 		],
 		tech: ['typescript', 'lisp', 'claude-code'],
