@@ -2,6 +2,7 @@ export interface ListItem {
 	title: string;
 	note?: string;
 	href?: string;
+	retired?: boolean;
 }
 
 export interface Category {
@@ -129,16 +130,28 @@ export const lists: List[] = [
 				name: 'software',
 				items: [
 					{ title: 'Neovim', note: 'editor — muscle memory I can’t undo' },
-					{ title: 'tmux', note: 'terminal — every project is a session' },
-					{ title: 'Claude Code', note: 'pair programmer that actually ships' },
-					{ title: 'Obsidian', note: 'notes — my second brain, in markdown' },
+					{ title: 'kitty', note: 'terminal emulator — fast and unfussy' },
 					{ title: 'Nix', note: 'reproducible everything, eventually' },
-					{ title: 'Raycast', note: 'launcher — the command palette for my life' },
+					{ title: 'Vicinae', note: 'launcher — the command palette for my life' },
+					{ title: 'niri', note: 'compositor — scrollable tiling, my daily driver' },
+					{ title: 'Brave', note: 'browser — chromium without the Google' },
+					{ title: 'eww', note: "desktop widgets — Elkowar's Wacky Widgets" },
+					{ title: 'NixOS', note: 'distro — declarative, reproducible, never breaks twice' },
+					{ title: 'tmux', note: 'terminal — every project is a session', retired: true },
+					{
+						title: 'Obsidian',
+						note: 'notes — my second brain, in markdown',
+						retired: true,
+					},
+					{ title: 'Rofi', note: 'launcher — the command palette for my life', retired: true },
+					{ title: 'Arch Linux', note: 'distro — btw', retired: true },
+					{ title: 'Hyprland', note: 'compositor — pretty, but I moved on', retired: true },
+					{
+						title: 'Conky',
+						note: 'desktop widgets — system stats on the wallpaper',
+						retired: true,
+					},
 				],
-			},
-			{
-				name: 'gear',
-				items: [{ title: 'Fujifilm X100V', note: 'the camera I actually carry' }],
 			},
 		],
 	},

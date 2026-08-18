@@ -30,7 +30,7 @@ const navLinks = [
 				<h2>{category.name}</h2>
 				<ul>
 					{category.items.map((item) => (
-						<li>
+						<li class:list={{ retired: item.retired }}>
 							{item.href ? (
 								<a href={item.href} target="_blank" rel="noopener noreferrer">
 									{item.title}
@@ -69,6 +69,17 @@ const navLinks = [
 	}
 	li {
 		padding: 0.35rem 0;
+	}
+	li.retired {
+		text-decoration: line-through;
+		text-decoration-color: var(--muted);
+		color: var(--muted);
+		font-weight: normal;
+		font-size: 0.9rem;
+	}
+	li.retired a {
+		color: var(--muted);
+		font-weight: normal;
 	}
 	.note {
 		color: var(--muted);
