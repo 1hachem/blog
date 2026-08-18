@@ -1185,22 +1185,52 @@ const yearMark = yearMarks(visibleRows);
 				}
 			};
 
+			const bandLine = 0.32; // matches the IO's top rootMargin below
+
 			const inView = new Set<HTMLElement>();
+			const update = () => {
+				const doc = document.documentElement;
+				const atBottom = window.innerHeight + Math.ceil(window.scrollY) >= doc.scrollHeight;
+				if (atBottom) {
+					// The last commit(s) may not have enough page left below them to ever get
+					// pushed up into the band — once there's nowhere further to scroll, just
+					// force the actual last commit active instead of leaving it unreachable.
+					setActive(commits[commits.length - 1] ?? null);
+					return;
+				}
+				if (inView.size > 0) {
+					// first in document order among those crossing the band right now
+					const first = commits.find((c) => inView.has(c));
+					if (first) setActive(first);
+					return;
+				}
+				// Nothing is crossing the band — either we haven't scrolled far enough yet,
+				// or (at the bottom of the page) there's no more content to push the last
+				// commit(s) through it. Fall back to the last commit whose top already
+				// passed the band line, so the tail of the list still gets highlighted.
+				const bandY = window.innerHeight * bandLine;
+				let current: HTMLElement | null = null;
+				for (const c of commits) {
+					if (c.getBoundingClientRect().top <= bandY) current = c;
+					else break;
+				}
+				if (current) setActive(current);
+			};
+
 			const io = new IntersectionObserver(
 				(entries) => {
 					for (const entry of entries) {
 						if (entry.isIntersecting) inView.add(entry.target as HTMLElement);
 						else inView.delete(entry.target as HTMLElement);
 					}
-					// first in document order among those crossing the band right now
-					const first = commits.find((c) => inView.has(c));
-					if (first) setActive(first);
+					update();
 				},
 				// a narrow band a third of the way down the screen — a commit is "active"
 				// once it reaches that line, matching where the eye naturally rests while scrolling.
 				{ rootMargin: '-32% 0px -60% 0px', threshold: 0 },
 			);
 			commits.forEach((c) => io.observe(c));
+			window.addEventListener('scroll', update, { passive: true });
 		}
 
 		// "start from birth" flips the timeline (oldest at top); edges follow because
