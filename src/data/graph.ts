@@ -318,7 +318,7 @@ export const history: Commit[] = [
 		type: 'life',
 		title: 'Born in Algeria',
 		desc: 'The initial commit.',
-		photos: ['https://picsum.photos/seed/algeria3/300/380'],
+		photos: [photo('birth')],
 	},
 	{
 		id: 'uae',
@@ -330,6 +330,7 @@ export const history: Commit[] = [
 		title: 'Raised in the UAE',
 		desc: 'Arabic as mother tongue, English as a second language.',
 		tech: ['arabic', 'english'],
+		photos: [photo('uae')],
 	},
 	{
 		id: 'algeria',
