@@ -25,6 +25,7 @@ const {
 	ogTitle,
 	ogDescription,
 	ogImage,
+	heroImage,
 	author,
 	category,
 	tags = [],
@@ -47,6 +48,8 @@ const categorySlug = category && slugify(category);
 			ogTitle={ogTitle}
 			ogDescription={ogDescription}
 			ogImage={ogImage}
+			image={heroImage?.src}
+			type="article"
 			author={author}
 		/>
 	</head>

@@ -10,16 +10,17 @@ interface NavLink {
 interface Props {
 	title: string;
 	description: string;
+	image?: string;
 	navLinks?: NavLink[];
 }
 
-const { title, description, navLinks } = Astro.props;
+const { title, description, image, navLinks } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} image={image} />
 	</head>
 	<body>
 		<main>

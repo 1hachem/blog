@@ -20,9 +20,11 @@ interface Props {
 	active?: string; // current category slug, undefined = all
 	title: string;
 	description?: string;
+	image?: string;
 }
 
-const { posts, currentPage, totalPages, categories, active, title, description } = Astro.props;
+const { posts, currentPage, totalPages, categories, active, title, description, image } =
+	Astro.props;
 
 const baseURL = active ? `/blog/${active}` : '/blog';
 const quotes = getQuotes(active);
@@ -35,6 +37,7 @@ const navLinks = [
 <BaseLayout
 	title={`${title} · ${SITE_TITLE}`}
 	description={description ?? SITE_DESCRIPTION}
+	image={image}
 	navLinks={navLinks}
 >
 	<RandomQuote quotes={quotes} />

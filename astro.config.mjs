@@ -4,7 +4,7 @@ import { defineConfig, envField } from 'astro/config';
 import rehypeLinkFavicons from './src/lib/rehype-link-favicons.mjs';
 
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://blog-worker.hachem-betrouni.workers.dev',
 	markdown: {
 		rehypePlugins: [rehypeLinkFavicons],
 	},
