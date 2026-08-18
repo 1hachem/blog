@@ -6,7 +6,9 @@
 	--accent: #00f;
 	--code-bg: #f0ede9;
 	--max-width: 34rem;
-	--font-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+	--font-mono:
+		'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code', 'Source Code Pro',
+		Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 	/* git-graph category colours (shared by the about graph + its landing preview) */
 	--c-main: #3b82f6;
 	--c-education: #8e4ec6;
@@ -16,7 +18,7 @@
 	--c-life: #e93d82;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
 	--bg: #0a0a0a;
 	--fg: #e8e8e8;
 	--muted: #888;
@@ -25,7 +27,9 @@
 	--code-bg: #111;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
 	box-sizing: border-box;
 }
 
@@ -75,18 +79,35 @@ a:hover {
 	text-decoration: underline;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-family: var(--font-mono);
 	font-weight: bold;
 	line-height: 1.2;
 	margin: 1.5rem 0 0.5rem;
 }
-h1 { font-size: 1.4rem; }
-h2 { font-size: 1.2rem; }
-h3 { font-size: 1.1rem; }
-h4, h5, h6 { font-size: 1rem; }
+h1 {
+	font-size: 1.4rem;
+}
+h2 {
+	font-size: 1.2rem;
+}
+h3 {
+	font-size: 1.1rem;
+}
+h4,
+h5,
+h6 {
+	font-size: 1rem;
+}
 
-p { margin: 0 0 1rem; }
+p {
+	margin: 0 0 1rem;
+}
 
 code {
 	font-family: var(--font-mono);
@@ -131,13 +152,15 @@ table {
 	border-collapse: collapse;
 	font-size: 0.9rem;
 }
-th, td {
+th,
+td {
 	border: 1px solid var(--border);
 	padding: 0.4rem 0.7rem;
 	text-align: left;
 }
 
-ul, ol {
+ul,
+ol {
 	padding-left: 1.5rem;
 }
 
@@ -179,8 +202,16 @@ ul, ol {
 }
 
 @media (max-width: 600px) {
-	html { font-size: 15px; }
-	main { padding: 1rem; }
-	pre { font-size: 0.78rem; }
-	table { font-size: 0.8rem; }
+	html {
+		font-size: 15px;
+	}
+	main {
+		padding: 1rem;
+	}
+	pre {
+		font-size: 0.78rem;
+	}
+	table {
+		font-size: 0.8rem;
+	}
 }

@@ -37,15 +37,15 @@ To make it concrete, here's what radical honesty actually sounded like on a
 normal day — the kind of thing you'd say to a colleague's face, calmly,
 without it being an event:
 
-- *"You don't smell great today — could you take more care of that? It's
-  distracting when we're sitting this close."* Hygiene, said out loud,
+- _"You don't smell great today — could you take more care of that? It's
+  distracting when we're sitting this close."_ Hygiene, said out loud,
   once, instead of five people avoiding your desk for a month.
-- *"I disagree with how you're prioritizing merges. From where I sit it
+- _"I disagree with how you're prioritizing merges. From where I sit it
   looks like your own branches always go in ahead of everyone else's, and
-  that's not fair to the rest of us."* A process complaint aimed at the
+  that's not fair to the rest of us."_ A process complaint aimed at the
   behavior, not the person.
-- *"The way you worded that review made me feel small, even if that wasn't
-  your intent."* Feedback about feedback.
+- _"The way you worded that review made me feel small, even if that wasn't
+  your intent."_ Feedback about feedback.
 
 None of these were accusations. They were mirrors. What kept them from
 turning into attacks was **nonviolent communication** — the framework we
@@ -86,7 +86,7 @@ instinct. And it turns out that when your honesty threatens someone's
 livelihood or self-image, "radical honesty" stops being a shared value and
 starts being an attack.
 
-The irony is that radical honesty made me a *better* salesperson, not a
+The irony is that radical honesty made me a _better_ salesperson, not a
 worse one. Once you stop trying to close and start trying to actually solve
 the client's problem — even when the honest answer is "we're not the right
 fit, go use this other thing" — something flips. You build genuine
@@ -119,7 +119,7 @@ product even is.
 ## What I actually learned
 
 Here's the uncomfortable conclusion. Radical honesty is not a universal
-solvent. It works *only* in the presence of aligned incentives and genuine
+solvent. It works _only_ in the presence of aligned incentives and genuine
 psychological safety. Where those two things exist, it is transformative.
 Where they don't, it doesn't create alignment — it exposes its absence, and
 people experience that exposure as a threat.
@@ -139,7 +139,7 @@ thing that finally forces everyone to admit it.
 
 We built a culture that could survive any conversation except the one that
 mattered most. So when that conversation finally came, the culture didn't
-soften the blow. It *was* the blow.
+soften the blow. It _was_ the blow.
 
 I don't regret it. Radical honesty made me a better engineer, a better
 salesperson, and a kinder colleague, and I'd build a company on it again. But
@@ -149,6 +149,6 @@ hoping to paper over.
 
 ---
 
-*This is part of a longer story about why I eventually left. If you want the
+_This is part of a longer story about why I eventually left. If you want the
 full arc — the mission, the pivots, and the exit — read [Why I left
-BigMama](/blog/why-i-left-bigmama).*
+BigMama](/blog/why-i-left-bigmama)._

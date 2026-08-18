@@ -1,8 +1,8 @@
-My mission for the last 3 year was to build an all in one ai automation soloution that non technical experts  (in different industries) can use in order to embed thier exeprtise and they way they work into ai automations, hybrid-ai.
+My mission for the last 3 year was to build an all in one ai automation soloution that non technical experts (in different industries) can use in order to embed thier exeprtise and they way they work into ai automations, hybrid-ai.
 
 it started with yourscrib.ai where I had extensive meetings with [Alexandre Jardin](https://fr.wikipedia.org/wiki/Alexandre_Jardin) where he explained to use his methodlogy of coming up with ideas for his books, how to find universel subjects and emotions that you can share with your audiance, how what matters is that subjects, emotions and opinions, the opinions have to be contrarian conterversial and deeply yours, it should be your deepest secrets and desires, how to do a psyche analysis to find these emotions and opinions, how then the plot is just a veil that you throw on top to hide the story, show not tell, how any plot can work once you find your true feelings and opinions regarding a subject of intereset for you.
 
-I took all these desicussion and iterated on a ai product that finally ended up with three steps, chat which plays a psychiatrist role asking questions with the objective of extracting these emotions from you (system prompt was too good we got messages from users saying that the chat session left them in tears). 
+I took all these desicussion and iterated on a ai product that finally ended up with three steps, chat which plays a psychiatrist role asking questions with the objective of extracting these emotions from you (system prompt was too good we got messages from users saying that the chat session left them in tears).
 
 after that comes the scinario building, a graph based editor where the writer can generate descriptions for different scenes and chapter, and experiment with different paths of the story, here comes the maximum shit load method (which is used extensivly by netflix), and that of asking what is the thing that will make the life of my charcter harder, and you chose that path, keeping the audiance at the edge of thier seats (used cautiously as it)
 
@@ -26,7 +26,7 @@ this is where we started understanding what we are actually trying to build and 
 
 by this time I was graduating as an AI engineer, with no seniors above us I became the "CTO" as soon as I finished my studies, at that time I didnt have any idea what a CTO does, no role models, I did all the text books mistakes.
 
-the bussiness plan was that talent is cheap in algeria, but only junior talent, sinors and intermediant knew better, and were landing remote jobs that got them 10x more financial outcomes, I myself got simlair offers as soon as I marked a 1 year experience, 90% of the juniors I helped in recruiting and that I managed  as soon as they mark a 1-2 years of experience they get easily poached, we were bleeding talent, tacit knowledge and technical know how, and not just us but the whole tech marekt in the country was faced with this churn, building was practicly impossible.
+the bussiness plan was that talent is cheap in algeria, but only junior talent, sinors and intermediant knew better, and were landing remote jobs that got them 10x more financial outcomes, I myself got simlair offers as soon as I marked a 1 year experience, 90% of the juniors I helped in recruiting and that I managed as soon as they mark a 1-2 years of experience they get easily poached, we were bleeding talent, tacit knowledge and technical know how, and not just us but the whole tech marekt in the country was faced with this churn, building was practicly impossible.
 
 I chose to stick since I was learning like nowhere else, the CTO position pushed me to take over responsbilities, switch carear paths from (AI to full stack), learn about design patterns, tech team management, reviews, sprints, documentation, ci/cd, cloud, customer support, investors and pitchs, bussiness plans I was always pushed out of my comfort zone.
 
@@ -52,7 +52,6 @@ I instead chose to listen to customer feedback and compliant and decided it was 
 
 with this pivot we got more clients new possibilities and we generated our first 4k MRR that turned into a 32k gross volume, hyko finally started paying for it bills after more than 2 years trying.
 
-
 this time I started reading more about startup mistakes, finances, I started finding ways to build financial bussiness plans with code (pyexcel) (I dont know how to use excel and you should too) (checkout ./execel.md which is going to be another blog that you will link it here).
 
 the goal was that I had to prepare a "convienscing" bussiness plan for an investor meeting, I knew nothing so I did what programmers do, I googled, and read the docs
@@ -61,7 +60,7 @@ used claude in order to generated the sheets and make them easily customizable (
 
 this is when troubles beginn, when I raised my head outside of my lane, at first it was ok because it was helpfule but when I understood that the sales is upside down, and that the tech team was secrewed all over with thier stock options, that we our equity split, sales process, bussiness plan, mindset is a recipie for disaster
 
-by this time we had developed a "radical honesty" cluture at the company, we were in the bussiness of transforiming organizations with AI, we knew that we had to transform oursleves first all the time, and transformating can only start with an honest disscussion between each one of us of that shortcomings of the other (technically, communcation wise, hygines, you name it) only by being the miror of one another can we transform, only by transforming can our bussiness sccuessded 
+by this time we had developed a "radical honesty" cluture at the company, we were in the bussiness of transforiming organizations with AI, we knew that we had to transform oursleves first all the time, and transformating can only start with an honest disscussion between each one of us of that shortcomings of the other (technically, communcation wise, hygines, you name it) only by being the miror of one another can we transform, only by transforming can our bussiness sccuessded
 
 everying loved practicing this it made things more clearer, manifestors where drafted left and right to align the processes, reviews where drama-free, and working became much more fun ... excpet for sales team, and for found equity.
 
@@ -71,13 +70,11 @@ we wanted to creep this radical honesty to the sales process, no more trying sho
 
 at this point I was 100% convienced that there is no major tricks or financial powermoves, no major collaboration with consulting group, a telco compay, or a trainning center that would build a product that people need and pay for, it was actually as PG puts it "do things that dont scale"
 
-the 20 years of experience and financial shenigens and factors no longer had an effect on me and I entered in a clash with the   status quo of the sales team.
+the 20 years of experience and financial shenigens and factors no longer had an effect on me and I entered in a clash with the status quo of the sales team.
 
 equity split was a major issue, and as soon as we tried to address it (despite the appearence of openess) no amount of talk, and of show of good incentives and of effort and focus on the product, no amount of group talks about trust and inhireted traumas (@claude link to blog about this create the entery) were enough to reach an agreement, the incentives didnt align, and all of sudden and friendly discussions became charged, sychological games, guilt tripping, sunk cost, silent treatments, exclusion, calomny, stage setting, and leactures about what is actually a product where I get the lowst point (it turns out I am the leaset person to understand what a product is)
 
-
 all of suddent the "founder" thinks that the technical execution of the product is the issue with sales, and that 90% of what we sold is actually thanks to his network, mtholdology, time and so little is the actual product
-
 
 I took that as a direct attempt to diminish our (tech team) contribtions the moment we asked to reconsider the equity split
 
@@ -85,7 +82,7 @@ the next thing I knew was that the CEO organized a technical audiot with a "seni
 
 the whole mission pitch that hooked me in the first place was the state of the art technology or fine tech products were never built from a place like algeria not becuase we couldnt it was becuase everyone else (includeing us) thought we couldnt and we wanted to challenge that belief, for talent to come together and for investors to invest
 
-it turned out the problem is much bigger than that and now its clear for me that building a fotware product will not solve it, 
+it turned out the problem is much bigger than that and now its clear for me that building a fotware product will not solve it,
 
 which leaves me with a resentful boss, a 0.5% quity, a third world country, stress in my guts, a 2 years old that thinks I come with a laptop attached to my hand and 0 savings, and a mission that I no longer believe in ... eeeeh no thanks, time for the next thing
 
@@ -97,4 +94,3 @@ to the CEO who taught me more with his right doings than his mistakes I love you
 to my wife whome work stole me from her and whome support was unparalel I love you
 
 to allah who made this journey for me I love you
-

@@ -24,8 +24,8 @@ I had a series of extended meetings with the novelist
 [Alexandre Jardin](https://fr.wikipedia.org/wiki/Alexandre_Jardin), who
 walked me through his entire methodology for coming up with ideas for his
 books. How to find universal subjects and emotions you can share with an
-audience. How what really matters isn't plot but *subjects, emotions, and
-opinions* — and how those opinions have to be contrarian, controversial,
+audience. How what really matters isn't plot but _subjects, emotions, and
+opinions_ — and how those opinions have to be contrarian, controversial,
 and deeply yours. Your secrets. Your desires. He described doing a kind of
 psychoanalysis on yourself to surface those emotions, and then treating the
 plot as just a veil you throw over the real story. Show, don't tell. Any
@@ -42,7 +42,7 @@ I took all of that and iterated it into an AI product with three stages:
    generate descriptions for scenes and chapters and experiment with
    different paths through the story. This is where we leaned on the
    "maximum shitload" technique Netflix uses so heavily: at every fork, ask
-   *what would make my character's life hardest?* — and take that path.
+   _what would make my character's life hardest?_ — and take that path.
    Keep the audience on the edge of their seats. (Used with care.)
 3. **Editing.** The actual writing, with tools to generate content, shift
    tone and style, and get feedback from an editor-like chatbot.
@@ -60,7 +60,7 @@ But it worked. And it taught us the lesson that started everything else: we
 had a little traction, and no technical moat — it was really just system
 prompts on top of GPT-4 and React Flow. So we decided to try something more
 ambitious and more general. An app that would let non-technical users build
-*any* kind of automation, not just writing.
+_any_ kind of automation, not just writing.
 
 ## Act II — Hyko: the overbuilt years
 
@@ -77,7 +77,7 @@ installed Docker and connected its socket to our web app so we could spin
 up containers on their machine — pulling images that ran Hugging Face depth
 estimation models on the user's own GPU (or, you know, concatenated two
 strings). We did all of this because we didn't know how to scale it, and we
-didn't yet realize that what we were building was a *worker queue* — a
+didn't yet realize that what we were building was a _worker queue_ — a
 well-known, long-solved architecture.
 
 We implemented our own DAG execution in a deeply unorthodox way, using
@@ -99,7 +99,7 @@ became "CTO" the moment I finished my studies. I had no idea what a CTO
 does. No role models. I made every mistake in the textbook, and then some.
 
 The business plan rested on an assumption: talent is cheap in Algeria. But
-that was only true for *junior* talent. Intermediates and seniors knew
+that was only true for _junior_ talent. Intermediates and seniors knew
 better and were landing remote jobs paying 10x more. I got the same kind of
 offers myself the moment I hit one year of experience. Roughly 90% of the
 juniors I helped recruit and managed got poached the moment they crossed
@@ -122,7 +122,7 @@ Even with the worker queue in place and no more local scripts, we were
 nowhere near production-ready. Worse, our paying clients found the app too
 complicated. What's loop mode? What's a fractal (nested flow)? Why won't
 this node connect to that one (type mismatch)? Lists, strings — confusing.
-Concat was *magic*.
+Concat was _magic_.
 
 What looked friendly and elegant to us was bewildering to the non-technical
 users we'd built it for. That's a hard thing to see when you're inside it.
@@ -133,12 +133,12 @@ AST, and a deployment running on Docker Compose via Coolify.
 
 Heads down. Build, build, build. (On a 0.5% grant that only vested after two
 years, with hideous clawbacks that let the company buy my shares back at a
-90% discount in case of *faute grave*.)
+90% discount in case of _faute grave_.)
 
 ### Digging out
 
 I tried to work around the complexity problem by building a copilot chatbot
-that would build the workflow *for* the user, validating changes against a
+that would build the workflow _for_ the user, validating changes against a
 virtual blueprint — inspired by React's virtual DOM. Around this time
 [revoltez](https://github.com/revoltez) joined and helped immensely,
 including moving us to Kubernetes, which would matter enormously in the
@@ -155,7 +155,7 @@ with "financial power moves" and "feedback loops," always leaning on "trust
 my 20 years of experience." I trusted it, but something always felt off.
 
 Sales were, in fact, upside down. Every textbook error. I only understood
-how wrong the approach was later, listening to YC's *Startup School* —
+how wrong the approach was later, listening to YC's _Startup School_ —
 Dalton and Michael — and to Naval and others. It became clear the sales
 strategy was fundamentally mistaken.
 
@@ -202,7 +202,7 @@ loved it. The moment it was pointed at the equity split, it became a weapon.
 By then I was fully convinced there was no trick, no financial power move,
 no magic partnership with a consulting group or a telco or a training center
 that would substitute for building a product people need and pay for. It was
-exactly what Paul Graham says: *do things that don't scale.* The twenty
+exactly what Paul Graham says: _do things that don't scale._ The twenty
 years of experience and the financial shenanigans no longer had any hold on
 me, and I ended up in open conflict with the status quo of the sales team.
 
@@ -214,11 +214,11 @@ incentives, effort, and focus on the product. No amount of group
 conversations about trust and inherited traumas. The incentives didn't
 align, and the friendly discussions turned into psychological games, guilt
 trips, sunk-cost appeals, silent treatment, exclusion, slander,
-stage-setting, and lectures about what a product *really* is — in which I,
+stage-setting, and lectures about what a product _really_ is — in which I,
 the CTO who led the team of three that had actually built the thing, somehow
 came out as the person least qualified to understand it.
 
-All of a sudden the founder decided that the *technical execution* was the
+All of a sudden the founder decided that the _technical execution_ was the
 real problem with sales — that 90% of what we'd sold was thanks to his
 network, his methodology, and his time, and that so little of it was the
 actual product. I took that for exactly what it was: a direct attempt to
@@ -232,7 +232,7 @@ CTO, was the last to hear about it.
 
 The whole mission that hooked me in the first place was this:
 state-of-the-art technology and genuinely fine products were never built
-from a place like Algeria — not because we *couldn't*, but because everyone,
+from a place like Algeria — not because we _couldn't_, but because everyone,
 ourselves included, believed we couldn't. We wanted to challenge that belief. To make
 talent come together and investors invest.
 

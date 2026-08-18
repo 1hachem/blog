@@ -1,6 +1,6 @@
 ---
 title: 'lisptc — a Lisp built for AI agents'
-description: 'Anthropic''s post on programmatic tool calling sent me down a rabbit hole: instead of calling tools in a loop, the agent becomes a programmer. So I built a Lisp from the ground up to be the language it writes in.'
+description: "Anthropic's post on programmatic tool calling sent me down a rabbit hole: instead of calling tools in a loop, the agent becomes a programmer. So I built a Lisp from the ground up to be the language it writes in."
 pubDate: 2026-08-16
 category: 'tech'
 tags: ['ai', 'agents', 'lisp', 'interpreters', 'neuro-symbolic', 'mcp']
@@ -27,7 +27,7 @@ The advantages compound quickly:
 - **Integration.** Huge eco-systemsof of libraries and sdks that the agent can use.
 
 The only serious downside I can think of is security. The code the agent
-executes can be malicious in many ways — the user might *want* it to be, a
+executes can be malicious in many ways — the user might _want_ it to be, a
 prompt injection might slip in, or the agent might simply write code that never
 stops eating host resources.
 
@@ -36,17 +36,17 @@ stops eating host resources.
 That's the well-known problem of untrusted code execution, and it leads you
 straight down a rabbit hole of decades of work on sandboxing and isolation.
 
-It's still a standing problem — only ever *mitigated*, never solved — and every
+It's still a standing problem — only ever _mitigated_, never solved — and every
 current solution adds a considerable amount of complexity to your stack.
 
 The root difficulty is this: trying to limit the power and access of a
-*general-purpose* programming language is a hard task, and there is always a
+_general-purpose_ programming language is a hard task, and there is always a
 workaround.
 
 This is what [cloudflare](https://developers.cloudflare.com/agents/tools/sandbox/), [e2b](https://e2b.dev/) and [exe.dev](https://exe.dev/) try to provide.
 
 But there's another way to get exactly what you want. Instead of fighting to
-strip capabilities *out* of an existing language, you build a language from the
+strip capabilities _out_ of an existing language, you build a language from the
 ground up that never had the access you didn't want in the first place.
 
 When Vercel (FU vercel) [announced zerolang](https://github.com/vercel-labs/zerolang) they'd built a language destined for AI agents, I got
@@ -72,7 +72,7 @@ agent language needs:
 I found [Make a Lisp](https://github.com/kanaka/mal) (mal), an open-source
 project for building Lisp interpreters across languages: C, JS, Python, Go, you
 name it. The C implementation was around 500 lines. I was in awe. I realized I
-could fit the *entire interpreter* into a system prompt — the agent could learn
+could fit the _entire interpreter_ into a system prompt — the agent could learn
 the language inside out.
 
 So I did exactly that. I cloned a TypeScript implementation, and with Claude
@@ -88,13 +88,13 @@ and an lsp — all thanks to the genius minimalism of Lisp's design.
 
 ## Constraining the model to valid syntax
 
-The best part: I can *force* the model's output to conform to the Lisp syntax.
+The best part: I can _force_ the model's output to conform to the Lisp syntax.
 `llama.cpp` supports [GBNF](https://github.com/ggml-org/llama.cpp/blob/master/grammars/README.md)
 grammars — you describe the language's grammar and generation rules, pass it in
 with your API call, and the model can only emit a token that satisfies the
 grammar.
 
-Not all model provider supports this passthrough, only a handful. 
+Not all model provider supports this passthrough, only a handful.
 [Fireworks AI](https://docs.fireworks.ai/structured-responses/structured-output-grammar-based) is one of the few I can name.
 
 At some point I may have to self-host these models myself.
@@ -103,10 +103,10 @@ At some point I may have to self-host these models myself.
 
 I hadn't touched a Jupyter notebook since I switched careers from AI engineer to
 software engineer, and I'd forgotten how good the REPL model is. You debug and
-test code *as you write it*; the REPL keeps context and gives you feedback.
+test code _as you write it_; the REPL keeps context and gives you feedback.
 
 For an AI agent this is fantastic. The agent gets instant feedback, and it was
-*trained* on exactly this kind of execution — every notebook in its training
+_trained_ on exactly this kind of execution — every notebook in its training
 data works this way. Setting up my editor with the custom formatter, LSP, and
 REPL was just as easy, giving me an adequate workbench to tear these scripts
 apart and reassemble them. The minimal-by-default, easily-extendable nature of
@@ -126,7 +126,7 @@ primitive**, instead of an afterthought bolted on later.
 
 ## Context compression by construction
 
-Owning the interpreter *and* the REPL means you can build in context
+Owning the interpreter _and_ the REPL means you can build in context
 compression from day one. Each variable is read with grep-like commands, and
 results are paginated by default — so the LLM reads exactly what it needs and
 nothing more.
@@ -161,13 +161,13 @@ The last missing piece is a cognitive architecture that fuses the power of LLMs
 with the symbolic nature of the language — a separate memory module that extends
 the interpreter.
 
-That's the real thesis here. The LLM is *not* the agent. It's one module in a
+That's the real thesis here. The LLM is _not_ the agent. It's one module in a
 system where every part plays a role toward an objective. The right move is to
 leave the imaginative, creative, flexible work to the LLM, and the rest to the
 symbolic system — the Lisp. Like the two hemispheres of a brain.
 
-I deliberately prefer "cognitive architecture" over "harness." *Harness* is the
-new kid on the block; *cognitive architecture* is a term rooted in decades of
+I deliberately prefer "cognitive architecture" over "harness." _Harness_ is the
+new kid on the block; _cognitive architecture_ is a term rooted in decades of
 research you can actually draw from.
 
 This is still a work in progress. My objective is to benchmark this

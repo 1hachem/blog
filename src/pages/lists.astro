@@ -2,24 +2,36 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { lists, previewTitles, PREVIEW_COUNT } from '../data/lists';
 
-const navLinks = [{ href: '/', label: '← home' }, { href: '/blog', label: 'blog' }];
+const navLinks = [
+	{ href: '/', label: '← home' },
+	{ href: '/blog', label: 'blog' },
+];
 ---
 
-<BaseLayout title="lists" description="books, movies, camping spots, and tools I keep coming back to" navLinks={navLinks}>
+<BaseLayout
+	title="lists"
+	description="books, movies, camping spots, and tools I keep coming back to"
+	navLinks={navLinks}
+>
 	<h1>lists</h1>
 	<p>Running lists of things I love. Perpetually unfinished.</p>
 
-	{lists.map((list) => {
-		const titles = previewTitles(list);
-		const preview = titles.slice(0, PREVIEW_COUNT);
-		const truncated = titles.length > PREVIEW_COUNT;
-		return (
-			<a class="list" href={`/lists/${list.slug}`}>
-				<span class="heading">{list.heading}</span>
-				<span class="preview">{preview.join(', ')}{truncated && '…'}</span>
-			</a>
-		);
-	})}
+	{
+		lists.map((list) => {
+			const titles = previewTitles(list);
+			const preview = titles.slice(0, PREVIEW_COUNT);
+			const truncated = titles.length > PREVIEW_COUNT;
+			return (
+				<a class="list" href={`/lists/${list.slug}`}>
+					<span class="heading">{list.heading}</span>
+					<span class="preview">
+						{preview.join(', ')}
+						{truncated && '…'}
+					</span>
+				</a>
+			);
+		})
+	}
 </BaseLayout>
 
 <style>

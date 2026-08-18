@@ -17,16 +17,20 @@ const { categories, active } = Astro.props;
 <div class="filter-row">
 	<nav class="filter">
 		<a href="/blog" class:list={[{ active: !active }]} data-astro-prefetch>all</a>
-		{categories.map((cat) => (
-			<a
-				href={`/blog/${slug(cat.label)}`}
-				class:list={[{ active: active === slug(cat.label) }, 'has-tooltip']}
-				data-astro-prefetch
-			>
-				{cat.label}
-				<span class="tooltip"><span class="tooltip-text">{cat.description}</span></span>
-			</a>
-		))}
+		{
+			categories.map((cat) => (
+				<a
+					href={`/blog/${slug(cat.label)}`}
+					class:list={[{ active: active === slug(cat.label) }, 'has-tooltip']}
+					data-astro-prefetch
+				>
+					{cat.label}
+					<span class="tooltip">
+						<span class="tooltip-text">{cat.description}</span>
+					</span>
+				</a>
+			))
+		}
 	</nav>
 </div>
 
@@ -83,7 +87,10 @@ const { categories, active } = Astro.props;
 			});
 
 			link.addEventListener('mouseleave', () => {
-				if (timer) { clearTimeout(timer); timer = null; }
+				if (timer) {
+					clearTimeout(timer);
+					timer = null;
+				}
 				tip.classList.remove('visible');
 			});
 		});

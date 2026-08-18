@@ -15,9 +15,22 @@ type Props = CollectionEntry<'blog'>['data'] & {
 };
 
 const {
-	title, description, pubDate, updatedDate,
-	keywords, canonicalURL, noindex, ogTitle, ogDescription, ogImage, author,
-	category, tags = [], related = [], headings = [], readingTime,
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	keywords,
+	canonicalURL,
+	noindex,
+	ogTitle,
+	ogDescription,
+	ogImage,
+	author,
+	category,
+	tags = [],
+	related = [],
+	headings = [],
+	readingTime,
 } = Astro.props;
 
 const categorySlug = category && slugify(category);
@@ -41,23 +54,47 @@ const categorySlug = category && slugify(category);
 		<main>
 			<article>
 				<header class="post-header">
-					<PageNav links={[{ href: '/blog', label: '← blog' }, { href: '/', label: 'home' }]} />
+					<PageNav
+						links={[
+							{ href: '/blog', label: '← blog' },
+							{ href: '/', label: 'home' },
+						]}
+					/>
 					<p class="post-meta">
 						<FormattedDate date={pubDate} />
-						{updatedDate && <span class="updated"> · updated <FormattedDate date={updatedDate} /></span>}
-						{category && (
-							<span> · <a href={`/blog/${categorySlug}`} data-astro-prefetch>{category}</a></span>
-						)}
+						{
+							updatedDate && (
+								<span class="updated">
+									{' '}
+									· updated <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
+						{
+							category && (
+								<span>
+									{' '}
+									·{' '}
+									<a href={`/blog/${categorySlug}`} data-astro-prefetch>
+										{category}
+									</a>
+								</span>
+							)
+						}
 						{readingTime && <span> · {readingTime}</span>}
 					</p>
 					<h1>{title}</h1>
-					{tags.length > 0 && (
-						<p class="post-tags">
-							{tags.map((tag: string) => (
-								<a href={`/tag/${tag}`} class="tag" data-astro-prefetch>#{tag}</a>
-							))}
-						</p>
-					)}
+					{
+						tags.length > 0 && (
+							<p class="post-tags">
+								{tags.map((tag: string) => (
+									<a href={`/tag/${tag}`} class="tag" data-astro-prefetch>
+										#{tag}
+									</a>
+								))}
+							</p>
+						)
+					}
 				</header>
 
 				<div class="post-body">
@@ -68,19 +105,30 @@ const categorySlug = category && slugify(category);
 
 				<TableOfContents headings={headings} />
 
-				{related.length > 0 && (
-					<aside class="related">
-						<p class="related-heading">more in <a href={`/blog/${categorySlug}`} data-astro-prefetch>{category}</a></p>
-						<ul>
-							{related.map((p) => (
-								<li>
-									<a href={`/blog/${p.id}/`} data-astro-prefetch>{p.data.title}</a>
-									<span class="date"><FormattedDate date={p.data.pubDate} /></span>
-								</li>
-							))}
-						</ul>
-					</aside>
-				)}
+				{
+					related.length > 0 && (
+						<aside class="related">
+							<p class="related-heading">
+								more in{' '}
+								<a href={`/blog/${categorySlug}`} data-astro-prefetch>
+									{category}
+								</a>
+							</p>
+							<ul>
+								{related.map((p) => (
+									<li>
+										<a href={`/blog/${p.id}/`} data-astro-prefetch>
+											{p.data.title}
+										</a>
+										<span class="date">
+											<FormattedDate date={p.data.pubDate} />
+										</span>
+									</li>
+								))}
+							</ul>
+						</aside>
+					)
+				}
 			</article>
 		</main>
 		<Footer />

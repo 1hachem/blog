@@ -26,12 +26,23 @@ const { posts, currentPage, totalPages, categories, active, title, description }
 
 const baseURL = active ? `/blog/${active}` : '/blog';
 const quotes = getQuotes(active);
-const navLinks = [{ href: '/', label: '← home' }, { href: '/about', label: 'about' }];
+const navLinks = [
+	{ href: '/', label: '← home' },
+	{ href: '/about', label: 'about' },
+];
 ---
 
-<BaseLayout title={`${title} · ${SITE_TITLE}`} description={description ?? SITE_DESCRIPTION} navLinks={navLinks}>
+<BaseLayout
+	title={`${title} · ${SITE_TITLE}`}
+	description={description ?? SITE_DESCRIPTION}
+	navLinks={navLinks}
+>
 	<RandomQuote quotes={quotes} />
 	<CategoryFilter categories={categories} active={active} />
-	<TimelinePostList posts={posts} currentPage={currentPage} totalPages={totalPages} baseURL={baseURL} />
+	<TimelinePostList
+		posts={posts}
+		currentPage={currentPage}
+		totalPages={totalPages}
+		baseURL={baseURL}
+	/>
 </BaseLayout>
-

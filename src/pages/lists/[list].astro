@@ -16,27 +16,35 @@ const navLinks = [
 ];
 ---
 
-<BaseLayout title={list.heading} description={list.blurb ?? `my ${list.heading} list`} navLinks={navLinks}>
+<BaseLayout
+	title={list.heading}
+	description={list.blurb ?? `my ${list.heading} list`}
+	navLinks={navLinks}
+>
 	<h1>{list.heading}</h1>
 	{list.blurb && <p class="blurb">{list.blurb}</p>}
 
-	{list.categories.map((category) => (
-		<section class="category">
-			<h2>{category.name}</h2>
-			<ul>
-				{category.items.map((item) => (
-					<li>
-						{item.href ? (
-							<a href={item.href} target="_blank" rel="noopener noreferrer">{item.title}</a>
-						) : (
-							item.title
-						)}
-						{item.note && <span class="note"> — {item.note}</span>}
-					</li>
-				))}
-			</ul>
-		</section>
-	))}
+	{
+		list.categories.map((category) => (
+			<section class="category">
+				<h2>{category.name}</h2>
+				<ul>
+					{category.items.map((item) => (
+						<li>
+							{item.href ? (
+								<a href={item.href} target="_blank" rel="noopener noreferrer">
+									{item.title}
+								</a>
+							) : (
+								item.title
+							)}
+							{item.note && <span class="note"> — {item.note}</span>}
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
 </BaseLayout>
 
 <style>

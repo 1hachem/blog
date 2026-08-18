@@ -21,9 +21,11 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 		</header>
 		<section class="about-me" aria-label="about me">
 			<p>
-				I build things, break them, and write about the wreckage. Software,
-				startups, hypnosis, and whatever else won't leave me alone lately.
-				This is where the loose thoughts land.
+				Hachem Betrouni, I go by Dashi on the internet. AI software and infrastructure engineer by
+				profession, traveler by heart. Ex-CTO, now solo-founding an AI-native software boutique. I
+				poke at the backend of reality; fractals, biomimicry, belief systems, and the odd
+				mushroom—looking for the patterns hidden in plain sight. Radically honest, occasionally too
+				blunt. A dad who's happiest where the signal drops.
 			</p>
 		</section>
 	</section>
@@ -36,26 +38,34 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 		</a>
 	</div>
 
-	{latestPosts.length > 0 && (
-		<section class="home">
-			<section class="latest" aria-label="latest posts">
-				<h2 class="latest-label">latest</h2>
-				<ul class="post-list">
-					{latestPosts.map((post) => (
-						<li>
-							<a href={`/blog/${post.id}/`} data-astro-prefetch>{post.data.title}</a>
-							<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-						</li>
-					))}
-				</ul>
+	{
+		latestPosts.length > 0 && (
+			<section class="home">
+				<section class="latest" aria-label="latest posts">
+					<h2 class="latest-label">latest</h2>
+					<ul class="post-list">
+						{latestPosts.map((post) => (
+							<li>
+								<a href={`/blog/${post.id}/`} data-astro-prefetch>
+									{post.data.title}
+								</a>
+								<span class="date">
+									<FormattedDate date={post.data.pubDate} />
+								</span>
+							</li>
+						))}
+					</ul>
+				</section>
 			</section>
-		</section>
-	)}
+		)
+	}
 </BaseLayout>
 
 <style>
 	/* widen the page just enough for the graph teaser to breathe */
-	:global(main:has(.graph-teaser)) { max-width: 48rem; }
+	:global(main:has(.graph-teaser)) {
+		max-width: 48rem;
+	}
 
 	.home {
 		max-width: 34rem;
@@ -73,7 +83,9 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 	/* fade the cropped bottom into the background */
 	.teaser-veil {
 		position: absolute;
-		left: 0; right: 0; bottom: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
 		height: 68%;
 		background: linear-gradient(to bottom, transparent, var(--bg) 78%);
 		pointer-events: none;
@@ -90,7 +102,9 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 	/* caption sits inside, on the faded area */
 	.teaser-cta {
 		position: absolute;
-		left: 0; right: 0; bottom: 0.4rem;
+		left: 0;
+		right: 0;
+		bottom: 0.4rem;
 		text-align: center;
 		font-size: 0.85rem;
 		font-weight: bold;

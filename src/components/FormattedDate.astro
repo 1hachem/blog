@@ -6,4 +6,5 @@ const { date } = Astro.props;
 const iso = date.toISOString();
 const display = date.toISOString().slice(0, 10);
 ---
+
 <time datetime={iso}>{display}</time>

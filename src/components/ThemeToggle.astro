@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <button id="theme-toggle" aria-label="toggle dark mode" title="switch theme">
@@ -37,8 +38,16 @@
 		color: var(--fg);
 	}
 	/* icons driven by data-theme on <html>, set before paint by inline script in <head> */
-	.icon-sun { display: none; }
-	.icon-moon { display: inline; }
-	:global([data-theme="dark"]) .icon-sun { display: inline; }
-	:global([data-theme="dark"]) .icon-moon { display: none; }
+	.icon-sun {
+		display: none;
+	}
+	.icon-moon {
+		display: inline;
+	}
+	:global([data-theme='dark']) .icon-sun {
+		display: inline;
+	}
+	:global([data-theme='dark']) .icon-moon {
+		display: none;
+	}
 </style>

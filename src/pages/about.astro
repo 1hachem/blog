@@ -2,17 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GitGraph from '../components/GitGraph.astro';
 
-const navLinks = [{ href: '/', label: '← home' }, { href: '/blog', label: 'blog' }];
+const navLinks = [
+	{ href: '/', label: '← home' },
+	{ href: '/blog', label: 'blog' },
+];
 ---
 
 <BaseLayout title="about" description="my history as a git graph" navLinks={navLinks}>
-    <h1>about</h1>
-    <p>this doubles as my curriculum vitae</p>
+	<h1>about</h1>
+	<p>this doubles as my curriculum vitae</p>
 
-    <p>I hate conventional CVs — they're a pain to write and a pain to read.</p>
+	<p>I hate conventional CVs — they're a pain to write and a pain to read.</p>
 	<p>
-    So here's a better way to look at my work experience, my life, and everything that
-    makes me who I am today: my story as a <strong>git graph</strong>.
+		So here's a better way to look at my work experience, my life, and everything that makes me who
+		I am today: my story as a <strong>git graph</strong>.
 	</p>
 
 	<GitGraph showLegend />

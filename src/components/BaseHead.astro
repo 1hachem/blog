@@ -38,27 +38,32 @@ const resolvedOgImage = ogImage ?? image;
 
 <meta charset="utf-8" />
 <script is:inline>
-  (function () {
-    function applyTheme() {
-      const stored = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (stored === 'dark' || (!stored && prefersDark)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      } else {
-        document.documentElement.removeAttribute('data-theme');
-      }
-    }
-    applyTheme();
-    // ClientRouter swaps the document but keeps <html>; re-apply so the
-    // theme never flashes to default during a view transition.
-    document.addEventListener('astro:after-swap', applyTheme);
-  })();
+	(function () {
+		function applyTheme() {
+			const stored = localStorage.getItem('theme');
+			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (stored === 'dark' || (!stored && prefersDark)) {
+				document.documentElement.setAttribute('data-theme', 'dark');
+			} else {
+				document.documentElement.removeAttribute('data-theme');
+			}
+		}
+		applyTheme();
+		// ClientRouter swaps the document but keeps <html>; re-apply so the
+		// theme never flashes to default during a view transition.
+		document.addEventListener('astro:after-swap', applyTheme);
+	})();
 </script>
 <ClientRouter />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href={new URL('rss.xml', Astro.site)} />
+<link
+	rel="alternate"
+	type="application/rss+xml"
+	title={SITE_TITLE}
+	href={new URL('rss.xml', Astro.site)}
+/>
 <meta name="generator" content={Astro.generator} />
 
 <link rel="canonical" href={canonical} />

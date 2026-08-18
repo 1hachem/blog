@@ -7,7 +7,7 @@ category: 'general'
 ---
 
 It began at university, watching a hypnotist perform something I couldn't
-explain. I dismissed it as a hoax for years. Then I read *Plastic Reality* —
+explain. I dismissed it as a hoax for years. Then I read _Plastic Reality_ —
 my heartbeat climbing with every page, because I knew that the moment I
 finished it I **must** go and test it out in reality, on strangers, since
 that's the only way it works.

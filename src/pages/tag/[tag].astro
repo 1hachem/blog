@@ -20,10 +20,17 @@ export async function getStaticPaths() {
 
 const { tag, posts, totalPages } = Astro.props;
 
-const navLinks = [{ href: '/blog', label: '← blog' }, { href: '/', label: 'home' }];
+const navLinks = [
+	{ href: '/blog', label: '← blog' },
+	{ href: '/', label: 'home' },
+];
 ---
 
-<BaseLayout title={`#${tag} — ${SITE_TITLE}`} description={`Posts tagged #${tag}`} navLinks={navLinks}>
+<BaseLayout
+	title={`#${tag} — ${SITE_TITLE}`}
+	description={`Posts tagged #${tag}`}
+	navLinks={navLinks}
+>
 	<p class="heading">#{tag}</p>
 	<TimelinePostList posts={posts} currentPage={1} totalPages={totalPages} baseURL={`/tag/${tag}`} />
 </BaseLayout>

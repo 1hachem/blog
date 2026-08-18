@@ -10,12 +10,16 @@ const { links } = Astro.props;
 ---
 
 <nav class="page-nav" aria-label="page navigation">
-	{links.map((link, i) => (
-		<>
-			{i > 0 && <span class="sep"> | </span>}
-			<a href={link.href} data-astro-prefetch>{link.label}</a>
-		</>
-	))}
+	{
+		links.map((link, i) => (
+			<>
+				{i > 0 && <span class="sep"> | </span>}
+				<a href={link.href} data-astro-prefetch>
+					{link.label}
+				</a>
+			</>
+		))
+	}
 </nav>
 
 <style>

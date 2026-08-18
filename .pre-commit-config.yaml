@@ -6,9 +6,9 @@ repos:
         stages: [commit-msg]
   - repo: local
     hooks:
-      - id: biome-check
-        name: biome check
-        entry: pnpm exec biome check --write --no-errors-on-unmatched --files-ignore-unknown=true
+      - id: prettier
+        name: prettier
+        entry: pnpm exec prettier --write --ignore-unknown
         language: system
-        files: \.(js|mjs|cjs|ts|tsx|jsx|json|jsonc)$
+        files: \.(js|mjs|cjs|ts|tsx|jsx|json|jsonc|css|astro|md)$
         pass_filenames: true

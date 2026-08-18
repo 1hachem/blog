@@ -1,8 +1,8 @@
 ---
-title: "1 million reason why I never owned a smartphone"
-description: "actually just 8 reasons but I can go on forever..."
+title: '1 million reason why I never owned a smartphone'
+description: 'actually just 8 reasons but I can go on forever...'
 pubDate: 2024-04-01
-category: "lifestyle"
+category: 'lifestyle'
 tags: ['Well-being']
 ---
 

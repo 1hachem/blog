@@ -8,9 +8,9 @@ export async function getStaticPaths() {
 	return posts.map((post) => {
 		const related = post.data.category
 			? posts
-				.filter((p) => p.id !== post.id && p.data.category === post.data.category)
-				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-				.slice(0, 3)
+					.filter((p) => p.id !== post.id && p.data.category === post.data.category)
+					.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+					.slice(0, 3)
 			: [];
 		return {
 			params: { slug: post.id },

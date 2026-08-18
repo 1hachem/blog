@@ -39,47 +39,65 @@ function pageURL(n: number) {
 }
 ---
 
-{groups.map((group) => (
-	<section class="timeline-group">
-		<h2 class="group-label">{group.label}</h2>
-		<ul class="post-list">
-			{group.posts.map((post) => (
-				<li>
-					<div class="post-meta">
-						<a href={`/blog/${post.id}/`} data-astro-prefetch class="has-tooltip">
-							{post.data.title}
-							{post.data.description && (
-								<span class="tooltip"><span class="tooltip-text">{post.data.description}</span></span>
+{
+	groups.map((group) => (
+		<section class="timeline-group">
+			<h2 class="group-label">{group.label}</h2>
+			<ul class="post-list">
+				{group.posts.map((post) => (
+					<li>
+						<div class="post-meta">
+							<a href={`/blog/${post.id}/`} data-astro-prefetch class="has-tooltip">
+								{post.data.title}
+								{post.data.description && (
+									<span class="tooltip">
+										<span class="tooltip-text">{post.data.description}</span>
+									</span>
+								)}
+							</a>
+							{post.data.category && (
+								<a
+									href={`/blog/${categorySlug(post.data.category)}`}
+									class="cat-badge"
+									data-astro-prefetch
+								>
+									{post.data.category}
+								</a>
 							)}
-						</a>
-						{post.data.category && (
-							<a
-								href={`/blog/${categorySlug(post.data.category)}`}
-								class="cat-badge"
-								data-astro-prefetch
-							>{post.data.category}</a>
-						)}
-					</div>
-					<span class="date"><FormattedDate date={post.data.pubDate} /></span>
-				</li>
-			))}
-		</ul>
-	</section>
-))}
+						</div>
+						<span class="date">
+							<FormattedDate date={post.data.pubDate} />
+						</span>
+					</li>
+				))}
+			</ul>
+		</section>
+	))
+}
 
-{totalPages > 1 && (
-	<nav class="pagination">
-		{currentPage > 1
-			? <a href={pageURL(currentPage - 1)} data-astro-prefetch>← prev</a>
-			: <span class="disabled">← prev</span>
-		}
-		<span class="page-count">{currentPage} / {totalPages}</span>
-		{currentPage < totalPages
-			? <a href={pageURL(currentPage + 1)} data-astro-prefetch>next →</a>
-			: <span class="disabled">next →</span>
-		}
-	</nav>
-)}
+{
+	totalPages > 1 && (
+		<nav class="pagination">
+			{currentPage > 1 ? (
+				<a href={pageURL(currentPage - 1)} data-astro-prefetch>
+					← prev
+				</a>
+			) : (
+				<span class="disabled">← prev</span>
+			)}
+			<span class="page-count">
+				{currentPage} / {totalPages}
+			</span>
+			{currentPage < totalPages ? (
+				<a href={pageURL(currentPage + 1)} data-astro-prefetch>
+					next →
+				</a>
+			) : (
+				<span class="disabled">next →</span>
+			)}
+		</nav>
+	)
+}
 
 <style>
 	.timeline-group {
@@ -118,7 +136,7 @@ function pageURL(n: number) {
 	.post-meta > a:hover {
 		text-decoration: underline;
 	}
-.cat-badge {
+	.cat-badge {
 		font-size: 0.7rem;
 		border: 1px solid var(--border);
 		padding: 0 0.3rem;
@@ -183,7 +201,10 @@ function pageURL(n: number) {
 		});
 
 		link.addEventListener('mouseleave', () => {
-			if (timer) { clearTimeout(timer); timer = null; }
+			if (timer) {
+				clearTimeout(timer);
+				timer = null;
+			}
 			tip.classList.remove('visible');
 		});
 	});

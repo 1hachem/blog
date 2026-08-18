@@ -10,25 +10,25 @@ const commits: Commit[] = [...history].sort((a, b) => a.t - b.t);
 // from their kind, overridable per-commit.
 type Chip = { label: string; color: string };
 const BRANCH_META: Record<string, Chip> = {
-	streets:   { label: 'free roam',   color: '#e5722a' },
-	wild:      { label: 'wandering',   color: '#96692e' },
-	contests:  { label: 'achievement', color: '#d99e00' },
-	freelance: { label: 'freelance',   color: '#2f7ee5' },
-	research:  { label: 'research',    color: '#0891b2' },
-	ventures:  { label: 'world map',   color: '#10a5a5' },
-	oss:       { label: 'crafting',    color: '#9333ea' },
-	lisptc:    { label: 'crafting',    color: '#9333ea' },
-	bigmama:   { label: 'campaign',    color: '#5b5bd6' },
+	streets: { label: 'free roam', color: '#e5722a' },
+	wild: { label: 'wandering', color: '#96692e' },
+	contests: { label: 'achievement', color: '#d99e00' },
+	freelance: { label: 'freelance', color: '#2f7ee5' },
+	research: { label: 'research', color: '#0891b2' },
+	ventures: { label: 'world map', color: '#10a5a5' },
+	oss: { label: 'crafting', color: '#9333ea' },
+	lisptc: { label: 'crafting', color: '#9333ea' },
+	bigmama: { label: 'campaign', color: '#5b5bd6' },
 };
 const TYPE_CHIP: Partial<Record<Commit['type'], Chip>> = {
-	accident:  { label: 'character development', color: '#e5484d' },
-	education: { label: '+1 XP',                  color: '#8e4ec6' },
-	travel:    { label: 'world map',              color: '#10a5a5' },
+	accident: { label: 'character development', color: '#e5484d' },
+	education: { label: '+1 XP', color: '#8e4ec6' },
+	travel: { label: 'world map', color: '#10a5a5' },
 };
 const CHIP_OVERRIDE: Record<string, Chip> = {
-	hackathon: { label: '+1 XP',   color: '#8e4ec6' },
-	dad:       { label: '+∞ love', color: '#db2777' },
-	tedx:      { label: 'on stage', color: '#E62B1E' },
+	hackathon: { label: '+1 XP', color: '#8e4ec6' },
+	dad: { label: '+∞ love', color: '#db2777' },
+	tedx: { label: 'on stage', color: '#E62B1E' },
 };
 const chipFor = (c: Commit): Chip | undefined =>
 	CHIP_OVERRIDE[c.id] ?? (c.branch !== 'main' ? BRANCH_META[c.branch] : TYPE_CHIP[c.type]);
@@ -45,133 +45,198 @@ const rows = [...commits].reverse().map((c) => ({
 
 const EDGES = buildEdges(commits, (branch) => BRANCH_META[branch]?.color ?? null);
 
-const LEGEND = (Object.keys(CATEGORY_LABEL) as Category[]).map((type) => ({ type, label: CATEGORY_LABEL[type] }));
+const LEGEND = (Object.keys(CATEGORY_LABEL) as Category[]).map((type) => ({
+	type,
+	label: CATEGORY_LABEL[type],
+}));
 
 interface Props {
-	limit?: number;         // render only the newest N commits (a teaser)
-	showLegend?: boolean;   // show the colour key
-	preview?: boolean;      // non-interactive teaser mode
+	limit?: number; // render only the newest N commits (a teaser)
+	showLegend?: boolean; // show the colour key
+	preview?: boolean; // non-interactive teaser mode
 }
 const { limit, showLegend = false, preview = false } = Astro.props;
 const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;
 const yearMark = yearMarks(visibleRows);
 ---
 
-{(showLegend || !preview) && (
-	<div class="graph-head">
-		{showLegend && (
-			<ul class="legend" aria-label="colour key">
-				{LEGEND.map((l) => (
-					<li class="legend-item"><span class={`dot ${l.type}`}></span>{l.label}</li>
-				))}
-			</ul>
-		)}
-		{!preview && (
-			<div class="graph-buttons">
-				<button type="button" class="flip-toggle" aria-pressed="false">
-					<span class="flip-label">start from birth</span>
-				</button>
-			</div>
-		)}
-	</div>
-)}
+{
+	(showLegend || !preview) && (
+		<div class="graph-head">
+			{showLegend && (
+				<ul class="legend" aria-label="colour key">
+					{LEGEND.map((l) => (
+						<li class="legend-item">
+							<span class={`dot ${l.type}`} />
+							{l.label}
+						</li>
+					))}
+				</ul>
+			)}
+			{!preview && (
+				<div class="graph-buttons">
+					<button type="button" class="flip-toggle" aria-pressed="false">
+						<span class="flip-label">start from birth</span>
+					</button>
+				</div>
+			)}
+		</div>
+	)
+}
 
 <div class:list={['gitgraph', { preview }]} style={`--lanes:${laneCount}`}>
 	<svg class="graph-edges" aria-hidden="true"></svg>
-	<script type="application/json" class="graph-edges-data" set:html={JSON.stringify(EDGES)} is:inline></script>
-	{visibleRows.map((c, i) => (
-		<>
-		{yearMark[i] && (
-			<div class="year-sep" aria-hidden="true"><span class="year-sep-label">{yearMark[i]}</span></div>
-		)}
-		<div
-			class={['commit', c.type, c.branch === 'main' ? 'on-main' : 'on-branch', `side-${c.side}`, c.root ? 'is-root' : '', c.hidden ? 'is-junction' : ''].join(' ')}
-			data-type={c.type}
-			data-id={c.id}
-			data-branch={c.branch}
-		>
-			<div class="graph-cell">
-				<span class="node" data-node data-id={c.id} style={`--lane:${c.lane}`}></span>
-			</div>
-			<div class="card">
-				{!c.hidden && (
-				<h3 class="title">
-					{c.year && <span class="yr">{c.year}</span>}
-					{c.title}
-					{c.chip && (
-						<span class="chip" style={`--chip:${c.chip.color}`}>{c.chip.label}</span>
-					)}
-					{c.photos && c.photos.length > 0 && (
-						<span class="photo-badge" title={`${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`} aria-label={`${c.photos.length} photos, hover to view`}>
-							{c.photos.length}
-							<svg class="photo-ico" viewBox="0 0 24 24" aria-hidden="true">
-								<rect x="3" y="5" width="18" height="14" rx="2" />
-								<circle cx="8.5" cy="10" r="1.6" />
-								<path d="M21 16l-5-5-4 4-2-2-4 4" />
-							</svg>
-						</span>
-					)}
-				</h3>
-				)}
-				{!c.hidden && c.desc && <p class="desc">{c.desc}</p>}
-				{c.links && (
-					<p class="links">
-						{c.links.map((lk) => {
-							const yt = lk.href.includes('youtube.com') || lk.href.includes('youtu.be');
-							// External (non-YouTube) links get the destination site's favicon,
-							// matching the blog's rehype-link-favicons plugin.
-							let favicon;
-							if (!yt && lk.href.startsWith('http')) {
-								try {
-									favicon = `https://icons.duckduckgo.com/ip3/${new URL(lk.href).hostname}.ico`;
-								} catch { /* leave undecorated */ }
-							}
-							return (
-								<a href={lk.href} class={yt ? 'yt-link' : (favicon ? 'fav-link' : undefined)} target={lk.href.startsWith('http') ? '_blank' : undefined} rel={lk.href.startsWith('http') ? 'noopener' : undefined}>
-									{yt && (
-										<svg class="yt-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5 31 31 0 00.5 12 31 31 0 001 16.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5A3 3 0 0023 16.5 31 31 0 0023.5 12 31 31 0 0023 7.5z"/><path fill="#fff" d="M9.75 15.5v-7l6 3.5z"/></svg>
-									)}
-									{favicon && <img class="link-favicon" src={favicon} alt="" aria-hidden="true" loading="lazy" width="16" height="16" />}
-									{yt ? <span class="yt-label" title={lk.label}>{lk.label}</span> : lk.label}
-								</a>
-							);
-						})}
-					</p>
-				)}
-				{!c.hidden && c.tech && (
-					<div class="badges">
-						{c.tech.map((k) => {
-							const t = TECH[k];
-							return (
-								<span class={`badge ${t.dark ? 'badge-dark' : 'badge-light'}`} style={`background:${t.bg}`}>
-									{t.icon && <i class={`logo ${t.icon}`} aria-hidden="true"></i>}
-									{t.label}
-								</span>
-							);
-						})}
+	<script
+		type="application/json"
+		class="graph-edges-data"
+		set:html={JSON.stringify(EDGES)}
+		is:inline
+	/>
+	{
+		visibleRows.map((c, i) => (
+			<>
+				{yearMark[i] && (
+					<div class="year-sep" aria-hidden="true">
+						<span class="year-sep-label">{yearMark[i]}</span>
 					</div>
 				)}
-			</div>
-			{c.photos && c.photos.length > 0 && !c.hidden && (
-				<div class="photos" data-count={c.photos.length}>
-					{c.photos.map((src, i) => (
-						<figure class="photo" style={`--tilt:${tiltOf(c.id + i)}deg; --dx:${shiftOf(c.id + i)}px; --i:${i}`}>
-							<img src={src} alt="" loading="lazy" decoding="async" />
-						</figure>
-					))}
+				<div
+					class={[
+						'commit',
+						c.type,
+						c.branch === 'main' ? 'on-main' : 'on-branch',
+						`side-${c.side}`,
+						c.root ? 'is-root' : '',
+						c.hidden ? 'is-junction' : '',
+					].join(' ')}
+					data-type={c.type}
+					data-id={c.id}
+					data-branch={c.branch}
+				>
+					<div class="graph-cell">
+						<span class="node" data-node data-id={c.id} style={`--lane:${c.lane}`} />
+					</div>
+					<div class="card">
+						{!c.hidden && (
+							<h3 class="title">
+								{c.year && <span class="yr">{c.year}</span>}
+								{c.title}
+								{c.chip && (
+									<span class="chip" style={`--chip:${c.chip.color}`}>
+										{c.chip.label}
+									</span>
+								)}
+								{c.photos && c.photos.length > 0 && (
+									<span
+										class="photo-badge"
+										title={`${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`}
+										aria-label={`${c.photos.length} photos, hover to view`}
+									>
+										{c.photos.length}
+										<svg class="photo-ico" viewBox="0 0 24 24" aria-hidden="true">
+											<rect x="3" y="5" width="18" height="14" rx="2" />
+											<circle cx="8.5" cy="10" r="1.6" />
+											<path d="M21 16l-5-5-4 4-2-2-4 4" />
+										</svg>
+									</span>
+								)}
+							</h3>
+						)}
+						{!c.hidden && c.desc && <p class="desc">{c.desc}</p>}
+						{c.links && (
+							<p class="links">
+								{c.links.map((lk) => {
+									const yt = lk.href.includes('youtube.com') || lk.href.includes('youtu.be');
+									// External (non-YouTube) links get the destination site's favicon,
+									// matching the blog's rehype-link-favicons plugin.
+									let favicon;
+									if (!yt && lk.href.startsWith('http')) {
+										try {
+											favicon = `https://icons.duckduckgo.com/ip3/${new URL(lk.href).hostname}.ico`;
+										} catch {
+											/* leave undecorated */
+										}
+									}
+									return (
+										<a
+											href={lk.href}
+											class={yt ? 'yt-link' : favicon ? 'fav-link' : undefined}
+											target={lk.href.startsWith('http') ? '_blank' : undefined}
+											rel={lk.href.startsWith('http') ? 'noopener' : undefined}
+										>
+											{yt && (
+												<svg class="yt-ico" viewBox="0 0 24 24" aria-hidden="true">
+													<path
+														fill="#FF0000"
+														d="M23 7.5a3 3 0 00-2.1-2.1C19 4.9 12 4.9 12 4.9s-7 0-8.9.5A3 3 0 001 7.5 31 31 0 00.5 12 31 31 0 001 16.5a3 3 0 002.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5A3 3 0 0023 16.5 31 31 0 0023.5 12 31 31 0 0023 7.5z"
+													/>
+													<path fill="#fff" d="M9.75 15.5v-7l6 3.5z" />
+												</svg>
+											)}
+											{favicon && (
+												<img
+													class="link-favicon"
+													src={favicon}
+													alt=""
+													aria-hidden="true"
+													loading="lazy"
+													width="16"
+													height="16"
+												/>
+											)}
+											{yt ? (
+												<span class="yt-label" title={lk.label}>
+													{lk.label}
+												</span>
+											) : (
+												lk.label
+											)}
+										</a>
+									);
+								})}
+							</p>
+						)}
+						{!c.hidden && c.tech && (
+							<div class="badges">
+								{c.tech.map((k) => {
+									const t = TECH[k];
+									return (
+										<span
+											class={`badge ${t.dark ? 'badge-dark' : 'badge-light'}`}
+											style={`background:${t.bg}`}
+										>
+											{t.icon && <i class={`logo ${t.icon}`} aria-hidden="true" />}
+											{t.label}
+										</span>
+									);
+								})}
+							</div>
+						)}
+					</div>
+					{c.photos && c.photos.length > 0 && !c.hidden && (
+						<div class="photos" data-count={c.photos.length}>
+							{c.photos.map((src, i) => (
+								<figure
+									class="photo"
+									style={`--tilt:${tiltOf(c.id + i)}deg; --dx:${shiftOf(c.id + i)}px; --i:${i}`}
+								>
+									<img src={src} alt="" loading="lazy" decoding="async" />
+								</figure>
+							))}
+						</div>
+					)}
+					{c.tip && !c.hidden && <p class="tip-note" data-tip={c.tip} aria-hidden="true" />}
 				</div>
-			)}
-			{c.tip && !c.hidden && (
-				<p class="tip-note" data-tip={c.tip} aria-hidden="true"></p>
-			)}
-		</div>
-		</>
-	))}
+			</>
+		))
+	}
 </div>
 
 <style is:global>
 	/* the full graph breaks out of the default reading column; the preview does not */
-	main:has(.gitgraph:not(.preview)) { max-width: 56rem; }
+	main:has(.gitgraph:not(.preview)) {
+		max-width: 56rem;
+	}
 </style>
 
 <style>
@@ -194,17 +259,36 @@ const yearMark = yearMarks(visibleRows);
 		font-size: 0.75rem;
 		color: var(--muted);
 	}
-	.legend-item { display: inline-flex; align-items: center; gap: 0.4rem; }
-	.dot {
-		width: 0.7rem; height: 0.7rem; border-radius: 50%;
-		display: inline-block; flex-shrink: 0;
+	.legend-item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
 	}
-	.dot.main { background: var(--c-main); }
-	.dot.education { background: var(--c-education); }
-	.dot.accident { background: var(--c-accident); }
-	.dot.travel { background: var(--c-travel); }
-	.dot.side { background: var(--c-side); }
-	.dot.life { background: var(--c-life); }
+	.dot {
+		width: 0.7rem;
+		height: 0.7rem;
+		border-radius: 50%;
+		display: inline-block;
+		flex-shrink: 0;
+	}
+	.dot.main {
+		background: var(--c-main);
+	}
+	.dot.education {
+		background: var(--c-education);
+	}
+	.dot.accident {
+		background: var(--c-accident);
+	}
+	.dot.travel {
+		background: var(--c-travel);
+	}
+	.dot.side {
+		background: var(--c-side);
+	}
+	.dot.life {
+		background: var(--c-life);
+	}
 
 	/* git graph ------------------------------------------------------------- */
 	.gitgraph {
@@ -214,9 +298,15 @@ const yearMark = yearMarks(visibleRows);
 		--node-y: 1rem;
 		--gutter: calc(var(--lanes) * var(--lane-w));
 	}
-	.gitgraph.preview { pointer-events: none; margin: 0; }
+	.gitgraph.preview {
+		pointer-events: none;
+		margin: 0;
+	}
 	/* birth-first view: reverse the vertical stack (edges redraw from live positions) */
-	.gitgraph.flipped { display: flex; flex-direction: column-reverse; }
+	.gitgraph.flipped {
+		display: flex;
+		flex-direction: column-reverse;
+	}
 
 	.graph-buttons {
 		display: inline-flex;
@@ -239,15 +329,28 @@ const yearMark = yearMarks(visibleRows);
 		border: 1px solid var(--border);
 		border-radius: 999px;
 		cursor: pointer;
-		transition: color 0.15s ease, border-color 0.15s ease;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
 	}
-	.flip-toggle::before { content: '⇅'; font-size: 0.9em; line-height: 1; }
-	.flip-toggle:hover { color: var(--c-main); border-color: var(--c-main); }
-	.flip-toggle[aria-pressed='true'] { color: var(--c-main); border-color: var(--c-main); }
+	.flip-toggle::before {
+		content: '⇅';
+		font-size: 0.9em;
+		line-height: 1;
+	}
+	.flip-toggle:hover {
+		color: var(--c-main);
+		border-color: var(--c-main);
+	}
+	.flip-toggle[aria-pressed='true'] {
+		color: var(--c-main);
+		border-color: var(--c-main);
+	}
 	.graph-edges {
 		position: absolute;
 		inset: 0;
-		width: 100%; height: 100%;
+		width: 100%;
+		height: 100%;
 		pointer-events: none;
 		overflow: visible;
 		z-index: 0;
@@ -256,16 +359,29 @@ const yearMark = yearMarks(visibleRows);
 		fill: none;
 		stroke: var(--border);
 		stroke-width: 2;
-		transition: opacity 0.15s ease, stroke-width 0.15s ease;
+		transition:
+			opacity 0.15s ease,
+			stroke-width 0.15s ease;
 	}
 	/* hovering a card dims the graph and lights up that commit's branch */
-	.gitgraph.hover-active .graph-edges :global(path) { opacity: 0.2; }
-	.gitgraph.hover-active .graph-edges :global(path.hl) { opacity: 1; stroke-width: 3.5; }
+	.gitgraph.hover-active .graph-edges :global(path) {
+		opacity: 0.2;
+	}
+	.gitgraph.hover-active .graph-edges :global(path.hl) {
+		opacity: 1;
+		stroke-width: 3.5;
+	}
 
 	/* dim every commit slightly while hovering, keeping the hovered one full */
-	.commit { transition: opacity 0.15s ease; }
-	.gitgraph.hover-active .commit { opacity: 0.55; }
-	.gitgraph.hover-active .commit:has(.card:hover) { opacity: 1; }
+	.commit {
+		transition: opacity 0.15s ease;
+	}
+	.gitgraph.hover-active .commit {
+		opacity: 0.55;
+	}
+	.gitgraph.hover-active .commit:has(.card:hover) {
+		opacity: 1;
+	}
 
 	/* full-width dotted rule between years, year label pinned to the far left */
 	.year-sep {
@@ -302,17 +418,32 @@ const yearMark = yearMarks(visibleRows);
 		position: relative;
 	}
 
-	.graph-cell { grid-column: 2; position: relative; }
-	.card { grid-column: 3; min-width: 0; padding-bottom: 1.7rem; position: relative; z-index: 1; }
-	.commit.side-left .card { grid-column: 1; text-align: right; }
+	.graph-cell {
+		grid-column: 2;
+		position: relative;
+	}
+	.card {
+		grid-column: 3;
+		min-width: 0;
+		padding-bottom: 1.7rem;
+		position: relative;
+		z-index: 1;
+	}
+	.commit.side-left .card {
+		grid-column: 1;
+		text-align: right;
+	}
 	.commit.side-left .title,
 	.commit.side-left .links,
-	.commit.side-left .badges { justify-content: flex-end; }
+	.commit.side-left .badges {
+		justify-content: flex-end;
+	}
 	.node {
 		position: absolute;
 		left: calc(var(--lane) * var(--lane-w) + var(--lane-w) / 2);
 		top: var(--node-y);
-		width: 0.55rem; height: 0.55rem;
+		width: 0.55rem;
+		height: 0.55rem;
 		border-radius: 50%;
 		transform: translate(-50%, -50%);
 		background: var(--bg);
@@ -320,30 +451,72 @@ const yearMark = yearMarks(visibleRows);
 		z-index: 2;
 		transition: transform 0.15s ease;
 	}
-	.node.hl { transform: translate(-50%, -50%) scale(1.35); z-index: 3; }
-	.commit.main .node { border: 2px solid var(--c-main); }
-	.commit.education .node { border: 2px solid var(--c-education); }
-	.commit.accident .node { border: 2px solid var(--c-accident); }
-	.commit.travel .node { border: 2px solid var(--c-travel); }
-	.commit.side .node { border: 2px solid var(--c-side); }
-	.commit.life .node { border: 2px solid var(--c-life); }
-	.on-main.main .node { background: var(--c-main); }
-	.on-main.education .node { background: var(--c-education); }
-	.on-main.accident .node { background: var(--c-accident); }
-	.on-main.travel .node { background: var(--c-travel); }
-	.on-main.side .node { background: var(--c-side); }
-	.on-main.life .node { background: var(--c-life); }
-	.on-main.is-root .node { width: 0.5rem; height: 0.5rem; background: var(--c-travel); border: 2px solid var(--c-travel); }
+	.node.hl {
+		transform: translate(-50%, -50%) scale(1.35);
+		z-index: 3;
+	}
+	.commit.main .node {
+		border: 2px solid var(--c-main);
+	}
+	.commit.education .node {
+		border: 2px solid var(--c-education);
+	}
+	.commit.accident .node {
+		border: 2px solid var(--c-accident);
+	}
+	.commit.travel .node {
+		border: 2px solid var(--c-travel);
+	}
+	.commit.side .node {
+		border: 2px solid var(--c-side);
+	}
+	.commit.life .node {
+		border: 2px solid var(--c-life);
+	}
+	.on-main.main .node {
+		background: var(--c-main);
+	}
+	.on-main.education .node {
+		background: var(--c-education);
+	}
+	.on-main.accident .node {
+		background: var(--c-accident);
+	}
+	.on-main.travel .node {
+		background: var(--c-travel);
+	}
+	.on-main.side .node {
+		background: var(--c-side);
+	}
+	.on-main.life .node {
+		background: var(--c-life);
+	}
+	.on-main.is-root .node {
+		width: 0.5rem;
+		height: 0.5rem;
+		background: var(--c-travel);
+		border: 2px solid var(--c-travel);
+	}
 	/* hidden merge junction: a small neutral dot on the trunk (links only, no card) */
-	.commit.is-junction .node { border: 2px solid var(--border); background: var(--border); width: 0.4rem; height: 0.4rem; }
-	.commit.is-junction .card { padding-bottom: 1.2rem; }
-	.commit.is-junction .links { margin-top: -0.15rem; font-size: 0.72rem; }
+	.commit.is-junction .node {
+		border: 2px solid var(--border);
+		background: var(--border);
+		width: 0.4rem;
+		height: 0.4rem;
+	}
+	.commit.is-junction .card {
+		padding-bottom: 1.2rem;
+	}
+	.commit.is-junction .links {
+		margin-top: -0.15rem;
+		font-size: 0.72rem;
+	}
 
 	/* pulsing rings — inset:0 so the ring is exactly concentric with the node */
-	.commit[data-id="now"] .node::after,
-	.commit[data-id="dad"] .node::after,
-	.commit[data-id="married"] .node::after,
-	.commit[data-id="born"] .node::after {
+	.commit[data-id='now'] .node::after,
+	.commit[data-id='dad'] .node::after,
+	.commit[data-id='married'] .node::after,
+	.commit[data-id='born'] .node::after {
 		content: '';
 		position: absolute;
 		inset: 0;
@@ -351,26 +524,36 @@ const yearMark = yearMarks(visibleRows);
 		border: 2px solid var(--c-main);
 		animation: pulse-ring 1.8s ease-out infinite;
 	}
-	.commit[data-id="born"] .node::after { border-color: var(--c-travel); }
+	.commit[data-id='born'] .node::after {
+		border-color: var(--c-travel);
+	}
 	@keyframes pulse-ring {
-		0%   { transform: scale(1);   opacity: 0.8; }
-		100% { transform: scale(3.4); opacity: 0;   }
+		0% {
+			transform: scale(1);
+			opacity: 0.8;
+		}
+		100% {
+			transform: scale(3.4);
+			opacity: 0;
+		}
 	}
 	/* the two life-defining moments: gold dots (same size as the HEAD) */
-	.commit[data-id="dad"] .node,
-	.commit[data-id="married"] .node {
+	.commit[data-id='dad'] .node,
+	.commit[data-id='married'] .node {
 		border: 2px solid #f0b90b;
 		background: #f0b90b;
 	}
-	.commit[data-id="dad"] .node::after,
-	.commit[data-id="married"] .node::after {
+	.commit[data-id='dad'] .node::after,
+	.commit[data-id='married'] .node::after {
 		border-color: #f0b90b;
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.commit[data-id="now"] .node::after,
-		.commit[data-id="dad"] .node::after,
-		.commit[data-id="married"] .node::after,
-		.commit[data-id="born"] .node::after { animation: none; }
+		.commit[data-id='now'] .node::after,
+		.commit[data-id='dad'] .node::after,
+		.commit[data-id='married'] .node::after,
+		.commit[data-id='born'] .node::after {
+			animation: none;
+		}
 	}
 
 	/* cards ----------------------------------------------------------------- */
@@ -383,8 +566,15 @@ const yearMark = yearMarks(visibleRows);
 		align-items: baseline;
 		gap: 0.4rem 0.5rem;
 	}
-	.is-root .title { font-weight: bold; }
-	.yr { font-size: 0.7rem; color: var(--muted); font-weight: normal; white-space: nowrap; }
+	.is-root .title {
+		font-weight: bold;
+	}
+	.yr {
+		font-size: 0.7rem;
+		color: var(--muted);
+		font-weight: normal;
+		white-space: nowrap;
+	}
 	.chip {
 		display: inline-flex;
 		align-items: center;
@@ -399,7 +589,12 @@ const yearMark = yearMarks(visibleRows);
 		border: 1px solid var(--chip);
 		background: color-mix(in srgb, var(--chip) 12%, transparent);
 	}
-	.desc { margin: 0 0 0.4rem; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+	.desc {
+		margin: 0 0 0.4rem;
+		font-size: 0.82rem;
+		color: var(--muted);
+		line-height: 1.5;
+	}
 	.links {
 		margin: 0 0 0.5rem;
 		display: flex;
@@ -407,12 +602,35 @@ const yearMark = yearMarks(visibleRows);
 		gap: 0.15rem 0.8rem;
 		font-size: 0.78rem;
 	}
-	.yt-link { display: inline-flex; align-items: center; gap: 0.3rem; max-width: 14rem; min-width: 0; }
-	.yt-ico { width: 1.05em; height: 1.05em; flex-shrink: 0; }
-	.yt-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	.yt-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		max-width: 14rem;
+		min-width: 0;
+	}
+	.yt-ico {
+		width: 1.05em;
+		height: 1.05em;
+		flex-shrink: 0;
+	}
+	.yt-label {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 	/* external links carry the destination site's favicon (see the map above) */
-	.fav-link { display: inline-flex; align-items: center; gap: 0.3rem; }
-	.link-favicon { width: 1em; height: 1em; flex-shrink: 0; border-radius: 2px; }
+	.fav-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+	}
+	.link-favicon {
+		width: 1em;
+		height: 1em;
+		flex-shrink: 0;
+		border-radius: 2px;
+	}
 
 	/* margin annotation: pushed into the outer gutter and typed out char-by-char while
 	   the card is hovered (JS toggles .show). */
@@ -430,21 +648,40 @@ const yearMark = yearMarks(visibleRows);
 		pointer-events: none;
 		transition: opacity 0.2s ease;
 	}
-	.tip-note.show { opacity: 1; }
+	.tip-note.show {
+		opacity: 1;
+	}
 	/* blinking caret while the text is being typed */
 	.tip-note.typing::after {
 		content: '▏';
 		margin-left: -0.1em;
 		animation: tip-caret 0.8s steps(1) infinite;
 	}
-	@keyframes tip-caret { 50% { opacity: 0; } }
+	@keyframes tip-caret {
+		50% {
+			opacity: 0;
+		}
+	}
 	/* padding (not margin) pushes the text into the gutter while the box stays flush
 	   against the card */
-	.commit.side-right .tip-note { left: 100%; padding: 1.4rem 0 1.4rem 7rem; text-align: left; }
-	.commit.side-left .tip-note { right: 100%; padding: 1.4rem 7rem 1.4rem 0; text-align: right; }
+	.commit.side-right .tip-note {
+		left: 100%;
+		padding: 1.4rem 0 1.4rem 7rem;
+		text-align: left;
+	}
+	.commit.side-left .tip-note {
+		right: 100%;
+		padding: 1.4rem 7rem 1.4rem 0;
+		text-align: right;
+	}
 
 	/* skill / tech badges --------------------------------------------------- */
-	.badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.3rem; }
+	.badges {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		margin-top: 0.3rem;
+	}
 	.badge {
 		display: inline-flex;
 		align-items: center;
@@ -455,9 +692,16 @@ const yearMark = yearMarks(visibleRows);
 		border-radius: 4px;
 		white-space: nowrap;
 	}
-	.badge-dark { color: #fff; }
-	.badge-light { color: #111; }
-	.badge .logo { font-size: 0.85rem; line-height: 1; }
+	.badge-dark {
+		color: #fff;
+	}
+	.badge-light {
+		color: #111;
+	}
+	.badge .logo {
+		font-size: 0.85rem;
+		line-height: 1;
+	}
 
 	/* a small "has photos" marker in the title, e.g. "3 [icon]" */
 	.photo-badge {
@@ -497,12 +741,26 @@ const yearMark = yearMarks(visibleRows);
 		pointer-events: none;
 	}
 	/* a single photo takes one narrow column */
-	.photos[data-count='1'] { width: 13rem; grid-template-columns: 1fr; }
+	.photos[data-count='1'] {
+		width: 13rem;
+		grid-template-columns: 1fr;
+	}
 	/* three photos form a triangle: one tall on the side, two stacked beside it */
-	.photos[data-count='3'] { grid-template-rows: repeat(2, 1fr); }
-	.photos[data-count='3'] .photo:nth-child(1) { grid-row: 1 / span 2; align-self: center; }
-	.photos[data-count='3'] .photo:nth-child(2) { grid-column: 2; grid-row: 1; }
-	.photos[data-count='3'] .photo:nth-child(3) { grid-column: 2; grid-row: 2; }
+	.photos[data-count='3'] {
+		grid-template-rows: repeat(2, 1fr);
+	}
+	.photos[data-count='3'] .photo:nth-child(1) {
+		grid-row: 1 / span 2;
+		align-self: center;
+	}
+	.photos[data-count='3'] .photo:nth-child(2) {
+		grid-column: 2;
+		grid-row: 1;
+	}
+	.photos[data-count='3'] .photo:nth-child(3) {
+		grid-column: 2;
+		grid-row: 2;
+	}
 	.photo {
 		margin: 0;
 		--tilt: 0deg;
@@ -510,7 +768,9 @@ const yearMark = yearMarks(visibleRows);
 		--i: 0;
 		opacity: 0;
 		transform: translateX(var(--dx)) rotate(var(--tilt)) scale(0.8);
-		transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+		transition:
+			transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+			opacity 0.3s ease;
 	}
 	.card:hover ~ .photos .photo,
 	.card:focus-within ~ .photos .photo {
@@ -528,36 +788,66 @@ const yearMark = yearMarks(visibleRows);
 	}
 	/* push photos out past the card, on the SAME side as the card, into the page
 	   margin so they never overlap other cards' content */
-	.commit.side-right .photos { left: calc(50% + 100vw / 3); }
-	.commit.side-left .photos { left: calc(50% - 100vw / 3); }
+	.commit.side-right .photos {
+		left: calc(50% + 100vw / 3);
+	}
+	.commit.side-left .photos {
+		left: calc(50% - 100vw / 3);
+	}
 	@media (prefers-reduced-motion: reduce) {
-		.photo { transition: none; }
+		.photo {
+			transition: none;
+		}
 	}
 
 	/* on narrow screens collapse every branch onto a single left rail with cards
 	   on the right — the multi-lane layout is too wide for a phone */
 	@media (max-width: 680px) {
-		.year-sep { margin-left: 0; margin-right: 0; }
-		.gitgraph { --lane-w: 1.2rem; --gutter: var(--lane-w); }
-		.commit { grid-template-columns: var(--gutter) 1fr; }
-		.graph-cell { grid-column: 1; }
+		.year-sep {
+			margin-left: 0;
+			margin-right: 0;
+		}
+		.gitgraph {
+			--lane-w: 1.2rem;
+			--gutter: var(--lane-w);
+		}
+		.commit {
+			grid-template-columns: var(--gutter) 1fr;
+		}
+		.graph-cell {
+			grid-column: 1;
+		}
 		.node,
 		.commit.side-left .node,
-		.commit.side-right .node { left: calc(var(--lane-w) / 2); }
-		.card, .commit.side-left .card { grid-column: 2; text-align: left; }
+		.commit.side-right .node {
+			left: calc(var(--lane-w) / 2);
+		}
+		.card,
+		.commit.side-left .card {
+			grid-column: 2;
+			text-align: left;
+		}
 		.commit.side-left .title,
 		.commit.side-left .links,
-		.commit.side-left .badges { justify-content: flex-start; }
-		.title { font-size: 0.9rem; }
+		.commit.side-left .badges {
+			justify-content: flex-start;
+		}
+		.title {
+			font-size: 0.9rem;
+		}
 		/* margin annotations and edge photos have no room on a phone */
 		.tip-note,
 		.commit .tip-note,
 		.commit.side-left .tip-note,
-		.commit.side-right .tip-note { display: none; }
+		.commit.side-right .tip-note {
+			display: none;
+		}
 		.photos,
 		.commit .photos,
 		.commit.side-left .photos,
-		.commit.side-right .photos { display: none; }
+		.commit.side-right .photos {
+			display: none;
+		}
 	}
 </style>
 
@@ -571,7 +861,13 @@ const yearMark = yearMarks(visibleRows);
 		// flip toggle fire twice per click and cancel itself out).
 		if (graph.dataset.ginit) return;
 		graph.dataset.ginit = '1';
-		const edges: { from: string; to: string; branch: string; color: string | null; railFrom: boolean }[] = JSON.parse(dataEl.textContent || '[]');
+		const edges: {
+			from: string;
+			to: string;
+			branch: string;
+			color: string | null;
+			railFrom: boolean;
+		}[] = JSON.parse(dataEl.textContent || '[]');
 		const SVGNS = 'http://www.w3.org/2000/svg';
 
 		function draw() {
@@ -580,7 +876,10 @@ const yearMark = yearMarks(visibleRows);
 			graph.querySelectorAll<HTMLElement>('[data-node]').forEach((n) => {
 				const r = n.getBoundingClientRect();
 				if (!r.width) return;
-				pos[n.dataset.id!] = { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+				pos[n.dataset.id!] = {
+					x: r.left - box.left + r.width / 2,
+					y: r.top - box.top + r.height / 2,
+				};
 			});
 			svg!.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
 			svg!.setAttribute('width', String(box.width));
@@ -619,7 +918,10 @@ const yearMark = yearMarks(visibleRows);
 		}
 
 		let raf = 0;
-		const schedule = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
+		const schedule = () => {
+			cancelAnimationFrame(raf);
+			raf = requestAnimationFrame(draw);
+		};
 		draw();
 		if (document.fonts?.ready) document.fonts.ready.then(draw);
 		window.addEventListener('resize', schedule);
@@ -627,11 +929,16 @@ const yearMark = yearMarks(visibleRows);
 
 		// margin tip notes: shown while the card is hovered, typed out char-by-char the
 		// first time. On mobile / reduced-motion the full text is shown with no typing.
-		const noAnim = window.matchMedia('(max-width: 680px)').matches
-			|| window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const noAnim =
+			window.matchMedia('(max-width: 680px)').matches ||
+			window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		graph.querySelectorAll<HTMLElement>('.tip-note').forEach((note) => {
 			const full = note.dataset.tip || '';
-			if (noAnim) { note.textContent = full; note.classList.add('show'); return; }
+			if (noAnim) {
+				note.textContent = full;
+				note.classList.add('show');
+				return;
+			}
 			const card = note.closest<HTMLElement>('.commit')?.querySelector<HTMLElement>('.card');
 			if (!card) return;
 			note.textContent = '';
@@ -643,7 +950,10 @@ const yearMark = yearMarks(visibleRows);
 				let i = 0;
 				typer = setInterval(() => {
 					note.textContent = full.slice(0, ++i);
-					if (i >= full.length) { clearInterval(typer); note.classList.remove('typing'); }
+					if (i >= full.length) {
+						clearInterval(typer);
+						note.classList.remove('typing');
+					}
 				}, 22);
 			});
 			card.addEventListener('mouseleave', () => {
@@ -670,7 +980,8 @@ const yearMark = yearMarks(visibleRows);
 					// but for a commit on `main`, don't light a branch's checkout/merge edge
 					// just because it connects here; those aren't part of main.
 					const touches = p.dataset.from === id || p.dataset.to === id;
-					if (p.dataset.branch === branch || (touches && !(onMain && p.dataset.branch !== 'main'))) p.classList.add('hl');
+					if (p.dataset.branch === branch || (touches && !(onMain && p.dataset.branch !== 'main')))
+						p.classList.add('hl');
 				});
 			});
 			card.addEventListener('mouseleave', () => {
@@ -693,7 +1004,6 @@ const yearMark = yearMarks(visibleRows);
 				draw();
 			});
 		}
-
 	}
 
 	function initGraphs() {
