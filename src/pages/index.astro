@@ -21,11 +21,12 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 		</header>
 		<section class="about-me" aria-label="about me">
 			<p>
-				Hachem Betrouni, I go by Dashi on the internet. AI software and infrastructure engineer by
-				profession, traveler by heart. Ex-CTO, now solo-founding an AI-native software boutique. I
-				poke at the backend of reality; fractals, biomimicry, belief systems, and the odd
-				mushroom—looking for the patterns hidden in plain sight. Radically honest, occasionally too
-				blunt. A dad who's happiest where the signal drops.
+				Hachem, I go by Dashi. AI software/infrastructure engineer, traveler by heart. Ex-CTO at <a
+					src="https://hyko.ai">hyko.ai</a
+				>, now solo-founding an AI-native software boutique. I poke at the backend of reality;
+				fractals, biomimicry, subconscious, and odd mushrooms. Looking for patterns hidden in plain
+				sight. I try to be radically honest, (sometimes too blunt). A dad who's happiest where the
+				signal drops.
 			</p>
 		</section>
 	</section>
@@ -141,6 +142,10 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 		color: var(--muted);
 		line-height: 1.6;
 		margin-bottom: 2rem;
+		width: min(46rem, 92vw);
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.about-me p {
 		margin: 0;
