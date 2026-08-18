@@ -31,6 +31,8 @@
 		"@biomejs/biome": "2.5.4",
 		"@playwright/test": "^1.60.0",
 		"@vitest/coverage-v8": "^4.1.7",
+		"prettier": "^3.9.6",
+		"prettier-plugin-astro": "^0.14.1",
 		"vitest": "^4.1.7",
 		"wrangler": "^4.95.0"
 	}
