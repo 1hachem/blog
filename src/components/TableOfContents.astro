@@ -11,15 +11,20 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 {
 	toc.length >= 2 && (
-		<nav class="toc" aria-label="Table of contents">
-			<ol class="toc-list">
-				{toc.map((h) => (
-					<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'} data-id={h.slug}>
-						<a href={`#${h.slug}`}>{h.text}</a>
-					</li>
-				))}
-			</ol>
-		</nav>
+		<div class="toc">
+			<button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc-panel">
+				Table of contents
+			</button>
+			<nav class="toc-panel" id="toc-panel" aria-label="Table of contents">
+				<ol class="toc-list">
+					{toc.map((h) => (
+						<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'} data-id={h.slug}>
+							<a href={`#${h.slug}`}>{h.text}</a>
+						</li>
+					))}
+				</ol>
+			</nav>
+		</div>
 	)
 }
 
@@ -29,6 +34,16 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 	function setupToc() {
 		// Tear down any observer from a previous page (ClientRouter reuses the JS context).
 		io?.disconnect();
+
+		const toc = document.querySelector<HTMLElement>('.toc');
+		const toggle = toc?.querySelector<HTMLButtonElement>('.toc-toggle');
+		if (toc && toggle && !toggle.dataset.bound) {
+			toggle.dataset.bound = 'true';
+			toggle.addEventListener('click', () => {
+				const expanded = toc.classList.toggle('expanded');
+				toggle.setAttribute('aria-expanded', String(expanded));
+			});
+		}
 
 		const list = document.querySelector('.toc-list');
 		if (!list) return;
@@ -119,5 +134,42 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 	}
 	.toc-h3 {
 		padding-left: 0.8rem;
+	}
+
+	.toc-toggle {
+		display: none;
+	}
+
+	@media (max-width: 700px) {
+		.toc-toggle {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			background: none;
+			border: none;
+			padding: 0;
+			cursor: pointer;
+			font: inherit;
+			font-size: 0.85rem;
+			color: var(--fg);
+		}
+		.toc-toggle::before {
+			content: '▸';
+			display: inline-block;
+			margin-right: 0.4rem;
+			transition: transform 0.15s ease;
+		}
+		.toc.expanded .toc-toggle::before {
+			transform: rotate(90deg);
+		}
+		.toc-panel {
+			display: none;
+		}
+		.toc.expanded .toc-panel {
+			display: block;
+		}
+		.toc-list {
+			padding-top: 0.6rem;
+		}
 	}
 </style>

@@ -227,17 +227,25 @@ const categorySlug = category && slugify(category);
 		top: 3.5rem;
 	}
 
-	/* Mobile: single column, TOC above prose */
+	/* Mobile: single column, TOC under the title, above the prose */
 	@media (max-width: 700px) {
 		article {
 			grid-template-columns: minmax(0, 1fr);
 		}
+		.post-header {
+			grid-row: 1;
+		}
 		article :global(.toc) {
 			grid-column: 1;
-			grid-row: auto;
-			order: -1;
+			grid-row: 2;
 			position: static;
 			margin-bottom: 1.5rem;
+		}
+		.post-body {
+			grid-row: 3;
+		}
+		.related {
+			grid-row: 4;
 		}
 	}
 
