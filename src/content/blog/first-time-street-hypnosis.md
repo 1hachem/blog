@@ -2,8 +2,8 @@
 title: 'The first time I hypnotized a stranger'
 description: 'Why finishing Plastic Reality left me no choice but to walk up to strangers and try it for real.'
 pubDate: 'Jul 25 2026'
-heroImage: '../../assets/blog-placeholder-3.jpg'
 category: 'general'
+ogImage: 'og1'
 ---
 
 It began at university, watching a hypnotist perform something I couldn't

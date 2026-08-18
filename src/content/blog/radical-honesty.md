@@ -4,6 +4,7 @@ description: 'We built a culture on radical honesty. It made us better engineers
 pubDate: 2026-08-16
 category: 'startup'
 tags: ['startups', 'culture', 'honesty', 'leadership']
+ogImage: 'og2'
 ---
 
 We were in the business of transforming organizations with AI. Somewhere

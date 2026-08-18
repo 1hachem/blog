@@ -1,5 +1,6 @@
 ---
 import type { MarkdownHeading } from 'astro';
+import { PUBLIC_R2_URL } from 'astro:env/client';
 import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -25,7 +26,6 @@ const {
 	ogTitle,
 	ogDescription,
 	ogImage,
-	heroImage,
 	author,
 	category,
 	tags = [],
@@ -35,6 +35,7 @@ const {
 } = Astro.props;
 
 const categorySlug = category && slugify(category);
+const resolvedOgImage = ogImage && `${PUBLIC_R2_URL}/og/${ogImage}.webp`;
 ---
 
 <html lang="en">
@@ -47,8 +48,7 @@ const categorySlug = category && slugify(category);
 			noindex={noindex}
 			ogTitle={ogTitle}
 			ogDescription={ogDescription}
-			ogImage={ogImage}
-			image={heroImage?.src}
+			ogImage={resolvedOgImage}
 			type="article"
 			author={author}
 		/>

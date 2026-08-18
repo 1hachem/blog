@@ -4,6 +4,7 @@ description: "Anthropic's post on programmatic tool calling sent me down a rabbi
 pubDate: 2026-08-16
 category: 'tech'
 tags: ['ai', 'agents', 'lisp', 'interpreters', 'neuro-symbolic', 'mcp']
+ogImage: 'og2'
 ---
 
 Anthropic's [blog post](https://www.anthropic.com/engineering/advanced-tool-use) about programmatic tool calling shed light on a better

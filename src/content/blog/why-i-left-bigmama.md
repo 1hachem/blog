@@ -4,6 +4,7 @@ description: 'Three years, two pivots, one CTO title I had no idea how to hold, 
 pubDate: 2026-08-16
 category: 'startup'
 tags: ['startups', 'career', 'ai', 'algeria', 'founders']
+ogImage: 'og3'
 ---
 
 For the last three years my mission was a single idea: build an all-in-one

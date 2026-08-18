@@ -3,8 +3,10 @@ import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/700.css';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
-import defaultOgImage from '../assets/blog-placeholder-1.jpg';
+import { PUBLIC_R2_URL } from 'astro:env/client';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
+
+const defaultOgImage = `${PUBLIC_R2_URL}/og/og1.webp`;
 
 interface Props {
 	title: string;
@@ -36,7 +38,7 @@ const {
 
 const pageTitle = title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;
 const canonical = canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
-const resolvedOgImage = ogImage ?? image ?? defaultOgImage.src;
+const resolvedOgImage = ogImage ?? image ?? defaultOgImage;
 ---
 
 <meta charset="utf-8" />
