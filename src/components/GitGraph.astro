@@ -1163,74 +1163,69 @@ const yearMark = yearMarks(visibleRows);
 			card.addEventListener('mouseleave', () => unhighlight(commit));
 		});
 
-		// phones have no hover: instead, whichever commit is crossing a band near the
-		// top of the viewport becomes "active" as the user scrolls past it, with a short
+		// phones have no hover: instead, whichever commit sits closest to a line a third
+		// of the way down the viewport becomes "active" as the user scrolls, with a short
 		// vibration marking each hand-off so the effect reads as tactile, not just visual.
+		// Proximity (not a fixed crossing-point) is what's compared, so every commit gets
+		// an activation window sized to its own spacing — including the last few, which
+		// stay fairly split between them even once the page runs out of room to scroll
+		// any single one of them all the way up to the line.
 		if (window.matchMedia('(max-width: 680px)').matches) {
 			const commits = [...graph.querySelectorAll<HTMLElement>('.commit')].filter(
 				(c) => !c.classList.contains('is-junction'),
 			);
-			let active: HTMLElement | null = null;
-			const setActive = (commit: HTMLElement | null) => {
-				if (commit === active) return;
-				if (active) {
-					unhighlight(active);
-					active.classList.remove('active-mobile');
-				}
-				active = commit;
-				if (active) {
-					highlight(active);
-					active.classList.add('active-mobile');
-					navigator.vibrate?.(12);
-				}
-			};
-
-			const bandLine = 0.32; // matches the IO's top rootMargin below
-
-			const inView = new Set<HTMLElement>();
-			const update = () => {
-				const doc = document.documentElement;
-				const atBottom = window.innerHeight + Math.ceil(window.scrollY) >= doc.scrollHeight;
-				if (atBottom) {
-					// The last commit(s) may not have enough page left below them to ever get
-					// pushed up into the band — once there's nowhere further to scroll, just
-					// force the actual last commit active instead of leaving it unreachable.
-					setActive(commits[commits.length - 1] ?? null);
-					return;
-				}
-				if (inView.size > 0) {
-					// first in document order among those crossing the band right now
-					const first = commits.find((c) => inView.has(c));
-					if (first) setActive(first);
-					return;
-				}
-				// Nothing is crossing the band — either we haven't scrolled far enough yet,
-				// or (at the bottom of the page) there's no more content to push the last
-				// commit(s) through it. Fall back to the last commit whose top already
-				// passed the band line, so the tail of the list still gets highlighted.
-				const bandY = window.innerHeight * bandLine;
-				let current: HTMLElement | null = null;
-				for (const c of commits) {
-					if (c.getBoundingClientRect().top <= bandY) current = c;
-					else break;
-				}
-				if (current) setActive(current);
-			};
-
-			const io = new IntersectionObserver(
-				(entries) => {
-					for (const entry of entries) {
-						if (entry.isIntersecting) inView.add(entry.target as HTMLElement);
-						else inView.delete(entry.target as HTMLElement);
+			if (commits.length) {
+				let active: HTMLElement | null = null;
+				const setActive = (commit: HTMLElement | null) => {
+					if (commit === active) return;
+					if (active) {
+						unhighlight(active);
+						active.classList.remove('active-mobile');
 					}
-					update();
-				},
-				// a narrow band a third of the way down the screen — a commit is "active"
-				// once it reaches that line, matching where the eye naturally rests while scrolling.
-				{ rootMargin: '-32% 0px -60% 0px', threshold: 0 },
-			);
-			commits.forEach((c) => io.observe(c));
-			window.addEventListener('scroll', update, { passive: true });
+					active = commit;
+					if (active) {
+						highlight(active);
+						active.classList.add('active-mobile');
+						navigator.vibrate?.(12);
+					}
+				};
+
+				const restLine = 0.32; // where on screen the eye naturally rests while scrolling
+				let raf = 0;
+				const update = () => {
+					raf = 0;
+					const vh = window.innerHeight;
+					const doc = document.documentElement;
+					const maxScroll = Math.max(0, doc.scrollHeight - vh);
+					// Near the very bottom there may not be enough page left to carry each of
+					// the last few commits up to the resting line individually — once within
+					// one screen's height of the end, sweep that line down toward the bottom
+					// of the viewport instead, so the remaining scroll distance still passes
+					// it through each trailing commit in turn rather than stranding them all
+					// below a line that can never reach them.
+					const distFromBottom = maxScroll - window.scrollY;
+					const t = vh > 0 ? Math.max(0, Math.min(1, 1 - distFromBottom / vh)) : 0;
+					const anchorY = vh * (restLine + t * (0.92 - restLine));
+
+					let closest = commits[0];
+					let closestDist = Infinity;
+					for (const c of commits) {
+						const dist = Math.abs(c.getBoundingClientRect().top - anchorY);
+						if (dist < closestDist) {
+							closestDist = dist;
+							closest = c;
+						}
+					}
+					setActive(closest);
+				};
+				const schedule = () => {
+					if (!raf) raf = requestAnimationFrame(update);
+				};
+
+				schedule();
+				window.addEventListener('scroll', schedule, { passive: true });
+				window.addEventListener('resize', schedule);
+			}
 		}
 
 		// "start from birth" flips the timeline (oldest at top); edges follow because
