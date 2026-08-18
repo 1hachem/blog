@@ -127,10 +127,11 @@ const yearMark = yearMarks(visibleRows);
 									</span>
 								)}
 								{c.photos && c.photos.length > 0 && (
-									<span
+									<button
+										type="button"
 										class="photo-badge"
 										title={`${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`}
-										aria-label={`${c.photos.length} photos, hover to view`}
+										aria-label={`View ${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`}
 									>
 										{c.photos.length}
 										<svg class="photo-ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -138,7 +139,7 @@ const yearMark = yearMarks(visibleRows);
 											<circle cx="8.5" cy="10" r="1.6" />
 											<path d="M21 16l-5-5-4 4-2-2-4 4" />
 										</svg>
-									</span>
+									</button>
 								)}
 							</h3>
 						)}
@@ -236,6 +237,10 @@ const yearMark = yearMarks(visibleRows);
 	/* the full graph breaks out of the default reading column; the preview does not */
 	main:has(.gitgraph:not(.preview)) {
 		max-width: 56rem;
+	}
+	/* lock background scroll while the photo lightbox is open */
+	body.lightbox-open {
+		overflow: hidden;
 	}
 </style>
 
@@ -379,7 +384,8 @@ const yearMark = yearMarks(visibleRows);
 	.gitgraph.hover-active .commit {
 		opacity: 0.55;
 	}
-	.gitgraph.hover-active .commit:has(.card:hover) {
+	.gitgraph.hover-active .commit:has(.card:hover),
+	.gitgraph.hover-active .commit.active-mobile {
 		opacity: 1;
 	}
 
@@ -708,10 +714,19 @@ const yearMark = yearMarks(visibleRows);
 		display: inline-flex;
 		align-items: center;
 		gap: 0.2rem;
+		font: inherit;
 		font-size: 0.62rem;
 		font-weight: normal;
 		color: var(--muted);
 		white-space: nowrap;
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+	}
+	.photo-badge:hover,
+	.photo-badge:focus-visible {
+		color: var(--fg);
 	}
 	.photo-ico {
 		width: 1.15em;
@@ -800,12 +815,72 @@ const yearMark = yearMarks(visibleRows);
 		}
 	}
 
+	/* full-screen carousel opened by tapping a .photo-badge — the .photos hover
+	   group stays in the DOM (hidden on mobile) purely as the image source. */
+	.photo-lightbox {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.9);
+	}
+	.photo-lightbox[hidden] {
+		display: none;
+	}
+	.lightbox-img {
+		max-width: min(92vw, 32rem);
+		max-height: 82vh;
+		border-radius: 8px;
+		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+	}
+	.lightbox-close,
+	.lightbox-prev,
+	.lightbox-next {
+		position: absolute;
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.8rem;
+		line-height: 1;
+		cursor: pointer;
+		padding: 0.6rem;
+	}
+	.lightbox-close {
+		top: 0.5rem;
+		right: 0.5rem;
+	}
+	.lightbox-prev {
+		left: 0.25rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.lightbox-next {
+		right: 0.25rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	.lightbox-prev[hidden],
+	.lightbox-next[hidden] {
+		display: none;
+	}
+	.lightbox-counter {
+		position: absolute;
+		bottom: 1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		color: rgba(255, 255, 255, 0.75);
+		font-size: 0.8rem;
+	}
+
 	/* on narrow screens collapse every branch onto a single left rail with cards
 	   on the right — the multi-lane layout is too wide for a phone */
 	@media (max-width: 680px) {
 		.year-sep {
 			margin-left: 0;
 			margin-right: 0;
+			flex-direction: row-reverse;
 		}
 		.gitgraph {
 			--lane-w: 1.2rem;
@@ -852,6 +927,86 @@ const yearMark = yearMarks(visibleRows);
 </style>
 
 <script>
+	// Singleton full-screen carousel for a commit's photos, opened by tapping its
+	// .photo-badge. Rebuilt lazily if a prior navigation left a detached element
+	// behind (ClientRouter swaps the body, dropping anything appended to it).
+	let lightbox: { el: HTMLElement; open: (srcs: string[]) => void } | null = null;
+
+	function ensureLightbox() {
+		if (lightbox && document.body.contains(lightbox.el)) return lightbox;
+
+		const el = document.createElement('div');
+		el.className = 'photo-lightbox';
+		el.hidden = true;
+		el.innerHTML = `
+			<button type="button" class="lightbox-close" aria-label="Close">✕</button>
+			<button type="button" class="lightbox-prev" aria-label="Previous photo">‹</button>
+			<img class="lightbox-img" alt="" />
+			<button type="button" class="lightbox-next" aria-label="Next photo">›</button>
+			<span class="lightbox-counter"></span>
+		`;
+		document.body.appendChild(el);
+
+		const img = el.querySelector<HTMLImageElement>('.lightbox-img')!;
+		const counter = el.querySelector<HTMLElement>('.lightbox-counter')!;
+		const prevBtn = el.querySelector<HTMLButtonElement>('.lightbox-prev')!;
+		const nextBtn = el.querySelector<HTMLButtonElement>('.lightbox-next')!;
+
+		let srcs: string[] = [];
+		let index = 0;
+
+		const render = () => {
+			img.src = srcs[index];
+			counter.textContent = `${index + 1} / ${srcs.length}`;
+			const single = srcs.length < 2;
+			prevBtn.hidden = single;
+			nextBtn.hidden = single;
+		};
+		const close = () => {
+			el.hidden = true;
+			document.body.classList.remove('lightbox-open');
+		};
+		const prev = () => {
+			index = (index - 1 + srcs.length) % srcs.length;
+			render();
+		};
+		const next = () => {
+			index = (index + 1) % srcs.length;
+			render();
+		};
+		const open = (photoSrcs: string[]) => {
+			srcs = photoSrcs;
+			index = 0;
+			render();
+			el.hidden = false;
+			document.body.classList.add('lightbox-open');
+		};
+
+		prevBtn.addEventListener('click', prev);
+		nextBtn.addEventListener('click', next);
+		el.querySelector('.lightbox-close')!.addEventListener('click', close);
+		el.addEventListener('click', (e) => {
+			if (e.target === el) close(); // backdrop click
+		});
+		document.addEventListener('keydown', (e) => {
+			if (el.hidden) return;
+			if (e.key === 'Escape') close();
+			else if (e.key === 'ArrowLeft') prev();
+			else if (e.key === 'ArrowRight') next();
+		});
+		let touchStartX = 0;
+		el.addEventListener('touchstart', (e) => {
+			touchStartX = e.changedTouches[0].clientX;
+		});
+		el.addEventListener('touchend', (e) => {
+			const dx = e.changedTouches[0].clientX - touchStartX;
+			if (Math.abs(dx) > 40) (dx > 0 ? prev : next)();
+		});
+
+		lightbox = { el, open };
+		return lightbox;
+	}
+
 	function drawOne(graph: HTMLElement) {
 		const svg = graph.querySelector<SVGSVGElement>('.graph-edges');
 		const dataEl = graph.querySelector<HTMLElement>('.graph-edges-data');
@@ -861,6 +1016,18 @@ const yearMark = yearMarks(visibleRows);
 		// flip toggle fire twice per click and cancel itself out).
 		if (graph.dataset.ginit) return;
 		graph.dataset.ginit = '1';
+
+		// tapping a photo badge opens that commit's photos in a full-screen carousel
+		// (the .photos figures already hold the <img>s; on mobile they're just hidden).
+		graph.querySelectorAll<HTMLButtonElement>('.photo-badge').forEach((badge) => {
+			const commit = badge.closest<HTMLElement>('.commit');
+			const srcs = [...(commit?.querySelectorAll<HTMLImageElement>('.photos img') ?? [])].map(
+				(img) => img.src,
+			);
+			if (!srcs.length) return;
+			badge.addEventListener('click', () => ensureLightbox().open(srcs));
+		});
+
 		const edges: {
 			from: string;
 			to: string;
@@ -962,34 +1129,79 @@ const yearMark = yearMarks(visibleRows);
 			});
 		});
 
-		// hover a card -> highlight its commit node and the branch it lives on in the path.
-		// bind to the card (not the full-width .commit row) so hovering the empty space on
-		// the opposite side at the same level doesn't trigger a highlight.
-		graph.querySelectorAll<HTMLElement>('.commit').forEach((commit) => {
+		// highlight a commit's node + the branch it lives on in the path; shared by the
+		// desktop hover binding below and the mobile scroll-linked activation further down.
+		function highlight(commit: HTMLElement) {
 			const id = commit.dataset.id;
 			const branch = commit.dataset.branch;
 			const onMain = commit.classList.contains('on-main');
 			const node = commit.querySelector<HTMLElement>('.node');
+			graph.classList.add('hover-active');
+			node?.classList.add('hl');
+			svg!.querySelectorAll<SVGPathElement>('path').forEach((p) => {
+				// edges belonging to this commit's branch, plus edges touching this node —
+				// but for a commit on `main`, don't light a branch's checkout/merge edge
+				// just because it connects here; those aren't part of main.
+				const touches = p.dataset.from === id || p.dataset.to === id;
+				if (p.dataset.branch === branch || (touches && !(onMain && p.dataset.branch !== 'main')))
+					p.classList.add('hl');
+			});
+		}
+		function unhighlight(commit: HTMLElement) {
+			graph.classList.remove('hover-active');
+			commit.querySelector<HTMLElement>('.node')?.classList.remove('hl');
+			svg!.querySelectorAll<SVGPathElement>('path.hl').forEach((p) => p.classList.remove('hl'));
+		}
+
+		// hover a card -> highlight its commit node and the branch it lives on in the path.
+		// bind to the card (not the full-width .commit row) so hovering the empty space on
+		// the opposite side at the same level doesn't trigger a highlight.
+		graph.querySelectorAll<HTMLElement>('.commit').forEach((commit) => {
 			const card = commit.querySelector<HTMLElement>('.card');
 			if (!card) return;
-			card.addEventListener('mouseenter', () => {
-				graph.classList.add('hover-active');
-				node?.classList.add('hl');
-				svg!.querySelectorAll<SVGPathElement>('path').forEach((p) => {
-					// edges belonging to this commit's branch, plus edges touching this node —
-					// but for a commit on `main`, don't light a branch's checkout/merge edge
-					// just because it connects here; those aren't part of main.
-					const touches = p.dataset.from === id || p.dataset.to === id;
-					if (p.dataset.branch === branch || (touches && !(onMain && p.dataset.branch !== 'main')))
-						p.classList.add('hl');
-				});
-			});
-			card.addEventListener('mouseleave', () => {
-				graph.classList.remove('hover-active');
-				node?.classList.remove('hl');
-				svg!.querySelectorAll<SVGPathElement>('path.hl').forEach((p) => p.classList.remove('hl'));
-			});
+			card.addEventListener('mouseenter', () => highlight(commit));
+			card.addEventListener('mouseleave', () => unhighlight(commit));
 		});
+
+		// phones have no hover: instead, whichever commit is crossing a band near the
+		// top of the viewport becomes "active" as the user scrolls past it, with a short
+		// vibration marking each hand-off so the effect reads as tactile, not just visual.
+		if (window.matchMedia('(max-width: 680px)').matches) {
+			const commits = [...graph.querySelectorAll<HTMLElement>('.commit')].filter(
+				(c) => !c.classList.contains('is-junction'),
+			);
+			let active: HTMLElement | null = null;
+			const setActive = (commit: HTMLElement | null) => {
+				if (commit === active) return;
+				if (active) {
+					unhighlight(active);
+					active.classList.remove('active-mobile');
+				}
+				active = commit;
+				if (active) {
+					highlight(active);
+					active.classList.add('active-mobile');
+					navigator.vibrate?.(12);
+				}
+			};
+
+			const inView = new Set<HTMLElement>();
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) inView.add(entry.target as HTMLElement);
+						else inView.delete(entry.target as HTMLElement);
+					}
+					// first in document order among those crossing the band right now
+					const first = commits.find((c) => inView.has(c));
+					if (first) setActive(first);
+				},
+				// a narrow band a third of the way down the screen — a commit is "active"
+				// once it reaches that line, matching where the eye naturally rests while scrolling.
+				{ rootMargin: '-32% 0px -60% 0px', threshold: 0 },
+			);
+			commits.forEach((c) => io.observe(c));
+		}
 
 		// "start from birth" flips the timeline (oldest at top); edges follow because
 		// draw() reads the live node positions after the reorder.
