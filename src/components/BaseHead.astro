@@ -3,6 +3,7 @@ import '@fontsource/jetbrains-mono/400.css';
 import '@fontsource/jetbrains-mono/700.css';
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import defaultOgImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_AUTHOR, SITE_TITLE } from '../consts';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 	ogDescription?: string;
 	ogImage?: string;
 	author?: string;
+	type?: 'website' | 'article';
 }
 
 const {
@@ -29,11 +31,12 @@ const {
 	ogDescription,
 	ogImage,
 	author,
+	type = 'website',
 } = Astro.props;
 
 const pageTitle = title === SITE_TITLE ? title : `${title} — ${SITE_TITLE}`;
 const canonical = canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
-const resolvedOgImage = ogImage ?? image;
+const resolvedOgImage = ogImage ?? image ?? defaultOgImage.src;
 ---
 
 <meta charset="utf-8" />
@@ -75,7 +78,7 @@ const resolvedOgImage = ogImage ?? image;
 {(author ?? SITE_AUTHOR) && <meta name="author" content={author ?? SITE_AUTHOR} />}
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-<meta property="og:type" content="article" />
+<meta property="og:type" content={type} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={ogTitle ?? pageTitle} />
 <meta property="og:description" content={ogDescription ?? description} />
