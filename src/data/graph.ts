@@ -303,7 +303,8 @@ export type Commit = BaseCommit &
 
 // --- Photo assets ----------------------------------------------------------
 // Photos live in a Cloudflare R2 bucket (mirrored locally under public/r2/,
-// which is gitignored). Base URL is validated in src/env.ts (PUBLIC_R2_URL).
+// which is gitignored). Base URL is validated by Astro's builtin env schema
+// (see the `env` block in astro.config.mjs).
 const photo = (name: string) => `${PUBLIC_R2_URL}/about/${name}.webp`;
 
 export const history: Commit[] = [

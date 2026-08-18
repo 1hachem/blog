@@ -7,10 +7,10 @@ type MockPost = Parameters<typeof getCategories>[0][number];
 function makePost(overrides: Partial<MockPost['data']> = {}): MockPost {
 	return {
 		id: 'test',
-		body: async () => '',
+		body: '',
 		collection: 'blog',
-		render: async () => ({ Content: {} as any, headings: [], remarkPluginFrontmatter: {} }),
 		data: {
+			draft: false,
 			title: 'Test',
 			description: 'desc',
 			pubDate: new Date('2024-01-01'),

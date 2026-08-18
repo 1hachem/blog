@@ -17,7 +17,7 @@ const blog = defineCollection({
 			tags: z.array(z.string()).optional(),
 			// SEO extras
 			keywords: z.array(z.string()).optional(),
-			canonicalURL: z.string().url().optional(),
+			canonicalURL: z.url().optional(),
 			noindex: z.boolean().optional(),
 			ogTitle: z.string().optional(),
 			ogDescription: z.string().optional(),
