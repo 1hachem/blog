@@ -41,6 +41,9 @@ const rows = [...commits].reverse().map((c) => ({
 	lane: laneOf[c.branch] - minLane,
 	side: (c.card ?? (laneOf[c.branch] < 0 ? 'left' : 'right')) as 'left' | 'right',
 	chip: chipFor(c),
+	photoLabel: c.photos?.length
+		? `${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`
+		: undefined,
 }));
 
 const EDGES = buildEdges(commits, (branch) => BRANCH_META[branch]?.color ?? null);
@@ -130,8 +133,8 @@ const yearMark = yearMarks(visibleRows);
 									<button
 										type="button"
 										class="photo-badge"
-										title={`${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`}
-										aria-label={`View ${c.photos.length} photo${c.photos.length > 1 ? 's' : ''}`}
+										title={c.photoLabel}
+										aria-label={`View ${c.photoLabel}`}
 									>
 										{c.photos.length}
 										<svg class="photo-ico" viewBox="0 0 24 24" aria-hidden="true">
@@ -369,10 +372,10 @@ const yearMark = yearMarks(visibleRows);
 			stroke-width 0.15s ease;
 	}
 	/* hovering a card dims the graph and lights up that commit's branch */
-	.gitgraph.hover-active .graph-edges :global(path) {
+	.gitgraph.graph-active .graph-edges :global(path) {
 		opacity: 0.2;
 	}
-	.gitgraph.hover-active .graph-edges :global(path.hl) {
+	.gitgraph.graph-active .graph-edges :global(path.hl) {
 		opacity: 1;
 		stroke-width: 3.5;
 	}
@@ -381,11 +384,11 @@ const yearMark = yearMarks(visibleRows);
 	.commit {
 		transition: opacity 0.15s ease;
 	}
-	.gitgraph.hover-active .commit {
+	.gitgraph.graph-active .commit {
 		opacity: 0.55;
 	}
-	.gitgraph.hover-active .commit:has(.card:hover),
-	.gitgraph.hover-active .commit.active-mobile {
+	.gitgraph.graph-active .commit:has(.card:hover),
+	.gitgraph.graph-active .commit.active-mobile {
 		opacity: 1;
 	}
 
@@ -930,7 +933,22 @@ const yearMark = yearMarks(visibleRows);
 	// Singleton full-screen carousel for a commit's photos, opened by tapping its
 	// .photo-badge. Rebuilt lazily if a prior navigation left a detached element
 	// behind (ClientRouter swaps the body, dropping anything appended to it).
-	let lightbox: { el: HTMLElement; open: (srcs: string[]) => void } | null = null;
+	let lightbox: {
+		el: HTMLElement;
+		open: (srcs: string[]) => void;
+		close: () => void;
+		prev: () => void;
+		next: () => void;
+	} | null = null;
+
+	// Bound once, ever — reads whichever lightbox instance is current instead of being
+	// re-bound (and leaked) each time ensureLightbox() rebuilds after a navigation.
+	document.addEventListener('keydown', (e) => {
+		if (!lightbox || lightbox.el.hidden) return;
+		if (e.key === 'Escape') lightbox.close();
+		else if (e.key === 'ArrowLeft') lightbox.prev();
+		else if (e.key === 'ArrowRight') lightbox.next();
+	});
 
 	function ensureLightbox() {
 		if (lightbox && document.body.contains(lightbox.el)) return lightbox;
@@ -988,12 +1006,6 @@ const yearMark = yearMarks(visibleRows);
 		el.addEventListener('click', (e) => {
 			if (e.target === el) close(); // backdrop click
 		});
-		document.addEventListener('keydown', (e) => {
-			if (el.hidden) return;
-			if (e.key === 'Escape') close();
-			else if (e.key === 'ArrowLeft') prev();
-			else if (e.key === 'ArrowRight') next();
-		});
 		let touchStartX = 0;
 		el.addEventListener('touchstart', (e) => {
 			touchStartX = e.changedTouches[0].clientX;
@@ -1003,7 +1015,7 @@ const yearMark = yearMarks(visibleRows);
 			if (Math.abs(dx) > 40) (dx > 0 ? prev : next)();
 		});
 
-		lightbox = { el, open };
+		lightbox = { el, open, close, prev, next };
 		return lightbox;
 	}
 
@@ -1136,7 +1148,7 @@ const yearMark = yearMarks(visibleRows);
 			const branch = commit.dataset.branch;
 			const onMain = commit.classList.contains('on-main');
 			const node = commit.querySelector<HTMLElement>('.node');
-			graph.classList.add('hover-active');
+			graph.classList.add('graph-active');
 			node?.classList.add('hl');
 			svg!.querySelectorAll<SVGPathElement>('path').forEach((p) => {
 				// edges belonging to this commit's branch, plus edges touching this node —
@@ -1148,7 +1160,7 @@ const yearMark = yearMarks(visibleRows);
 			});
 		}
 		function unhighlight(commit: HTMLElement) {
-			graph.classList.remove('hover-active');
+			graph.classList.remove('graph-active');
 			commit.querySelector<HTMLElement>('.node')?.classList.remove('hl');
 			svg!.querySelectorAll<SVGPathElement>('path.hl').forEach((p) => p.classList.remove('hl'));
 		}
