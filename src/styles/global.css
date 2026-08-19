@@ -64,9 +64,6 @@ body {
 
 main {
 	flex: 1;
-}
-
-main {
 	max-width: var(--max-width);
 	width: 100%;
 	margin: 0 auto;
@@ -203,16 +200,32 @@ ol {
 	white-space: normal;
 }
 
-.sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
+/* post-date byline, shared by every post-list rendering (home, timeline, related posts) */
+.date {
+	color: var(--muted);
+	font-size: 0.85rem;
+	flex-shrink: 0;
+}
+
+/* favicon prepended to a link's title (about-page links, post source link, prose links) */
+.link-favicon {
+	width: 1em;
+	height: 1em;
+	border-radius: 2px;
+}
+
+/* bare post list, shared by the home page and the blog timeline */
+.post-list {
+	list-style: none;
 	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border: 0;
+	margin: 0;
+}
+.post-list li {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	padding: 0.4rem 0;
 }
 
 @media (max-width: 600px) {
@@ -227,5 +240,15 @@ ol {
 	}
 	table {
 		font-size: 0.8rem;
+	}
+}
+
+@media (max-width: 500px) {
+	.post-list li {
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+	.date {
+		font-size: 0.75rem;
 	}
 }

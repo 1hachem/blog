@@ -111,18 +111,6 @@ function pageURL(n: number) {
 		margin: 0 0 0.25rem;
 		font-weight: normal;
 	}
-	.post-list {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-	.post-list li {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		gap: 1rem;
-		padding: 0.4rem 0;
-	}
 	.post-meta {
 		display: flex;
 		align-items: baseline;
@@ -149,11 +137,6 @@ function pageURL(n: number) {
 		color: var(--fg);
 		border-color: var(--fg);
 	}
-	.date {
-		color: var(--muted);
-		font-size: 0.85rem;
-		flex-shrink: 0;
-	}
 	.pagination {
 		display: flex;
 		gap: 1rem;
@@ -166,15 +149,6 @@ function pageURL(n: number) {
 	}
 	.disabled {
 		color: var(--border);
-	}
-	@media (max-width: 500px) {
-		.post-list li {
-			flex-direction: column;
-			gap: 0.15rem;
-		}
-		.date {
-			font-size: 0.75rem;
-		}
 	}
 </style>
 

@@ -218,14 +218,6 @@ const linkFavicon = link && faviconUrl(link);
 	.post-link a:hover {
 		text-decoration: underline;
 	}
-	.post-link .link-favicon {
-		display: inline-block;
-		width: 1em;
-		height: 1em;
-		margin-right: 0.3em;
-		vertical-align: -0.15em;
-		border-radius: 2px;
-	}
 	.post-tags {
 		margin: 0.4rem 0 0;
 		display: flex;
@@ -270,16 +262,16 @@ const linkFavicon = link && faviconUrl(link);
 		min-width: 0;
 	}
 
-	/* Favicon prepended to external links by the rehype-link-favicons plugin.
-	   Sits just left of the link title, sized to the surrounding text. */
+	/* Favicon prepended to a link's title: the post's own source link above, and
+	   external links inside the prose (added by the rehype-link-favicons plugin). */
+	.post-link .link-favicon,
 	.prose :global(.link-favicon) {
 		display: inline-block;
-		width: 1em;
-		height: 1em;
 		margin-right: 0.3em;
 		vertical-align: -0.15em;
-		border-radius: 2px;
-		/* keep the icon crisp and unaffected by link color/underline */
+	}
+	/* keep the prose icon crisp and unaffected by link color/underline */
+	.prose :global(.link-favicon) {
 		text-decoration: none;
 	}
 
@@ -348,10 +340,5 @@ const linkFavicon = link && faviconUrl(link);
 	}
 	.related li a:hover {
 		text-decoration: underline;
-	}
-	.date {
-		color: var(--muted);
-		font-size: 0.85rem;
-		flex-shrink: 0;
 	}
 </style>
