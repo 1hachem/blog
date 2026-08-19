@@ -5,6 +5,7 @@ pubDate: 2026-08-16
 category: 'tech'
 tags: ['ai', 'agents', 'lisp', 'interpreters', 'neuro-symbolic', 'mcp']
 ogImage: 'og2'
+link: 'https://github.com/1hachem/lisptc'
 tldr: "Programmatic tool calling lets an agent write code instead of firing one tool call at a time, but running that code safely is a hard, unsolved problem. Instead of sandboxing an existing language, I built lisptc: a Lisp dialect — interpreter, LSP, formatter, REPL — designed from scratch for AI agents, with native MCP support, grammar-constrained output, and context compression built in. The bigger claim: the LLM isn't the agent, it's one module in a cognitive architecture, and Lisp is the symbolic half."
 ---
 

@@ -7,6 +7,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import PageNav from '../components/PageNav.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import { faviconUrl } from '../lib/favicon';
 import { categorySlug as slugify } from '../lib/posts';
 
 type Props = CollectionEntry<'blog'>['data'] & {
@@ -30,6 +31,7 @@ const {
 	category,
 	tags = [],
 	tldr,
+	link,
 	related = [],
 	headings = [],
 	readingTime,
@@ -37,6 +39,7 @@ const {
 
 const categorySlug = category && slugify(category);
 const resolvedOgImage = ogImage && `${PUBLIC_R2_URL}/og/${ogImage}.webp`;
+const linkFavicon = link && faviconUrl(link);
 ---
 
 <html lang="en">
@@ -88,6 +91,22 @@ const resolvedOgImage = ogImage && `${PUBLIC_R2_URL}/og/${ogImage}.webp`;
 						{readingTime && <span> · {readingTime}</span>}
 					</p>
 					<h1>{title}</h1>
+					{
+						link && (
+							<p class="post-link">
+								<a href={link} target="_blank" rel="noopener">
+									<img
+										class="link-favicon"
+										src={linkFavicon}
+										alt=""
+										aria-hidden="true"
+										loading="lazy"
+									/>
+									{link}
+								</a>
+							</p>
+						)
+					}
 					{
 						tags.length > 0 && (
 							<p class="post-tags">
@@ -187,6 +206,25 @@ const resolvedOgImage = ogImage && `${PUBLIC_R2_URL}/og/${ogImage}.webp`;
 		color: var(--muted);
 		font-size: 0.85rem;
 		margin: 0;
+	}
+	.post-link {
+		margin: 0.4rem 0 0;
+		font-size: 0.9rem;
+	}
+	.post-link a {
+		color: var(--secondary);
+		text-decoration: none;
+	}
+	.post-link a:hover {
+		text-decoration: underline;
+	}
+	.post-link .link-favicon {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		margin-right: 0.3em;
+		vertical-align: -0.15em;
+		border-radius: 2px;
 	}
 	.post-tags {
 		margin: 0.4rem 0 0;
