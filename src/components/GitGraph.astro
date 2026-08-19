@@ -2,6 +2,7 @@
 import 'devicon/devicon.min.css';
 import { TECH, history, CATEGORY_LABEL, type Commit, type Category } from '../data/graph';
 import { assignLanes, buildEdges, tiltOf, shiftOf, yearMarks } from '../lib/graph-layout';
+import { faviconUrl } from '../lib/favicon';
 
 // chronological order, parents before children — the lane algorithm relies on it
 const commits: Commit[] = [...history].sort((a, b) => a.t - b.t);
@@ -153,14 +154,7 @@ const yearMark = yearMarks(visibleRows);
 									const yt = lk.href.includes('youtube.com') || lk.href.includes('youtu.be');
 									// External (non-YouTube) links get the destination site's favicon,
 									// matching the blog's rehype-link-favicons plugin.
-									let favicon;
-									if (!yt && lk.href.startsWith('http')) {
-										try {
-											favicon = `https://icons.duckduckgo.com/ip3/${new URL(lk.href).hostname}.ico`;
-										} catch {
-											/* leave undecorated */
-										}
-									}
+									const favicon = !yt ? faviconUrl(lk.href) : undefined;
 									return (
 										<a
 											href={lk.href}

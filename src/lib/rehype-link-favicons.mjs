@@ -1,3 +1,5 @@
+import { faviconUrl } from './favicon.ts';
+
 /**
  * Rehype plugin: for every external link (`http(s)://…`) in the rendered
  * markdown, prepend a small favicon of the destination site so the link reads
@@ -5,9 +7,6 @@
  * (which, unlike Google's, preserves the icon's transparent background) and
  * loaded lazily by the browser — nothing is fetched at build time. Broken or
  * missing icons render as nothing (empty `alt`).
- *
- * Keep the URL logic in sync with the about page's git-graph links
- * (`src/components/GitGraph.astro`), which decorate links the same way.
  */
 export default function rehypeLinkFavicons() {
 	return (tree) => {
@@ -28,15 +27,8 @@ function decorate(node) {
 	const href = node.properties?.href;
 	if (typeof href !== 'string') return;
 
-	let host;
-	try {
-		const url = new URL(href);
-		if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
-		host = url.hostname;
-	} catch {
-		// relative / internal links have no distinct favicon
-		return;
-	}
+	const src = faviconUrl(href);
+	if (!src) return; // relative / internal links have no distinct favicon
 
 	// Skip if we've already decorated this link.
 	if (node.properties.dataFavicon != null) return;
@@ -47,7 +39,7 @@ function decorate(node) {
 		tagName: 'img',
 		properties: {
 			className: ['link-favicon'],
-			src: `https://icons.duckduckgo.com/ip3/${host}.ico`,
+			src,
 			alt: '',
 			'aria-hidden': 'true',
 			loading: 'lazy',
