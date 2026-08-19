@@ -68,6 +68,15 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 		const visible = new Set<string>();
 
 		const update = () => {
+			const doc = document.documentElement;
+			const atBottom = window.innerHeight + Math.ceil(window.scrollY) >= doc.scrollHeight;
+			if (atBottom) {
+				// The last heading(s) may not have enough page left below them to ever get
+				// pushed into the top band — once there's nowhere further to scroll, just
+				// force the actual last heading active instead of leaving it unreachable.
+				setActive(ids[ids.length - 1] ?? '');
+				return;
+			}
 			if (visible.size > 0) {
 				// Highlight the first visible heading in document order.
 				const first = ids.find((id) => visible.has(id));
@@ -96,6 +105,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 		);
 
 		for (const el of headings) io.observe(el);
+		window.addEventListener('scroll', update, { passive: true });
 		update();
 	}
 
