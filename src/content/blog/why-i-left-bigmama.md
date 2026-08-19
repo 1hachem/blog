@@ -5,6 +5,7 @@ pubDate: 2026-08-16
 category: 'startup'
 tags: ['startups', 'career', 'ai', 'algeria', 'founders']
 ogImage: 'og3'
+tldr: "Three years building an AI automation platform through two pivots — YourScrib, then Hyko's drag-and-drop workflows, then a chat-based MCP agent — while becoming a self-taught CTO with no role models. Just as the business finally turned profitable, a radical-honesty culture exposed an unfixable founder-equity problem. Left with 0.5% equity, zero savings, and the realization the real problem was never the software."
 ---
 
 For the last three years my mission was a single idea: build an all-in-one

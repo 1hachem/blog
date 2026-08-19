@@ -5,6 +5,7 @@ pubDate: 2026-08-16
 category: 'startup'
 tags: ['startups', 'culture', 'honesty', 'leadership']
 ogImage: 'og2'
+tldr: 'We built a company culture on radical honesty, softened by nonviolent communication, and it made engineering, code review, and everyday work genuinely better. It broke in exactly two places: sales, where honesty clashed with the art of persuasion, and founder equity, where honesty about who deserved what became existential. Lesson: radical honesty only works with aligned incentives and real psychological safety — otherwise it just exposes the misalignment instead of fixing it.'
 ---
 
 We were in the business of transforming organizations with AI. Somewhere

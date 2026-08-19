@@ -29,6 +29,7 @@ const {
 	author,
 	category,
 	tags = [],
+	tldr,
 	related = [],
 	headings = [],
 	readingTime,
@@ -96,6 +97,14 @@ const resolvedOgImage = ogImage && `${PUBLIC_R2_URL}/og/${ogImage}.webp`;
 									</a>
 								))}
 							</p>
+						)
+					}
+					{
+						tldr && (
+							<details class="tldr">
+								<summary>TL;DR</summary>
+								<p>{tldr}</p>
+							</details>
 						)
 					}
 				</header>
@@ -195,6 +204,28 @@ const resolvedOgImage = ogImage && `${PUBLIC_R2_URL}/og/${ogImage}.webp`;
 	}
 	.updated {
 		font-style: italic;
+	}
+
+	.tldr {
+		margin-top: 1rem;
+		border: 1px solid var(--border);
+		border-left: 3px solid var(--secondary);
+		padding: 0.6rem 0.9rem;
+	}
+	.tldr summary {
+		cursor: pointer;
+		font-weight: bold;
+		font-size: 0.85rem;
+		color: var(--secondary);
+		user-select: none;
+	}
+	.tldr[open] summary {
+		margin-bottom: 0.5rem;
+	}
+	.tldr p {
+		margin: 0;
+		color: var(--secondary);
+		font-size: 0.95rem;
 	}
 
 	.prose {
