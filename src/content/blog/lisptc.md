@@ -6,7 +6,7 @@ category: 'tech'
 tags: ['ai', 'agents', 'lisp', 'interpreters', 'neuro-symbolic', 'mcp']
 ogImage: 'og2'
 link: 'https://github.com/1hachem/lisptc'
-tldr: "Programmatic tool calling lets an agent write code instead of firing one tool call at a time, but running that code safely is a hard, unsolved problem. Instead of sandboxing an existing language, I built lisptc: a Lisp dialect — interpreter, LSP, formatter, REPL — designed from scratch for AI agents, with native MCP support, grammar-constrained output, and context compression built in. The bigger claim: the LLM isn't the agent, it's one module in a cognitive architecture, and Lisp is the symbolic half."
+tldr: "Programmatic tool calling lets an agent write code instead of firing one tool call at a time, but running that code safely is a hard, unsolved problem. Instead of sandboxing an existing language, I built a programming language from the groundup without the , I built lisptc: a Lisp dialect — interpreter, LSP, formatter, REPL — designed from scratch for AI agents, with native MCP support, grammar-constrained output, and context compression built in. The bigger claim: the LLM isn't the agent, it's one module in a cognitive architecture, and Lisp is the symbolic half."
 ---
 
 Anthropic's [blog post](https://www.anthropic.com/engineering/advanced-tool-use) about programmatic tool calling shed light on a better
@@ -40,6 +40,80 @@ each call and becomes the thing that _writes the logic_ around them.
 
 That shift is the entire premise of this project, so it's worth being concrete
 about why it's such an improvement.
+
+<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Traditional agent loop versus programmatic tool calling">
+  <style>
+    svg { color:#1a1a1a; }
+    @media (prefers-color-scheme: dark){ svg { color:#e8e8e8; } }
+    .s{ stroke:currentColor; stroke-width:1.6; }
+    .box{ stroke:currentColor; stroke-width:1.6; fill:none; }
+    .ll{ stroke:currentColor; stroke-width:1.2; stroke-dasharray:3 4; opacity:.5; }
+    .t{ fill:currentColor; font-family:'JetBrains Mono','JetBrainsMono Nerd Font',ui-monospace,'Cascadia Code','Source Code Pro',Menlo,Consolas,'DejaVu Sans Mono',monospace; }
+    .lbl{ font-size:13px; }
+    .ttl{ font-size:15px; font-weight:600; }
+    .cap{ font-size:12px; opacity:.72; }
+    .mono{ font-size:12px; fill:currentColor; }
+    .dim{ opacity:.6; }
+  </style>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <line x1="380" y1="18" x2="380" y2="388" class="ll"/>
+  <!-- LEFT: traditional agent loop -->
+  <text x="200" y="32" text-anchor="middle" class="t ttl">Traditional agent loop</text>
+  <rect class="box" x="70" y="58" width="90" height="44" rx="7"/>
+  <text x="115" y="85" text-anchor="middle" class="t lbl">Model</text>
+  <rect class="box" x="250" y="58" width="90" height="44" rx="7"/>
+  <text x="295" y="85" text-anchor="middle" class="t lbl">MCP server</text>
+  <line x1="115" y1="102" x2="115" y2="322" class="ll"/>
+  <line x1="295" y1="102" x2="295" y2="322" class="ll"/>
+  <line class="s" x1="117" y1="140" x2="293" y2="140" marker-end="url(#ah)"/>
+  <text x="205" y="134" text-anchor="middle" class="t mono">tool call &#9312;</text>
+  <line class="s" x1="293" y1="172" x2="117" y2="172" marker-end="url(#ah)"/>
+  <text x="205" y="166" text-anchor="middle" class="t mono">result &#9312;</text>
+  <line class="s" x1="117" y1="214" x2="293" y2="214" marker-end="url(#ah)"/>
+  <text x="205" y="208" text-anchor="middle" class="t mono">tool call &#9313;</text>
+  <line class="s" x1="293" y1="246" x2="117" y2="246" marker-end="url(#ah)"/>
+  <text x="205" y="240" text-anchor="middle" class="t mono">result &#9313;</text>
+  <text x="205" y="288" text-anchor="middle" class="t lbl dim">&#8942;</text>
+  <text x="205" y="352" text-anchor="middle" class="t cap">N round trips; every value</text>
+  <text x="205" y="368" text-anchor="middle" class="t cap">re-enters the model's context</text>
+  <!-- RIGHT: programmatic tool calling -->
+  <text x="570" y="32" text-anchor="middle" class="t ttl">Programmatic tool calling</text>
+  <rect class="box" x="430" y="58" width="96" height="44" rx="7"/>
+  <text x="478" y="85" text-anchor="middle" class="t lbl">Model</text>
+  <line class="s" x1="478" y1="102" x2="478" y2="140" marker-end="url(#ah)"/>
+  <text x="514" y="126" class="t cap">writes</text>
+  <rect class="box" x="418" y="142" width="152" height="98" rx="7"/>
+  <text x="430" y="162" class="t cap dim">one program</text>
+  <line class="s dim" x1="430" y1="178" x2="540" y2="178"/>
+  <line class="s dim" x1="430" y1="192" x2="558" y2="192"/>
+  <line class="s dim" x1="446" y1="206" x2="540" y2="206"/>
+  <line class="s dim" x1="446" y1="220" x2="522" y2="220"/>
+  <rect class="box" x="612" y="150" width="96" height="82" rx="7"/>
+  <text x="660" y="184" text-anchor="middle" class="t lbl">Runtime</text>
+  <text x="660" y="204" text-anchor="middle" class="t mono dim">fn&#183;fn&#183;fn</text>
+  <line class="s" x1="570" y1="191" x2="612" y2="191" marker-end="url(#ah)"/>
+  <text x="591" y="183" text-anchor="middle" class="t cap">run</text>
+  <path class="s" d="M660 150 C 655 112 596 92 530 88" marker-end="url(#ah)"/>
+  <text x="602" y="108" text-anchor="middle" class="t cap">result only</text>
+  <text x="565" y="292" text-anchor="middle" class="t cap">one round trip; intermediate data</text>
+  <text x="565" y="308" text-anchor="middle" class="t cap">stays in the runtime</text>
+</svg>
+
+For those who are unfamiliar with this subject, here is a video that illustrates more what PTC is:
+
+<div style="position: relative; aspect-ratio: 16 / 9; margin: 1.5rem 0;">
+  <iframe
+    src="https://www.youtube-nocookie.com/embed/2MJDdzSXL74"
+    title="What is programmatic tool calling?"
+    style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>
 
 ## Why programmatic tool calling wins
 
@@ -87,9 +161,8 @@ for me at the entrance was the perfect language for the job. Lisp!
 ## Enter Lisp
 
 First developed in 1958 for AI research, its ideas went on to influence most of
-today's programming languages, and it's notoriously known for making better
-programmers. And the questions John McCarthy was
-wrestling with back then, when the whole point was symbolic reasoning for
+today's programming languages. The questions John McCarthy (creator, or maybe discoverer of lisp)
+was wrestling with back then, when the whole point was symbolic reasoning for
 machines, map almost perfectly onto what an agent language needs now:
 
 - What if a program were written in the very same form as the data it operates
