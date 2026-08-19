@@ -41,10 +41,9 @@ each call and becomes the thing that _writes the logic_ around them.
 That shift is the entire premise of this project, so it's worth being concrete
 about why it's such an improvement.
 
-<svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Traditional agent loop versus programmatic tool calling">
+<svg class="ptc-diagram" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Traditional agent loop versus programmatic tool calling">
   <style>
-    svg { color:#1a1a1a; }
-    @media (prefers-color-scheme: dark){ svg { color:#e8e8e8; } }
+    svg.ptc-diagram { color: var(--fg); }
     .s{ stroke:currentColor; stroke-width:1.6; }
     .box{ stroke:currentColor; stroke-width:1.6; fill:none; }
     .ll{ stroke:currentColor; stroke-width:1.2; stroke-dasharray:3 4; opacity:.5; }
