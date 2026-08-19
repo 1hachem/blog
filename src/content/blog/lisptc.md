@@ -104,7 +104,7 @@ about why it's such an improvement.
 
 For those who are unfamiliar with this subject, here is a video that illustrates more what PTC is:
 
-<div style="position: relative; aspect-ratio: 16 / 9; margin: 1.5rem 0;">
+<div style="position: relative; aspect-ratio: 16 / 9; margin: 1.5rem 0; background: #000 url('https://i.ytimg.com/vi/2MJDdzSXL74/hqdefault.jpg') center / cover no-repeat;">
   <iframe
     src="https://www.youtube-nocookie.com/embed/2MJDdzSXL74"
     title="What is programmatic tool calling?"
