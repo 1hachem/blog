@@ -7,6 +7,13 @@ export default defineConfig({
 	site: 'https://blog-worker.hachem-betrouni.workers.dev',
 	markdown: {
 		rehypePlugins: [rehypeLinkFavicons],
+		shikiConfig: {
+			themes: {
+				light: 'github-light',
+				dark: 'github-dark',
+			},
+			defaultColor: false,
+		},
 	},
 	env: {
 		schema: {

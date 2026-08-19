@@ -4,6 +4,7 @@
 	--muted: #666;
 	--border: #ccc;
 	--accent: #00f;
+	--secondary: #8a6d3b;
 	--code-bg: #f0ede9;
 	--max-width: 46rem;
 	--font-mono:
@@ -24,6 +25,7 @@
 	--muted: #888;
 	--border: #333;
 	--accent: #5599ff;
+	--secondary: #c9a876;
 	--code-bg: #111;
 }
 
@@ -127,6 +129,18 @@ pre {
 pre > code {
 	all: unset;
 	font-family: var(--font-mono);
+}
+
+/* Shiki dual-theme syntax highlighting: colours follow the site's light/dark
+   toggle instead of prefers-color-scheme (see astro.config.mjs shikiConfig).
+   Background/border stay on the site's own --code-bg/--border, set above. */
+pre.astro-code,
+pre.astro-code span {
+	color: var(--shiki-light);
+}
+[data-theme='dark'] pre.astro-code,
+[data-theme='dark'] pre.astro-code span {
+	color: var(--shiki-dark);
 }
 
 blockquote {
