@@ -13,7 +13,6 @@ If you are here than probably you asked me the famous question:
 
 Well ... it seems that "normal people" have mini heart attacks whenever they check for their phone in the wrong pocket, "low battery anxiety" is now a thing with them, and most can't fall asleep without their phones.
 
-> [!note] note
 > It's no secret that people are growing more and more attached to their smartphones, and for an African, who's grandfathers were nomads roaming the earth this materialistic attachment feels wrong to me.
 
 ## I don't want to have a mini heart attack or worry for forgetting my charger
@@ -28,7 +27,6 @@ What? Do you think that I can have a meaningful conversation with you when you k
 
 I will borrow the words of _David Amadio_ in his awesome _flip phone manifesto_:
 
-> [!quote] quote
 > "It's often advertised that smartphones are facilitators of imagination, you can create music, paint paintings, write books, and visualize your designs, this is true, but also false in the same time, sadly we often murder our creativity and imagination with constant distractions. How can someone's imagination flourish if one is always consuming the products of other's imagination, how can someone wonder about the reality of the world, reflect on his own ideas and beliefs or build honest opinions and points of view if his mind is in a constant distraction."
 
 ## If it's urgent it always finds its way to reach me
