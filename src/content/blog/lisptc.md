@@ -19,9 +19,10 @@ design, and Lisp (a programming language from 1958), and came out the other side
 with **lisptc**, a small Lisp built specifically for AI agents: interpreter,
 LSP, formatter, and REPL.
 
-But the tooling is only half the story. The real claim underneath all of it is
-this: the LLM is _not_ the agent. It's one module in a larger system, and the
-Lisp is what lets the other modules exist. Hold onto that; I'll come back to it.
+But the tooling is only half the story.
+
+My idea is that the LLM is not the agent. It's one module in a larger system, and the
+Lisp is the glue that holds all these modules together. Hold onto that; I'll come back to it.
 
 ## What programmatic tool calling is
 
@@ -160,7 +161,7 @@ for me at the entrance was the perfect language for the job. Lisp!
 ## Enter Lisp
 
 First developed in 1958 for AI research, its ideas went on to influence most of
-today's programming languages. The questions John McCarthy (creator, or maybe discoverer of lisp)
+today's programming languages. The questions John McCarthy (creator, or maybe discoverer of Lisp)
 was wrestling with back then, when the whole point was symbolic reasoning for
 machines, map almost perfectly onto what an agent language needs now:
 
@@ -236,7 +237,7 @@ A macro is a memory too, and a far better kind. It persists, it evaluates, it ca
 reach for other memories, it can have side effects. The agent can write code that
 runs over its memories, which are themselves code, to produce a new memory, which
 is also code. Declarative memory, the things it knows, and procedural memory, the
-things it knows how to do, stop being two separate systems bolted onto a model and
+things it knows how to do, stop being two separate systems stapled onto a model and
 become the same thing: lists the interpreter can already read, store, and run.
 
 Along the way I needed a language server, which turned out to be fairly easy with
@@ -277,7 +278,7 @@ TypeScript runtime versus running them in lisptc:
 <tr><td><strong>Execution model</strong></td><td>Run a script, get output, run another script. State dies with the process unless you rebuild it every time.</td><td>A live REPL. Bindings persist across turns, the agent tests a line before committing to it, and the whole loop matches the notebooks it was trained on.</td></tr>
 <tr><td><strong>Ecosystem</strong></td><td>npm. Nothing I build competes with this.</td><td>What I wrote, plus whatever MCP servers expose.</td></tr>
 <tr><td><strong>Model fluency</strong></td><td>Native. This is what the training data is made of.</td><td>Rusty, and the parentheses genuinely worried me.</td></tr>
-<tr><td><strong>Who owns the runtime</strong></td><td>You rent it. Compression, disclosure, and tooling are things you bolt on around a runtime someone else defined.</td><td>I own it, so the tricks land inside the language. Reads are grep-able and paginated by construction, and loading an MCP server teaches the LSP about it, so tools arrive with completion and documentation on the spot.</td></tr>
+<tr><td><strong>Who owns the runtime</strong></td><td>You rent it. Compression, disclosure, and tooling are things you add around a runtime someone else defined.</td><td>I own it, so the tricks land inside the language. Reads are grep-able and paginated by construction, and loading an MCP server teaches the LSP about it, so tools arrive with completion and documentation on the spot.</td></tr>
 </tbody>
 </table>
 </div>
@@ -291,7 +292,7 @@ further down.
 ## What owning the whole stack buys you
 
 Here's the part I didn't fully expect. Because I owned the interpreter _and_ the
-REPL end to end, capabilities that are expensive bolt-ons everywhere else came
+REPL end to end, capabilities that are expensive add-ons everywhere else came
 almost for free. Each one below is less a feature I built than a property that
 fell out of the design.
 
@@ -380,8 +381,8 @@ scripts apart and reassembling them.
 
 Another feature that was really easy to implement is native MCP integration. You
 load an MCP server, stdio or online, and every tool it exposes becomes a plain
-function. Discoverability comes along for the ride: search predefined servers, or
-find tools inside a loaded one.
+function. You get discoverability without asking for it: search predefined
+servers, or look for a tool inside one already loaded.
 
 ```lisp
 ;; discover a server in the bundled toolkit, load it, and call its tools
@@ -409,8 +410,7 @@ become visible at exactly the moment they become available.
 The same shared environment is what makes the REPL more than a convenience. State
 survives between turns, so the agent can load a server once, poke at a tool to see
 what it actually returns, keep the useful result in a variable, and build on it
-later without paying for any of it twice. A sandboxed script gives you none of
-that: it runs, it prints, it dies, and the next script starts from nothing.
+later without paying for any of it twice.
 
 ### Context compression by construction
 
@@ -448,7 +448,7 @@ Which brings me back to the claim I opened with. The last missing piece is a
 cognitive architecture that combines the power of LLMs with the symbolic nature
 of the language: a separate memory module that extends the interpreter.
 
-That's the real thesis. The LLM is _not_ the agent. It's part of a system where
+The LLM is _not_ the agent. It's part of a system where
 every module plays a role toward an objective. The best move is to leave the
 imaginative, creative, flexible parts to the LLM, and the rest to the symbolic
 system, the Lisp. Just like the brain has two hemispheres.
@@ -467,8 +467,9 @@ data, spots the shape it keeps rewriting, and folds it into a form it can reuse,
 building a vocabulary for a task as it works through it. I want to experiment with
 generative UI, so the agent can render its own interfaces and visualize the
 prelude and a run as they happen. I want declarative agents, described by what
-they should achieve rather than wired together by hand. And I want the whole thing
-to grow into its environment: a cloud-native setup, a distributed file system the
+they should achieve, all in Lisp (just like how NixOS built the Nix language for OS configuration, you can think of lisptc as the declaration of orchestration of agents).
+
+And I want the whole thing to grow in a cloud-native setup, a distributed file system the
 agents can share, and Git woven in so that every change an agent makes is
 versioned, reviewable, and reversible.
 
