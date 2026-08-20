@@ -29,8 +29,12 @@ export default defineConfig({
 	vite: {
 		server: {
 			watch: {
-				// don't reload the dev server on Claude Code worktree/agent churn
-				ignored: ['**/.claude/**'],
+				// don't reload the dev server on Claude Code worktree/agent churn, and
+				// don't follow .direnv/flake-inputs symlinks into the Nix store — they
+				// point at full nixpkgs source checkouts and blow past the OS's inotify
+				// watch limit (ENOSPC) if the watcher dereferences them.
+				ignored: ['**/.claude/**', '**/.direnv/**'],
+				followSymlinks: false,
 			},
 		},
 	},

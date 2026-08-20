@@ -1277,8 +1277,10 @@ const yearMark = yearMarks(visibleRows);
 		// Proximity (not a fixed crossing-point) is what's compared, so every commit gets
 		// an activation window sized to its own spacing — including the last few, which
 		// stay fairly split between them even once the page runs out of room to scroll
-		// any single one of them all the way up to the line.
-		if (window.matchMedia('(max-width: 680px)').matches) {
+		// any single one of them all the way up to the line. Skipped for the landing-page
+		// preview: it's a short, cropped teaser, not the real timeline, so there's no
+		// meaningful "closest to the line" to track — it just flickered and vibrated.
+		if (!graph.classList.contains('preview') && window.matchMedia('(max-width: 680px)').matches) {
 			const commits = [...graph.querySelectorAll<HTMLElement>('.commit')].filter(
 				(c) => !c.classList.contains('is-junction'),
 			);
