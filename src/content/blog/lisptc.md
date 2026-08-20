@@ -9,7 +9,7 @@ link: 'https://github.com/1hachem/lisptc'
 tldr: "Programmatic tool calling lets an agent write code instead of firing one tool call at a time, but running that code safely is a hard, unsolved problem. Instead of sandboxing an existing language, I built one that never had the dangerous capabilities in the first place: lisptc, a Lisp dialect with an interpreter, an LSP, a formatter and a REPL, designed from scratch for AI agents, with native MCP support, grammar-constrained output, and context compression built in. The bigger claim: the LLM isn't the agent, it's one module in a cognitive architecture, and Lisp is the symbolic half."
 ---
 
-Anthropic's [blog post](https://www.anthropic.com/engineering/advanced-tool-use) about programmatic tool calling shed light on a better
+Anthropic's [blog post](https://www.anthropic.com/engineering/advanced-tool-use) about programmatic tool calling pointed to a better
 way to use AI agents. Instead of calling tools in a loop, the agent becomes a
 programmer: it writes the function calls and the logic in a language of its
 choice, and the runtime executes them.
@@ -103,7 +103,7 @@ about why it's such an improvement.
   <text x="565" y="308" text-anchor="middle" class="t cap">stays in the runtime</text>
 </svg>
 
-For those who are unfamiliar with this subject, here is a video that illustrates more what PTC is:
+For those who are unfamiliar with this subject, here is a video that explains PTC in more detail:
 
 <div style="position: relative; aspect-ratio: 16 / 9; margin: 1.5rem 0; background: #000 url('https://i.ytimg.com/vi/2MJDdzSXL74/hqdefault.jpg') center / cover no-repeat;">
   <iframe
@@ -117,16 +117,13 @@ For those who are unfamiliar with this subject, here is a video that illustrates
 
 ## Why programmatic tool calling wins
 
-The advantages compound quickly:
-
-- **Fewer tokens.** No JSON-schema boilerplate wrapping every call. No giant
-  system prompt describing every tool up front.
-- **Real control flow.** You can call a tool inside a `for` loop instead of
-  relying on the model to fire off N separate calls by hand.
-- **Variables.** Intermediate data can be stored and passed around without
-  ever loading it back into the model's context.
-- **Integration.** Huge ecosystems of libraries and SDKs the agent can reach
-  for.
+The advantages compound quickly. There's no JSON-schema boilerplate wrapping
+every call, and no giant system prompt describing every tool up front. You get
+real control flow: call a tool inside a `for` loop instead of relying on the
+model to fire off N separate calls by hand. Intermediate data lives in
+variables and gets passed around without ever loading it back into the
+model's context. And the agent can pull from the huge ecosystems of libraries
+and SDKs already out there, not just the tools you hand it.
 
 The only serious downside I can think of is security. The code the agent
 executes can be malicious in plenty of ways: the user might _want_ it to be, a
@@ -138,7 +135,7 @@ stops eating host resources.
 That's the well-known problem of untrusted code execution, and it drops you
 straight into a rabbit hole of decades of work on sandboxing and isolation. It's
 still a standing problem, only ever _mitigated_, never solved, and every current
-solution piles a considerable amount of complexity onto your stack.
+solution piles a lot of complexity onto your stack.
 
 The root difficulty is this: trying to limit the power and access of a
 _general-purpose_ programming language is a hard task, and there is always a
@@ -362,7 +359,7 @@ format: you describe the language's grammar and generation rules, pass it in wit
 your API call, and the model can only emit a token that satisfies the grammar.
 Not every provider exposes this passthrough, and I can only name a few that do;
 [Fireworks AI](https://docs.fireworks.ai/structured-responses/structured-output-grammar-based)
-is one. Maybe at some point I'll have to self-host these models myself.
+is one. Maybe at some point I'll have to self-host these models.
 
 ### The REPL loop
 
@@ -438,8 +435,8 @@ It turned out fine. I was impressed by how well the proprietary models did with
 the whole interpreter sitting in the system prompt, and by how well the open
 models did when their output was constrained by the grammar. At first Claude made
 at least one mistake before fixing its calls to the Lisp REPL, but with the
-interpreter in the system prompt, things were smooth. The whole project was
-generated with coding agents, and the tests turned out to be straightforward: you
+interpreter in the system prompt, things were smooth. I built the whole project
+with coding agents, and the tests turned out to be straightforward: you
 write Lisp code and expect it to do what it says.
 
 ## The LLM is not the agent
@@ -449,13 +446,13 @@ cognitive architecture that combines the power of LLMs with the symbolic nature
 of the language: a separate memory module that extends the interpreter.
 
 The LLM is _not_ the agent. It's part of a system where
-every module plays a role toward an objective. The best move is to leave the
-imaginative, creative, flexible parts to the LLM, and the rest to the symbolic
+every module does one job toward a shared goal. The best move is to leave the
+imaginative, flexible parts to the LLM, and the rest to the symbolic
 system, the Lisp. Just like the brain has two hemispheres.
 
 I deliberately prefer "cognitive architecture" over "harness." _Harness_ is the
-new kid on the block; _cognitive architecture_ is deeply rooted, a term you can
-draw decades of research from.
+new kid on the block; _cognitive architecture_ goes back decades, a term backed
+by real research.
 
 ## Still a work in progress
 
@@ -464,12 +461,12 @@ neuro-symbolic architecture against its harness-style counterparts, but the
 roadmap runs a lot further than that. Macros are the shallow end of code-as-data,
 and I want to see how deep it goes: an agent that reads back its own programs as
 data, spots the shape it keeps rewriting, and folds it into a form it can reuse,
-building a vocabulary for a task as it works through it. I want to experiment with
-generative UI, so the agent can render its own interfaces and visualize the
-prelude and a run as they happen. I want declarative agents, described by what
-they should achieve, all in Lisp (just like how NixOS built the Nix language for OS configuration, you can think of lisptc as the declaration of orchestration of agents).
+building a vocabulary for a task as it works through it. Generative UI is another
+thread worth pulling on: the agent renders its own interfaces and visualizes the
+prelude and a run as they happen. Declarative agents are the bigger one, described
+by what they should achieve, all in Lisp (just like how NixOS built the Nix language for OS configuration, you can think of lisptc as the declaration of orchestration of agents).
 
-And I want the whole thing to grow in a cloud-native setup, a distributed file system the
+The whole thing should also grow in a cloud-native setup, a distributed file system the
 agents can share, and Git woven in so that every change an agent makes is
 versioned, reviewable, and reversible.
 
