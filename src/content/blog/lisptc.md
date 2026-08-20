@@ -173,9 +173,12 @@ machines, map almost perfectly onto what an agent language needs now:
 - And what if you threw out elaborate syntax altogether, so that a program was
   just a list?
 
-Sixty-odd years later, each answer earns its keep here. Code-as-data lets the
-agent generate, inspect, and rewrite its own programs as ordinary structures,
-which is exactly what makes macros and context compression so cheap. A handful of
+Sixty-odd years later, each answer earns its keep here. Code-as-data means a
+program is an ordinary structure the agent can build, read back, and reshape, and
+that reaches the language itself: a pattern it keeps spelling out by hand becomes
+a single form, so the same task costs fewer tokens every time it comes up again.
+Macros are the obvious payoff, but the deeper one is that the agent can bend the
+language to fit the job instead of the other way around. A handful of
 primitives keeps the language small enough to reason about completely and to pin
 down with a compact grammar. A self-describing core made the interpreter, LSP,
 and formatter almost embarrassingly simple to build. And when a program is just a
@@ -233,7 +236,8 @@ A macro is a memory too, and a far better kind. It persists, it evaluates, it ca
 reach for other memories, it can have side effects. The agent can write code that
 runs over its memories, which are themselves code, to produce a new memory, which
 is also code. Declarative memory, the things it knows, and procedural memory, the
-things it knows how to do, stop being two separate systems: they are both lists the interpreter can already read, store, and run.
+things it knows how to do, stop being two separate systems bolted onto a model and
+become the same thing: lists the interpreter can already read, store, and run.
 
 Along the way I needed a language server, which turned out to be fairly easy with
 [vscode-languageserver](https://github.com/microsoft/vscode-languageserver-node)
@@ -288,6 +292,64 @@ Here's the part I didn't fully expect. Because I owned the interpreter _and_ the
 REPL end to end, capabilities that are expensive bolt-ons everywhere else came
 almost for free. Each one below is less a feature I built than a property that
 fell out of the design.
+
+<svg class="repl-diagram" viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="The agent reasons and sends grammar-constrained Lisp to a persistent REPL, which returns clipped results while bindings stay in the session">
+  <style>
+    svg.repl-diagram { color: var(--fg); }
+    svg.repl-diagram .s{ stroke:currentColor; stroke-width:1.6; }
+    svg.repl-diagram .box{ stroke:currentColor; stroke-width:1.6; fill:none; }
+    svg.repl-diagram .dash{ stroke:currentColor; stroke-width:1.2; fill:none; stroke-dasharray:4 4; opacity:.6; }
+    svg.repl-diagram .ll{ stroke:currentColor; stroke-width:1.2; stroke-dasharray:3 4; opacity:.5; }
+    svg.repl-diagram .t{ fill:currentColor; font-family:'JetBrains Mono','JetBrainsMono Nerd Font',ui-monospace,'Cascadia Code','Source Code Pro',Menlo,Consolas,'DejaVu Sans Mono',monospace; }
+    svg.repl-diagram .lbl{ font-size:13px; }
+    svg.repl-diagram .cap{ font-size:12px; opacity:.72; }
+    svg.repl-diagram .mono{ font-size:12px; }
+    svg.repl-diagram .dim{ opacity:.55; }
+  </style>
+  <defs>
+    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <text x="165" y="34" text-anchor="middle" class="t lbl">Agent</text>
+  <text x="369" y="34" text-anchor="middle" class="t cap">grammar-constrained lisp</text>
+  <rect class="box" x="90" y="110" width="150" height="56" rx="8"/>
+  <text x="165" y="134" text-anchor="middle" class="t lbl">reasons</text>
+  <text x="165" y="153" text-anchor="middle" class="t cap dim">turn &#9312;</text>
+  <line x1="165" y1="166" x2="165" y2="250" class="ll"/>
+  <rect class="box" x="90" y="250" width="150" height="56" rx="8"/>
+  <text x="165" y="274" text-anchor="middle" class="t lbl">reasons</text>
+  <text x="165" y="293" text-anchor="middle" class="t cap dim">turn &#9313;</text>
+  <line x1="165" y1="306" x2="165" y2="330" class="ll"/>
+  <text x="165" y="344" text-anchor="middle" class="t lbl dim">&#8942;</text>
+  <rect class="box" x="500" y="48" width="218" height="300" rx="10"/>
+  <text x="609" y="76" text-anchor="middle" class="t lbl">REPL</text>
+  <text x="609" y="94" text-anchor="middle" class="t cap dim">persistent</text>
+  <rect class="dash" x="512" y="108" width="194" height="102" rx="6"/>
+  <text x="524" y="127" class="t cap">prelude</text>
+  <text x="524" y="149" class="t mono dim">(defun visit (url) &#8230;)</text>
+  <text x="524" y="167" class="t mono dim">(defvar *goal* &#8230;)</text>
+  <text x="524" y="185" class="t mono dim">(defvar *plan* &#8230;)</text>
+  <text x="524" y="203" class="t cap dim">procedural + declarative</text>
+  <text x="524" y="238" class="t cap">env</text>
+  <text x="524" y="260" class="t mono dim">page &#8592; &#9312;</text>
+  <text x="524" y="280" class="t mono dim">hits &#8592; &#9313;</text>
+  <text x="528" y="300" class="t lbl dim">&#8942;</text>
+  <text x="609" y="332" text-anchor="middle" class="t cap">nothing is rebuilt</text>
+  <text x="369" y="118" text-anchor="middle" class="t mono">(visit "https://hyko.ai")</text>
+  <line class="s" x1="242" y1="130" x2="496" y2="130" marker-end="url(#ah2)"/>
+  <line class="s" x1="496" y1="158" x2="242" y2="158" marker-end="url(#ah2)"/>
+  <text x="369" y="176" text-anchor="middle" class="t mono">#&lt;page 812 lines&gt;</text>
+  <text x="369" y="258" text-anchor="middle" class="t mono">(grep page "price")</text>
+  <line class="s" x1="242" y1="270" x2="496" y2="270" marker-end="url(#ah2)"/>
+  <line class="s" x1="496" y1="298" x2="242" y2="298" marker-end="url(#ah2)"/>
+  <text x="369" y="316" text-anchor="middle" class="t mono">("Pro $29/mo" &#8230;) [3 of 812]</text>
+  <text x="380" y="382" text-anchor="middle" class="t cap">only lisp crosses, in both directions</text>
+</svg>
+
+The prelude is the file the REPL starts from: procedures the agent can reuse
+without writing them again, plus the goal it's working toward and the plan it
+came up with. Everything below is a consequence of that picture.
 
 ### Grammar-constrained output
 
