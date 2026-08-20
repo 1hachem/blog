@@ -256,6 +256,7 @@ Inventing a language is the kind of thing you should have to justify.
 Here is the comparison as I see it, running an agent's programs in a sandboxed
 TypeScript runtime versus running them in lisptc:
 
+<div class="table-wrap">
 <table>
 <colgroup>
 <col style="width: 12%">
@@ -279,6 +280,7 @@ TypeScript runtime versus running them in lisptc:
 <tr><td><strong>Who owns the runtime</strong></td><td>You rent it. Compression, disclosure, and tooling are things you bolt on around a runtime someone else defined.</td><td>I own it, so the tricks land inside the language. Reads are grep-able and paginated by construction, and loading an MCP server teaches the LSP about it, so tools arrive with completion and documentation on the spot.</td></tr>
 </tbody>
 </table>
+</div>
 
 The two rows before the last are real losses and I am not going to pretend
 otherwise. The ecosystem gap stings least, because MCP absorbs most of what an
