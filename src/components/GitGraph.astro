@@ -239,6 +239,81 @@ const yearMark = yearMarks(visibleRows);
 	body.lightbox-open {
 		overflow: hidden;
 	}
+
+	/* full-screen carousel opened by tapping a .photo-badge — the .photos hover
+	   group stays in the DOM (hidden on mobile) purely as the image source.
+	   Built and appended to <body> at runtime (see the script below), so these
+	   rules must be global: a scoped style never reaches an element that isn't
+	   part of this component's own template. */
+	.photo-lightbox {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.9);
+	}
+	.photo-lightbox[hidden] {
+		display: none;
+	}
+	/* the window onto the slide row; deliberately wider than one photo so a
+	   sliver of the prev/next slide is always visible at rest — that sliver is
+	   the only "there's more" affordance now that the nav buttons are gone. */
+	.lightbox-viewport {
+		position: relative;
+		width: min(92vw, 34rem);
+		height: min(78vh, 34rem);
+		overflow: hidden;
+		touch-action: pan-y;
+		cursor: grab;
+	}
+	/* three slides (prev / current / next) narrower than the viewport, so the
+	   row centred on the current one leaves each neighbour's edge peeking past
+	   it; dragging adds a live px offset on top of that centred position, and
+	   crossing the per-slide "step" (see the script) commits to the neighbour */
+	.lightbox-track {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		transform: translateX(calc(var(--neutral, 0px) + var(--drag, 0px)));
+	}
+	.lightbox-track.snap {
+		transition: transform 0.25s ease;
+	}
+	.lightbox-slide {
+		flex-shrink: 0;
+		height: 100%;
+		border-radius: 8px;
+		object-fit: contain;
+		user-select: none;
+		-webkit-user-drag: none;
+	}
+	.lightbox-slide[data-slide='current'] {
+		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+	}
+	.lightbox-close {
+		position: absolute;
+		top: 0.5rem;
+		right: 0.5rem;
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.8rem;
+		line-height: 1;
+		cursor: pointer;
+		padding: 0.6rem;
+		z-index: 1;
+	}
+	.lightbox-counter {
+		position: absolute;
+		bottom: 1rem;
+		left: 50%;
+		transform: translateX(-50%);
+		color: rgba(255, 255, 255, 0.75);
+		font-size: 0.8rem;
+	}
 </style>
 
 <style>
@@ -809,65 +884,6 @@ const yearMark = yearMarks(visibleRows);
 		}
 	}
 
-	/* full-screen carousel opened by tapping a .photo-badge — the .photos hover
-	   group stays in the DOM (hidden on mobile) purely as the image source. */
-	.photo-lightbox {
-		position: fixed;
-		inset: 0;
-		z-index: 1000;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: rgba(0, 0, 0, 0.9);
-	}
-	.photo-lightbox[hidden] {
-		display: none;
-	}
-	.lightbox-img {
-		max-width: min(92vw, 32rem);
-		max-height: 82vh;
-		border-radius: 8px;
-		box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-	}
-	.lightbox-close,
-	.lightbox-prev,
-	.lightbox-next {
-		position: absolute;
-		background: none;
-		border: none;
-		color: #fff;
-		font-size: 1.8rem;
-		line-height: 1;
-		cursor: pointer;
-		padding: 0.6rem;
-	}
-	.lightbox-close {
-		top: 0.5rem;
-		right: 0.5rem;
-	}
-	.lightbox-prev {
-		left: 0.25rem;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-	.lightbox-next {
-		right: 0.25rem;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-	.lightbox-prev[hidden],
-	.lightbox-next[hidden] {
-		display: none;
-	}
-	.lightbox-counter {
-		position: absolute;
-		bottom: 1rem;
-		left: 50%;
-		transform: translateX(-50%);
-		color: rgba(255, 255, 255, 0.75);
-		font-size: 0.8rem;
-	}
-
 	/* on narrow screens collapse every branch onto a single left rail with cards
 	   on the right — the multi-lane layout is too wide for a phone */
 	@media (max-width: 680px) {
@@ -949,62 +965,149 @@ const yearMark = yearMarks(visibleRows);
 		el.hidden = true;
 		el.innerHTML = `
 			<button type="button" class="lightbox-close" aria-label="Close">✕</button>
-			<button type="button" class="lightbox-prev" aria-label="Previous photo">‹</button>
-			<img class="lightbox-img" alt="" />
-			<button type="button" class="lightbox-next" aria-label="Next photo">›</button>
+			<div class="lightbox-viewport">
+				<div class="lightbox-track">
+					<img class="lightbox-slide" data-slide="prev" alt="" />
+					<img class="lightbox-slide" data-slide="current" alt="" />
+					<img class="lightbox-slide" data-slide="next" alt="" />
+				</div>
+			</div>
 			<span class="lightbox-counter"></span>
 		`;
 		document.body.appendChild(el);
 
-		const img = el.querySelector<HTMLImageElement>('.lightbox-img')!;
+		const viewport = el.querySelector<HTMLElement>('.lightbox-viewport')!;
+		const track = el.querySelector<HTMLElement>('.lightbox-track')!;
+		const slidePrev = el.querySelector<HTMLImageElement>('[data-slide="prev"]')!;
+		const slideCur = el.querySelector<HTMLImageElement>('[data-slide="current"]')!;
+		const slideNext = el.querySelector<HTMLImageElement>('[data-slide="next"]')!;
 		const counter = el.querySelector<HTMLElement>('.lightbox-counter')!;
-		const prevBtn = el.querySelector<HTMLButtonElement>('.lightbox-prev')!;
-		const nextBtn = el.querySelector<HTMLButtonElement>('.lightbox-next')!;
+
+		// the current slide is narrower than the viewport (SLIDE_W of its width);
+		// the leftover space is split between the two edges, so the prev/next
+		// slide's edge always peeks through there — with only one photo there's
+		// nothing to peek, so it fills the viewport instead.
+		const SLIDE_W = 0.84;
+		const GAP = 0.04;
 
 		let srcs: string[] = [];
 		let index = 0;
+		let animating = false;
+		let stepPx = 0; // distance (px) the track travels to bring in a neighbour
 
+		// no wraparound: past either end there's simply no neighbour to show.
+		const at = (i: number): string | null => (i >= 0 && i < srcs.length ? srcs[i] : null);
+		// slide width/gap are fractions of the viewport, so this only needs
+		// recomputing when the viewport itself resizes or the photo count
+		// changes (1 photo vs 2+ toggles whether there's any peek at all).
+		const layout = () => {
+			const vw = viewport.clientWidth;
+			const peek = srcs.length > 1;
+			const slideW = vw * (peek ? SLIDE_W : 1);
+			const gap = peek ? vw * GAP : 0;
+			[slidePrev, slideCur, slideNext].forEach((s) => (s.style.width = `${slideW}px`));
+			track.style.gap = `${gap}px`;
+			stepPx = slideW + gap;
+			track.style.setProperty('--neutral', `${vw / 2 - 1.5 * slideW - gap}px`);
+		};
+		// past an end there's no photo for that slide — hide it rather than
+		// showing a stale or broken image.
+		const setSlide = (img: HTMLImageElement, i: number) => {
+			const src = at(i);
+			img.style.visibility = src ? 'visible' : 'hidden';
+			if (src) img.src = src;
+		};
 		const render = () => {
-			img.src = srcs[index];
+			setSlide(slidePrev, index - 1);
+			setSlide(slideCur, index);
+			setSlide(slideNext, index + 1);
 			counter.textContent = `${index + 1} / ${srcs.length}`;
-			const single = srcs.length < 2;
-			prevBtn.hidden = single;
-			nextBtn.hidden = single;
+		};
+		const settle = () => {
+			track.classList.remove('snap');
+			track.style.setProperty('--drag', '0px');
 		};
 		const close = () => {
 			el.hidden = true;
 			document.body.classList.remove('lightbox-open');
 		};
-		const prev = () => {
-			index = (index - 1 + srcs.length) % srcs.length;
-			render();
+		// animate the track by one slide-step in `dir`'s direction, then swap
+		// which photo is "current" once it finishes and snap back to the neutral
+		// (untranslated) position with no transition — the hand-off is invisible
+		// because the new current photo is already sitting there. No-ops past
+		// either end (no wraparound).
+		const goTo = (dir: 1 | -1) => {
+			const targetIndex = index + dir;
+			if (animating || targetIndex < 0 || targetIndex >= srcs.length) return;
+			animating = true;
+			track.classList.add('snap');
+			track.style.setProperty('--drag', `${-dir * stepPx}px`);
+			track.addEventListener(
+				'transitionend',
+				() => {
+					index = targetIndex;
+					settle();
+					render();
+					animating = false;
+				},
+				{ once: true },
+			);
 		};
-		const next = () => {
-			index = (index + 1) % srcs.length;
-			render();
-		};
+		const prev = () => goTo(-1);
+		const next = () => goTo(1);
 		const open = (photoSrcs: string[]) => {
 			srcs = photoSrcs;
 			index = 0;
-			render();
 			el.hidden = false;
 			document.body.classList.add('lightbox-open');
+			layout(); // needs the viewport visible (display: flex) to read its width
+			settle();
+			render();
 		};
 
-		prevBtn.addEventListener('click', prev);
-		nextBtn.addEventListener('click', next);
 		el.querySelector('.lightbox-close')!.addEventListener('click', close);
 		el.addEventListener('click', (e) => {
 			if (e.target === el) close(); // backdrop click
 		});
-		let touchStartX = 0;
-		el.addEventListener('touchstart', (e) => {
-			touchStartX = e.changedTouches[0].clientX;
+		window.addEventListener('resize', () => {
+			if (!el.hidden) layout();
 		});
-		el.addEventListener('touchend', (e) => {
-			const dx = e.changedTouches[0].clientX - touchStartX;
-			if (Math.abs(dx) > 40) (dx > 0 ? prev : next)();
+
+		// swiping is the only way to move between photos now (no arrow buttons):
+		// drag the track under the pointer (touch or mouse) so the peeking
+		// neighbour slides the rest of the way in; release past ~a fifth of a
+		// slide-step to commit, otherwise it springs back to centred.
+		let dragging = false;
+		let dragStartX = 0;
+		viewport.addEventListener('pointerdown', (e) => {
+			if (srcs.length < 2 || animating) return;
+			dragging = true;
+			dragStartX = e.clientX;
+			track.classList.remove('snap');
+			viewport.setPointerCapture(e.pointerId);
 		});
+		viewport.addEventListener('pointermove', (e) => {
+			if (!dragging) return;
+			track.style.setProperty('--drag', `${e.clientX - dragStartX}px`);
+		});
+		const endDrag = (e: PointerEvent) => {
+			if (!dragging) return;
+			dragging = false;
+			const dx = e.clientX - dragStartX;
+			const dir = dx < 0 ? 1 : -1;
+			const canMove = index + dir >= 0 && index + dir < srcs.length;
+			if (canMove && Math.abs(dx) > stepPx * 0.2) {
+				goTo(dir);
+			} else {
+				// either a short drag, or a drag toward an end that has no neighbour
+				// (no wraparound) — spring back to centred.
+				track.classList.add('snap');
+				track.style.setProperty('--drag', '0px');
+				track.addEventListener('transitionend', settle, { once: true });
+			}
+		};
+		viewport.addEventListener('pointerup', endDrag);
+		viewport.addEventListener('pointercancel', endDrag);
 
 		lightbox = { el, open, close, prev, next };
 		return lightbox;
@@ -1020,15 +1123,17 @@ const yearMark = yearMarks(visibleRows);
 		if (graph.dataset.ginit) return;
 		graph.dataset.ginit = '1';
 
-		// tapping a photo badge opens that commit's photos in a full-screen carousel
-		// (the .photos figures already hold the <img>s; on mobile they're just hidden).
-		graph.querySelectorAll<HTMLButtonElement>('.photo-badge').forEach((badge) => {
-			const commit = badge.closest<HTMLElement>('.commit');
-			const srcs = [...(commit?.querySelectorAll<HTMLImageElement>('.photos img') ?? [])].map(
+		// tapping the photo badge, or double-clicking anywhere on the card, opens
+		// that commit's photos in a full-screen carousel (the .photos figures
+		// already hold the <img>s; on mobile they're just hidden).
+		graph.querySelectorAll<HTMLElement>('.commit').forEach((commit) => {
+			const srcs = [...commit.querySelectorAll<HTMLImageElement>('.photos img')].map(
 				(img) => img.src,
 			);
 			if (!srcs.length) return;
-			badge.addEventListener('click', () => ensureLightbox().open(srcs));
+			const open = () => ensureLightbox().open(srcs);
+			commit.querySelector<HTMLButtonElement>('.photo-badge')?.addEventListener('click', open);
+			commit.querySelector<HTMLElement>('.card')?.addEventListener('dblclick', open);
 		});
 
 		const edges: {
