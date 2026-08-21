@@ -70,14 +70,14 @@ exceptions were the whole story.
 
 ### Sales
 
-To the sales team, radical honesty wasn't a value. It was, and I quote,
+To the sales manager, radical honesty wasn't a value. It was, and I quote,
 "evil" and "devil-making." If you see a fat woman in the street, you don't go and tell her she is fat
 just because radical honesty is the way.
 
 The reasoning was that sales is, by definition,
 the art of convincing someone to buy something, and that requires a little
 flexibility with the truth. A little sugar-coating. A little pushing the
-solution into the client's mouth whether or not it fits.
+solution into the client's mouth whether or not it fits. And most importantly, it meant you had to say the truth, but sometimes not the whole truth, which is trickier than it sounds: in a lot of situations, telling part of the truth is just plain lying.
 
 We wanted to bring radical honesty into the sales process too. No more
 shoving the product at prospects. If it didn't fit their needs, we'd say
