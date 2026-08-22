@@ -3,6 +3,7 @@ import 'devicon/devicon.min.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import GitGraph from '../components/GitGraph.astro';
+import ObfuscatedMailto from '../components/ObfuscatedMailto.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { getAllPosts } from '../lib/posts';
 
@@ -33,7 +34,7 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 					<i class="logo devicon-github-plain" aria-hidden="true"></i>
 					<span>github</span>
 				</a>
-				<a href="mailto:h@d4shi.com">
+				<ObfuscatedMailto user="h" domain="d4shi.com" showAddress>
 					<svg
 						class="logo mail-icon"
 						viewBox="0 0 16 16"
@@ -46,8 +47,7 @@ const latestPosts = (await getAllPosts()).slice(0, 5);
 							d="M1.5 3h13c.28 0 .5.22.5.5v9c0 .28-.22.5-.5.5h-13a.5.5 0 0 1-.5-.5v-9c0-.28.22-.5.5-.5zm.5 1.35V12h12V4.35L8 8.8 2 4.35zM2.4 4l5.6 4.2L13.6 4H2.4z"
 						></path>
 					</svg>
-					<span>h@d4shi.com</span>
-				</a>
+				</ObfuscatedMailto>
 			</div>
 		</section>
 	</section>

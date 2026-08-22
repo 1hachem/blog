@@ -1,0 +1,38 @@
+---
+interface Props {
+	user: string;
+	domain: string;
+	showAddress?: boolean;
+	class?: string;
+}
+
+const { user, domain, showAddress = false, class: className } = Astro.props;
+---
+
+<a
+	class:list={['obfuscated-mailto', className]}
+	data-user={user}
+	data-domain={domain}
+	data-show-address={showAddress ? '1' : undefined}
+>
+	<slot />
+</a>
+
+<script>
+	function decodeMailtoLinks() {
+		document.querySelectorAll('a.obfuscated-mailto[data-user]').forEach((el) => {
+			const user = el.getAttribute('data-user');
+			const domain = el.getAttribute('data-domain');
+			if (!user || !domain) return;
+			el.setAttribute('href', `mailto:${user}@${domain}`);
+			if (el.getAttribute('data-show-address') === '1') {
+				el.appendChild(document.createTextNode(`${user}@${domain}`));
+			}
+			el.removeAttribute('data-user');
+			el.removeAttribute('data-domain');
+			el.removeAttribute('data-show-address');
+		});
+	}
+	decodeMailtoLinks();
+	document.addEventListener('astro:page-load', decodeMailtoLinks);
+</script>
