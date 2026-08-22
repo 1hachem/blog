@@ -267,12 +267,11 @@ TypeScript runtime versus running them in lisptc:
 <tbody>
 <tr><td><strong>Security model</strong></td><td>Deny-list. You start from a language that can do anything and take capabilities away, hoping you found them all.</td><td>Allow-list. Nothing exists in the runtime unless I put it there, so there is nothing to strip out.</td></tr>
 <tr><td><strong>Cost of isolation</strong></td><td>V8 isolates, containers, or a microVM per run, plus the ops burden that comes with them.</td><td>The interpreter is the boundary. No extra infrastructure.</td></tr>
-<tr><td><strong>Size of the language</strong></td><td>Hundreds of pages of spec and decades of accumulated edge cases.</td><td>Around 500 lines. The whole interpreter fits in a system prompt.</td></tr>
+<tr><td><strong>Size of the language</strong></td><td>Hundreds of pages of spec and decades of accumulated edge cases.</td><td>The whole interpreter fits in a system prompt.</td></tr>
 <tr><td><strong>How the model learns it</strong></td><td>It relies on whatever it absorbed during training, and on you describing your API in prose.</td><td>It reads the actual interpreter, so it knows the language exactly, not approximately.</td></tr>
-<tr><td><strong>Constrained decoding</strong></td><td>A grammar for TypeScript is enormous and unusable in practice.</td><td>A full GBNF grammar in a few dozen rules, so an open model physically cannot emit invalid syntax.</td></tr>
+<tr><td><strong>Constrained decoding</strong></td><td>A grammar for TypeScript is enormous and unusable in practice.</td><td>A full GBNF grammar in 10 lines, so an open model physically cannot emit invalid syntax.</td></tr>
 <tr><td><strong>Code as data</strong></td><td>Extending the language means an AST library, a parser, and a lot of ceremony.</td><td>A program is a list, so the language extends itself. The agent defines a macro mid-session to collapse a pattern it keeps repeating, and the new form is indistinguishable from a builtin.</td></tr>
 <tr><td><strong>Tool calls</strong></td><td>An SDK, a client, and glue code per server.</td><td>Tools are ordinary globals: <code>(playwright/browser_navigate :url "...")</code></td></tr>
-<tr><td><strong>Execution model</strong></td><td>Run a script, get output, run another script. State dies with the process unless you rebuild it every time.</td><td>A live REPL. Bindings persist across turns, the agent tests a line before committing to it, and the whole loop matches the notebooks it was trained on.</td></tr>
 <tr><td><strong>Ecosystem</strong></td><td>npm. Nothing I build competes with this.</td><td>What I wrote, plus whatever MCP servers expose.</td></tr>
 <tr><td><strong>Model fluency</strong></td><td>Native. This is what the training data is made of.</td><td>Rusty, and the parentheses genuinely worried me.</td></tr>
 <tr><td><strong>Who owns the runtime</strong></td><td>You rent it. Compression, disclosure, and tooling are things you add around a runtime someone else defined.</td><td>I own it, so the tricks land inside the language. Reads are grep-able and paginated by construction, and loading an MCP server teaches the LSP about it, so tools arrive with completion and documentation on the spot.</td></tr>
@@ -347,9 +346,9 @@ fell out of the design.
   <text x="380" y="382" text-anchor="middle" class="t cap">only lisp crosses, in both directions</text>
 </svg>
 
-The prelude is the file the REPL starts from: procedures the agent can reuse
+Above in the illustration, the prelude is the file the REPL starts from: procedures the agent can reuse
 without writing them again, plus the goal it's working toward and the plan it
-came up with. Everything below is a consequence of that picture.
+came up with.
 
 ### Grammar-constrained output
 
