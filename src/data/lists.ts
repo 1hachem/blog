@@ -45,10 +45,6 @@ export const lists: List[] = [
 					{ title: 'Meditations', note: 'Marcus Aurelius — a Stoic talking to himself' },
 				],
 			},
-			{
-				name: 'craft',
-				items: [{ title: 'The Pragmatic Programmer', note: 'Hunt & Thomas — still the baseline' }],
-			},
 		],
 	},
 	{
@@ -59,23 +55,23 @@ export const lists: List[] = [
 			{
 				name: 'sci-fi',
 				items: [
-					{ title: 'Blade Runner 2049', note: 'Denis Villeneuve — loneliness in neon' },
-					{ title: 'Arrival', note: 'Denis Villeneuve — grief told out of order' },
+					{
+						title: "Good luck, have fun, don't die",
+						note: 'A AI doomer movie about a time travler who goes back in time and try to prevent ASI from happening, ASI fights back from the future',
+					},
 				],
 			},
 			{
 				name: 'drama',
-				items: [
-					{ title: 'Whiplash', note: 'Damien Chazelle — obsession as a drum solo' },
-					{ title: 'The Social Network', note: 'David Fincher — ambition at 24fps' },
-					{ title: 'Spirited Away', note: 'Hayao Miyazaki — the one I rewatch most' },
-				],
+				items: [{ title: 'A Silent Voice: The Movie', note: 'Anime that will make you cry' }],
 			},
 			{
 				name: 'thriller',
 				items: [
-					{ title: 'No Country for Old Men', note: 'Coen Brothers — dread with a coin flip' },
-					{ title: 'Parasite', note: 'Bong Joon-ho — the basement and the stairs' },
+					{
+						title: 'The game (1997)',
+						note: 'An arrogant, isolated investment banker is targeted by an enigmatic entertainment company',
+					},
 				],
 			},
 		],
