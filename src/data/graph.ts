@@ -895,7 +895,7 @@ export const history: Commit[] = [
 		links: [
 			{
 				label: 'reachout',
-				href: 'mailto:test@example.com',
+				href: 'mailto:hire@d4shi.com',
 			},
 		],
 	},
