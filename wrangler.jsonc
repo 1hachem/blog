@@ -3,6 +3,9 @@
 	"compatibility_date": "2025-05-29",
 	"assets": {
 		"directory": "./dist",
+		// without this, an unmatched path gets an empty-bodied 404 instead of
+		// the rendered /404.html.
+		"not_found_handling": "404-page",
 	},
 	"observability": {
 		"enabled": false,

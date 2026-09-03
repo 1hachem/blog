@@ -1,12 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE_TITLE } from '../consts';
+
+const navLinks = [
+	{ href: '/', label: '← home' },
+	{ href: '/blog', label: 'blog' },
+	{ href: '/about', label: 'about' },
+];
 ---
 
-<BaseLayout title={`404 — ${SITE_TITLE}`} description="Page not found">
+<BaseLayout title="404" description="page not found" navLinks={navLinks} noindex>
 	<p class="code">404</p>
 	<p class="message">page not found</p>
-	<p><a href="/">← home</a></p>
 </BaseLayout>
 
 <style>
