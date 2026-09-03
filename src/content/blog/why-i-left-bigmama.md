@@ -1,4 +1,5 @@
 ---
+draft: true
 title: 'Why I left BigMama'
 description: 'Three years, two pivots, one CTO title I had no idea how to hold, and the slow realization that a software product was never going to fix the thing I actually wanted to fix.'
 pubDate: 2026-08-16

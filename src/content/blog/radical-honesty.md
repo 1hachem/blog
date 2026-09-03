@@ -1,4 +1,5 @@
 ---
+draft: true
 title: 'How radical honesty can destroy a company'
 description: 'We built a culture on radical honesty. It made us better engineers, kinder colleagues, and clearer thinkers — and it also blew the company apart.'
 pubDate: 2026-08-16

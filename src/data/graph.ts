@@ -875,12 +875,6 @@ export const history: Commit[] = [
 		title: 'Left BIGmama after 4 years',
 		card: 'left',
 		desc: 'Stepped away from the CTO seat to build my own thing.',
-		links: [
-			{
-				label: 'Why I quit BIGmama after 4 years',
-				href: '/blog/why-i-left-bigmama',
-			},
-		],
 	},
 	{
 		id: 'now',
