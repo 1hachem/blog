@@ -180,8 +180,7 @@ Buoyed by that, I started reading about startups: the mistakes, the
 finances. I needed a convincing business plan for an investor meeting and I
 knew nothing, so I did what programmers do: I googled and read the docs. Then
 I taught myself to build financial models in code (I don't know how to use
-Excel, and honestly, neither should you: that's a
-[separate post](/blog/excel)).
+Excel, and honestly, neither should you: that's a separate post).
 
 My starting point was the workbook the bankers had made for us by hand. Full
 credit to them: it taught me what a budget model even contains. But it was a
@@ -230,9 +229,16 @@ to understand it.
 All of a sudden the founder decided that the _technical execution_ was the
 real problem with sales: 90% of what we'd sold was thanks to his network,
 his methodology, and his time, and so little of it came from the actual
-product. I took that for exactly what it was: a direct attempt to
-diminish the tech team's contribution, arriving precisely the moment we
-asked to revisit the equity split.
+product. I took that as a direct attempt to diminish the tech team's
+contribution, arriving precisely the moment we asked to revisit the equity
+split.
+
+By that point I had lost trust in the leadership, and in a startup that
+trust is foundational: it's what keeps the machinery running.
+
+And I snapped. I stopped being the one who tried to hold things together,
+and let everything I'd been holding blow up, in every regard, in a wrong and
+destructive way.
 
 The whole mission that hooked me in the first place was this:
 state-of-the-art technology and genuinely fine products were never built
@@ -243,12 +249,12 @@ belief. To make talent come together and investors invest.
 It turned out the problem was much bigger than that. And it's now clear to
 me that building a software product will not solve it.
 
-## Leaving
+## Where that left me
 
-Which left me with: a resentful boss, 0.5% equity, a third-world country,
-a permanent knot of stress in my gut, a two-year-old who thinks I come with
-a laptop attached to my hand, zero savings, and a mission I no longer
-believed in.
+After all those conversations: a resentful boss, 0.5% equity, a third-world
+country, a permanent knot of stress in my gut, a two-year-old who thinks I
+come with a laptop attached to my hand, zero savings, and a mission I no
+longer believed in.
 
 Yeah, no thanks. Time for the next thing.
 
@@ -261,11 +267,10 @@ works in production, and that's the itch that made me start
 [lisptc](/blog/lisptc). I walk away with an arsenal of tips and tricks for
 the next adventure, and a bag full of good, happy memories.
 
-To everyone I worked with (except the one pathological liar I hired): I
-love you.
-To the CEO, who taught me more with his right doings than with his mistakes:
-I love you. To my wife, whom this work stole me from, and whose support was
-unparalleled: I love you. And to Allah, who made this journey for me: I love
-you.
+To everyone I worked with (except the one pathological liar I hired): I love
+you. To the CEO, who taught me more with his right doings than with his
+mistakes: I love you. To my wife, whom this work stole me from, and whose
+support was unparalleled: I love you. And to Allah, who made this journey
+for me: I love you.
 
 Time for the next thing.
