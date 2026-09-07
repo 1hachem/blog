@@ -844,6 +844,10 @@ export const history: Commit[] = [
 				label: 'writeup',
 				href: '/blog/lisptc',
 			},
+			{
+				label: 'repo',
+				href: 'https://github.com/1hachem/lisptc',
+			},
 		],
 		tech: ['typescript', 'lisp', 'claude-code'],
 	},
