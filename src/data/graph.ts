@@ -306,6 +306,9 @@ export type Commit = BaseCommit &
 // which is gitignored). Base URL is validated by Astro's builtin env schema
 // (see the `env` block in astro.config.mjs).
 const photo = (name: string) => `${PUBLIC_R2_URL}/about/${name}.webp`;
+// Screen-recording clips live beside the photos as GIFs; they get the full
+// width of the hover gutter (see `.photo.clip` in GitGraph.astro).
+const clip = (name: string) => `${PUBLIC_R2_URL}/about/${name}.gif`;
 
 export const history: Commit[] = [
 	{
@@ -655,7 +658,7 @@ export const history: Commit[] = [
 				href: 'https://hyko.ai',
 			},
 		],
-		photos: [photo('focus')],
+		photos: [clip('hyko-workflow')],
 		tech: [
 			'typescript',
 			'react',

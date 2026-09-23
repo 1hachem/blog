@@ -224,7 +224,7 @@ const yearMark = yearMarks(visibleRows);
 						<div class="photos" data-count={c.photos.length}>
 							{c.photos.map((src, i) => (
 								<figure
-									class="photo"
+									class:list={['photo', { clip: src.endsWith('.gif') }]}
 									style={`--tilt:${tiltOf(c.id + i)}deg; --dx:${shiftOf(c.id + i)}px; --i:${i}`}
 								>
 									<img src={src} alt="" loading="lazy" decoding="async" />
@@ -853,6 +853,11 @@ const yearMark = yearMarks(visibleRows);
 	.photos[data-count='3'] .photo:nth-child(3) {
 		grid-column: 2;
 		grid-row: 2;
+	}
+	/* a screen-recording clip is unreadable in a half-width cell, so it takes the
+	   whole gutter row and the stills flow underneath it */
+	.photos .photo.clip {
+		grid-column: 1 / -1;
 	}
 	.photo {
 		margin: 0;
