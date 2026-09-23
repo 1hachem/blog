@@ -19,6 +19,7 @@
           pre-commit
           nodejs
           pnpm
+          wrangler
         ];
       };
     });
