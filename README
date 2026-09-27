@@ -1,5 +1,11 @@
 personal blog built with astro.
 
+## new post
+
+`task new` opens a TUI that asks for the frontmatter (title, slug, description,
+tl;dr, date, category, tags, link, og image, draft) and writes
+`src/content/blog/<slug>.md`. Categories are read from `src/lib/categories.ts`.
+
 ## todo
 
 - [ ] fill in about page

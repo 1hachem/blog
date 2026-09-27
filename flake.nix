@@ -20,6 +20,8 @@
           nodejs
           pnpm
           wrangler
+          go-task
+          go
         ];
       };
     });

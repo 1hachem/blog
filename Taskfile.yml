@@ -1,0 +1,12 @@
+version: '3'
+
+tasks:
+  new:
+    desc: Bootstrap a new blog post from a TUI prompt
+    dir: tools/newpost
+    interactive: true
+    cmds:
+      - >-
+        go run .
+        -out {{.ROOT_DIR}}/src/content/blog
+        -categories {{.ROOT_DIR}}/src/lib/categories.ts
