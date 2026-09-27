@@ -1,6 +1,10 @@
 version: '3'
 
 tasks:
+  dev:
+    desc: Run dev server for blog
+    cmd: pnpm dev
+
   new:
     desc: Bootstrap a new blog post from a TUI prompt
     dir: tools/newpost
