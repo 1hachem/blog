@@ -1,0 +1,137 @@
+<svg
+	class="rings-diagram"
+	viewBox="0 0 760 566"
+	xmlns="http://www.w3.org/2000/svg"
+	fill="none"
+	role="img"
+	aria-label="Four concentric rings, evaluator core, extension modules, host adapters and composition roots, with the world reaching in from outside and stopping at the adapter ring"
+>
+	<style>
+		svg.rings-diagram {
+			color: var(--fg);
+		}
+		svg.rings-diagram .s-wire {
+			stroke: #6d5fa6;
+		}
+		svg.rings-diagram .f-wire {
+			fill: #6d5fa6;
+		}
+		svg.rings-diagram .s-world {
+			stroke: #b4441f;
+		}
+		svg.rings-diagram .f-world {
+			fill: #b4441f;
+		}
+		svg.rings-diagram .s-sealed {
+			stroke: #0f7a6b;
+		}
+		svg.rings-diagram .f-sealed {
+			fill: #0f7a6b;
+		}
+		svg.rings-diagram .s-core {
+			stroke: #2c3a3d;
+		}
+		svg.rings-diagram .f-core {
+			fill: #2c3a3d;
+		}
+		svg.rings-diagram .band {
+			fill: none;
+		}
+		svg.rings-diagram .edge {
+			fill: none;
+			stroke-width: 1.25;
+			opacity: 0.6;
+		}
+		svg.rings-diagram .spoke {
+			stroke-width: 1.4;
+			fill: none;
+			stroke-dasharray: 5 3;
+			stroke-linecap: round;
+		}
+		svg.rings-diagram .t {
+			font-family:
+				'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code',
+				'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+		}
+		svg.rings-diagram .rl {
+			font-size: 12px;
+			letter-spacing: 0.09em;
+		}
+		svg.rings-diagram .rs {
+			font-size: 10.5px;
+			opacity: 0.72;
+		}
+		svg.rings-diagram .sl {
+			font-size: 10.5px;
+		}
+		svg.rings-diagram .note {
+			font-size: 12px;
+			fill: currentColor;
+			opacity: 0.72;
+		}
+		[data-theme='dark'] svg.rings-diagram .s-wire {
+			stroke: #a79bd6;
+		}
+		[data-theme='dark'] svg.rings-diagram .f-wire {
+			fill: #a79bd6;
+		}
+		[data-theme='dark'] svg.rings-diagram .s-world {
+			stroke: #f07f4f;
+		}
+		[data-theme='dark'] svg.rings-diagram .f-world {
+			fill: #f07f4f;
+		}
+		[data-theme='dark'] svg.rings-diagram .s-sealed {
+			stroke: #3fbfab;
+		}
+		[data-theme='dark'] svg.rings-diagram .f-sealed {
+			fill: #3fbfab;
+		}
+		[data-theme='dark'] svg.rings-diagram .s-core {
+			stroke: #b9c7c9;
+		}
+		[data-theme='dark'] svg.rings-diagram .f-core {
+			fill: #b9c7c9;
+		}
+	</style>
+	<circle class="band s-wire" cx="380" cy="250" r="190.0" stroke-width="44" opacity=".13"></circle>
+	<circle class="edge s-wire" cx="380" cy="250" r="212"></circle>
+	<circle class="band s-world" cx="380" cy="250" r="144.0" stroke-width="44" opacity=".2"></circle>
+	<circle class="edge s-world" cx="380" cy="250" r="166"></circle>
+	<circle class="band s-sealed" cx="380" cy="250" r="99.0" stroke-width="42" opacity=".13"></circle>
+	<circle class="edge s-sealed" cx="380" cy="250" r="120"></circle>
+	<circle class="band s-core" cx="380" cy="250" r="38.0" stroke-width="76" opacity=".13"></circle>
+	<circle class="edge s-core" cx="380" cy="250" r="76"></circle>
+	<text x="380" y="58.0" text-anchor="middle" class="t rl f-wire">COMPOSITION</text>
+	<text x="380" y="72.0" text-anchor="middle" class="t rs f-wire">apps and front-ends</text>
+	<text x="380" y="104.0" text-anchor="middle" class="t rl f-world">ADAPTERS</text>
+	<text x="380" y="118.0" text-anchor="middle" class="t rs f-world">*-host.ts</text>
+	<text x="380" y="149.0" text-anchor="middle" class="t rl f-sealed">EXTENSIONS</text>
+	<text x="380" y="163.0" text-anchor="middle" class="t rs f-sealed">*.ts</text>
+	<text x="380" y="244" text-anchor="middle" class="t rl f-core">EVALUATOR</text>
+	<text x="380" y="258" text-anchor="middle" class="t rs f-core">lisp.ts</text>
+	<line class="spoke s-world" x1="553.1" y1="104.7" x2="490.3" y2="157.4"></line>
+	<circle class="f-world" cx="490.3" cy="157.4" r="3.2"></circle>
+	<text x="562.3" y="100.0" text-anchor="start" class="t sl f-world">environment</text>
+	<line class="spoke s-world" x1="606.0" y1="250.0" x2="524.0" y2="250.0"></line>
+	<circle class="f-world" cx="524.0" cy="250.0" r="3.2"></circle>
+	<text x="618.0" y="253.0" text-anchor="start" class="t sl f-world">network</text>
+	<line class="spoke s-world" x1="553.1" y1="395.3" x2="490.3" y2="342.6"></line>
+	<circle class="f-world" cx="490.3" cy="342.6" r="3.2"></circle>
+	<text x="562.3" y="406.0" text-anchor="start" class="t sl f-world">SDK</text>
+	<line class="spoke s-world" x1="380.0" y1="476.0" x2="380.0" y2="394.0"></line>
+	<circle class="f-world" cx="380.0" cy="394.0" r="3.2"></circle>
+	<text x="380.0" y="499.0" text-anchor="middle" class="t sl f-world">subprocess</text>
+	<line class="spoke s-world" x1="206.9" y1="395.3" x2="269.7" y2="342.6"></line>
+	<circle class="f-world" cx="269.7" cy="342.6" r="3.2"></circle>
+	<text x="197.7" y="406.0" text-anchor="end" class="t sl f-world">clock</text>
+	<line class="spoke s-world" x1="154.0" y1="250.0" x2="236.0" y2="250.0"></line>
+	<circle class="f-world" cx="236.0" cy="250.0" r="3.2"></circle>
+	<text x="142.0" y="253.0" text-anchor="end" class="t sl f-world">filesystem</text>
+	<text x="380" y="528" text-anchor="middle" class="t note"
+		>every reach for the world stops at the adapter ring</text
+	>
+	<text x="380" y="546" text-anchor="middle" class="t note"
+		>the extension declares the port, it never imports what is behind it</text
+	>
+</svg>

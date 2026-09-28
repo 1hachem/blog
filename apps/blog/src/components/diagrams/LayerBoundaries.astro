@@ -1,0 +1,872 @@
+<svg
+	class="layers-diagram"
+	viewBox="0 0 760 486"
+	xmlns="http://www.w3.org/2000/svg"
+	fill="none"
+	role="img"
+	aria-label="Every lisptc workspace on the layer its turbo tag puts it in, with an arrow from each package to what it depends on, all of them pointing down"
+>
+	<style>
+		svg.layers-diagram {
+			color: var(--fg);
+		}
+		svg.layers-diagram .s {
+			stroke: currentColor;
+		}
+		svg.layers-diagram .box {
+			stroke: currentColor;
+			stroke-width: 1.2;
+			fill: var(--bg);
+		}
+		svg.layers-diagram .rule {
+			stroke: currentColor;
+			stroke-width: 1;
+			opacity: 0.25;
+		}
+		svg.layers-diagram .edge {
+			stroke: currentColor;
+			stroke-width: 1;
+			fill: none;
+			opacity: 0.13;
+			transition:
+				opacity 0.15s,
+				stroke-width 0.15s;
+		}
+		svg.layers-diagram:has(.n:hover) .edge {
+			opacity: 0.06;
+		}
+		svg.layers-diagram .n rect {
+			transition: stroke-width 0.15s;
+		}
+		svg.layers-diagram .n:hover rect {
+			stroke-width: 2.2;
+		}
+		@media (hover: none) {
+			svg.layers-diagram .edge {
+				opacity: 0.24;
+			}
+		}
+		svg.layers-diagram:has(.n-lisptc-cli:hover) .e-lisptc-cli {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-lisptc-dashi-code:hover) .e-lisptc-dashi-code {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-lisptc-lsp:hover) .e-lisptc-lsp {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-lisptc-mcp-repl:hover) .e-lisptc-mcp-repl {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-lisptc-mcp-toolkit:hover) .e-lisptc-mcp-toolkit {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-lisptc-trace-viewer:hover) .e-lisptc-trace-viewer {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-ai:hover) .e-repo-ai {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-backend:hover) .e-repo-backend {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-bloub:hover) .e-repo-bloub {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-checks:hover) .e-repo-checks {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-compaction-extension:hover) .e-repo-compaction-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-components:hover) .e-repo-components {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-env:hover) .e-repo-env {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-evals:hover) .e-repo-evals {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-interpreter:hover) .e-repo-interpreter {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-llm-extension:hover) .e-repo-llm-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-mcp-extension:hover) .e-repo-mcp-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-memory-extension:hover) .e-repo-memory-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-promises-extension:hover) .e-repo-promises-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-prose-extension:hover) .e-repo-prose-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-repl:hover) .e-repo-repl {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-secrets-extension:hover) .e-repo-secrets-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-shared:hover) .e-repo-shared {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-syntax:hover) .e-repo-syntax {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-tsconfigs:hover) .e-repo-tsconfigs {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-ui:hover) .e-repo-ui {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-repo-ui-extension:hover) .e-repo-ui-extension {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-api:hover) .e-api {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram:has(.n-app:hover) .e-app {
+			opacity: 0.95;
+			stroke-width: 1.8;
+		}
+		svg.layers-diagram .t {
+			fill: currentColor;
+			font-family:
+				'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code',
+				'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+		}
+		svg.layers-diagram .tag {
+			font-size: 11px;
+			opacity: 0.72;
+		}
+		svg.layers-diagram .pkg {
+			font-size: 9.5px;
+		}
+		svg.layers-diagram .cap {
+			font-size: 12px;
+			opacity: 0.72;
+		}
+	</style>
+	<defs>
+		<marker
+			id="ah-layers"
+			viewBox="0 0 6 6"
+			refX="6"
+			refY="3"
+			markerWidth="6"
+			markerHeight="6"
+			orient="auto"
+		>
+			<path d="M0 0L6 3L0 6z" fill="currentColor"></path>
+		</marker>
+	</defs>
+	<text x="104" y="409" text-anchor="end" class="t tag">foundation</text>
+	<line class="rule" x1="116" y1="420" x2="750" y2="420"></line>
+	<text x="104" y="347" text-anchor="end" class="t tag">ui</text>
+	<line class="rule" x1="116" y1="358" x2="750" y2="358"></line>
+	<text x="104" y="285" text-anchor="end" class="t tag">language</text>
+	<line class="rule" x1="116" y1="296" x2="750" y2="296"></line>
+	<text x="104" y="223" text-anchor="end" class="t tag">extension</text>
+	<line class="rule" x1="116" y1="234" x2="750" y2="234"></line>
+	<text x="104" y="161" text-anchor="end" class="t tag">runtime</text>
+	<line class="rule" x1="116" y1="172" x2="750" y2="172"></line>
+	<text x="104" y="99" text-anchor="end" class="t tag">backend</text>
+	<line class="rule" x1="116" y1="110" x2="750" y2="110"></line>
+	<text x="104" y="37" text-anchor="end" class="t tag">product</text>
+	<line class="rule" x1="116" y1="48" x2="750" y2="48"></line>
+	<path
+		class="edge e-api e-repo-ai"
+		d="M713.9,44 C713.9,90.0 337.0,90.0 337.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-backend"
+		d="M713.9,44 C713.9,59.0 433.0,59.0 433.0,74"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-compaction-extension"
+		d="M713.9,44 C713.9,121.0 575.7,121.0 575.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-env"
+		d="M713.9,44 C713.9,214.0 337.0,214.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-interpreter"
+		d="M713.9,44 C713.9,152.0 433.0,152.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-llm-extension"
+		d="M713.9,44 C713.9,121.0 290.3,121.0 290.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-mcp-extension"
+		d="M713.9,44 C713.9,121.0 361.7,121.0 361.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-memory-extension"
+		d="M713.9,44 C713.9,121.0 433.0,121.0 433.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-promises-extension"
+		d="M713.9,44 C713.9,121.0 647.0,121.0 647.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-prose-extension"
+		d="M713.9,44 C713.9,121.0 718.3,121.0 718.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-secrets-extension"
+		d="M713.9,44 C713.9,121.0 504.3,121.0 504.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-shared"
+		d="M713.9,44 C713.9,214.0 433.0,214.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-tsconfigs"
+		d="M713.9,44 C713.9,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-api e-repo-ui-extension"
+		d="M713.9,44 C713.9,121.0 219.0,121.0 219.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-backend"
+		d="M553.4,44 C553.4,59.0 433.0,59.0 433.0,74"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-bloub"
+		d="M553.4,44 C553.4,183.0 289.0,183.0 289.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-components"
+		d="M553.4,44 C553.4,183.0 385.0,183.0 385.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-env"
+		d="M553.4,44 C553.4,214.0 337.0,214.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-syntax"
+		d="M553.4,44 C553.4,183.0 481.0,183.0 481.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-tsconfigs"
+		d="M553.4,44 C553.4,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-app e-repo-ui"
+		d="M553.4,44 C553.4,183.0 577.0,183.0 577.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-compaction-extension"
+		d="M473.1,44 C473.1,121.0 575.7,121.0 575.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-env"
+		d="M473.1,44 C473.1,214.0 337.0,214.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-interpreter"
+		d="M473.1,44 C473.1,152.0 433.0,152.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-llm-extension"
+		d="M473.1,44 C473.1,121.0 290.3,121.0 290.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-mcp-extension"
+		d="M473.1,44 C473.1,121.0 361.7,121.0 361.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-memory-extension"
+		d="M473.1,44 C473.1,121.0 433.0,121.0 433.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-promises-extension"
+		d="M473.1,44 C473.1,121.0 647.0,121.0 647.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-prose-extension"
+		d="M473.1,44 C473.1,121.0 718.3,121.0 718.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-repl"
+		d="M473.1,44 C473.1,90.0 529.0,90.0 529.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-secrets-extension"
+		d="M473.1,44 C473.1,121.0 504.3,121.0 504.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-shared"
+		d="M473.1,44 C473.1,214.0 433.0,214.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-cli e-repo-tsconfigs"
+		d="M473.1,44 C473.1,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-dashi-code e-repo-env"
+		d="M152.1,44 C152.1,214.0 337.0,214.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-dashi-code e-repo-tsconfigs"
+		d="M152.1,44 C152.1,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-dashi-code e-repo-ui"
+		d="M152.1,44 C152.1,183.0 577.0,183.0 577.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-compaction-extension"
+		d="M392.9,44 C392.9,121.0 575.7,121.0 575.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-interpreter"
+		d="M392.9,44 C392.9,152.0 433.0,152.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-llm-extension"
+		d="M392.9,44 C392.9,121.0 290.3,121.0 290.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-mcp-extension"
+		d="M392.9,44 C392.9,121.0 361.7,121.0 361.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-memory-extension"
+		d="M392.9,44 C392.9,121.0 433.0,121.0 433.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-promises-extension"
+		d="M392.9,44 C392.9,121.0 647.0,121.0 647.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-prose-extension"
+		d="M392.9,44 C392.9,121.0 718.3,121.0 718.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-repl"
+		d="M392.9,44 C392.9,90.0 529.0,90.0 529.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-secrets-extension"
+		d="M392.9,44 C392.9,121.0 504.3,121.0 504.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-shared"
+		d="M392.9,44 C392.9,214.0 433.0,214.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-lsp e-repo-tsconfigs"
+		d="M392.9,44 C392.9,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-toolkit e-repo-env"
+		d="M232.4,44 C232.4,214.0 337.0,214.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-toolkit e-repo-tsconfigs"
+		d="M232.4,44 C232.4,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-compaction-extension"
+		d="M312.6,44 C312.6,121.0 575.7,121.0 575.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-llm-extension"
+		d="M312.6,44 C312.6,121.0 290.3,121.0 290.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-mcp-extension"
+		d="M312.6,44 C312.6,121.0 361.7,121.0 361.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-memory-extension"
+		d="M312.6,44 C312.6,121.0 433.0,121.0 433.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-promises-extension"
+		d="M312.6,44 C312.6,121.0 647.0,121.0 647.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-prose-extension"
+		d="M312.6,44 C312.6,121.0 718.3,121.0 718.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-repl"
+		d="M312.6,44 C312.6,90.0 529.0,90.0 529.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-secrets-extension"
+		d="M312.6,44 C312.6,121.0 504.3,121.0 504.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-mcp-repl e-repo-tsconfigs"
+		d="M312.6,44 C312.6,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-ai"
+		d="M633.6,44 C633.6,90.0 337.0,90.0 337.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-checks"
+		d="M633.6,44 C633.6,121.0 147.7,121.0 147.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-compaction-extension"
+		d="M633.6,44 C633.6,121.0 575.7,121.0 575.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-components"
+		d="M633.6,44 C633.6,183.0 385.0,183.0 385.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-env"
+		d="M633.6,44 C633.6,214.0 337.0,214.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-evals"
+		d="M633.6,44 C633.6,90.0 433.0,90.0 433.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-interpreter"
+		d="M633.6,44 C633.6,152.0 433.0,152.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-llm-extension"
+		d="M633.6,44 C633.6,121.0 290.3,121.0 290.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-mcp-extension"
+		d="M633.6,44 C633.6,121.0 361.7,121.0 361.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-memory-extension"
+		d="M633.6,44 C633.6,121.0 433.0,121.0 433.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-promises-extension"
+		d="M633.6,44 C633.6,121.0 647.0,121.0 647.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-prose-extension"
+		d="M633.6,44 C633.6,121.0 718.3,121.0 718.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-repl"
+		d="M633.6,44 C633.6,90.0 529.0,90.0 529.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-secrets-extension"
+		d="M633.6,44 C633.6,121.0 504.3,121.0 504.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-shared"
+		d="M633.6,44 C633.6,214.0 433.0,214.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-tsconfigs"
+		d="M633.6,44 C633.6,214.0 529.0,214.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-lisptc-trace-viewer e-repo-ui"
+		d="M633.6,44 C633.6,183.0 577.0,183.0 577.0,322"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ai e-repo-env"
+		d="M337.0,168 C337.0,276.0 337.0,276.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ai e-repo-interpreter"
+		d="M337.0,168 C337.0,214.0 433.0,214.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ai e-repo-shared"
+		d="M337.0,168 C337.0,276.0 433.0,276.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ai e-repo-tsconfigs"
+		d="M337.0,168 C337.0,276.0 529.0,276.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-compaction-extension"
+		d="M433.0,106 C433.0,152.0 575.7,152.0 575.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-interpreter"
+		d="M433.0,106 C433.0,183.0 433.0,183.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-llm-extension"
+		d="M433.0,106 C433.0,152.0 290.3,152.0 290.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-mcp-extension"
+		d="M433.0,106 C433.0,152.0 361.7,152.0 361.7,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-memory-extension"
+		d="M433.0,106 C433.0,152.0 433.0,152.0 433.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-promises-extension"
+		d="M433.0,106 C433.0,152.0 647.0,152.0 647.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-prose-extension"
+		d="M433.0,106 C433.0,152.0 718.3,152.0 718.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-repl"
+		d="M433.0,106 C433.0,121.0 529.0,121.0 529.0,136"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-secrets-extension"
+		d="M433.0,106 C433.0,152.0 504.3,152.0 504.3,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-shared"
+		d="M433.0,106 C433.0,245.0 433.0,245.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-tsconfigs"
+		d="M433.0,106 C433.0,245.0 529.0,245.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-backend e-repo-ui-extension"
+		d="M433.0,106 C433.0,152.0 219.0,152.0 219.0,198"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-bloub e-repo-tsconfigs"
+		d="M289.0,354 C289.0,369.0 529.0,369.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-checks e-repo-interpreter"
+		d="M147.7,230 C147.7,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-checks e-repo-tsconfigs"
+		d="M147.7,230 C147.7,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-compaction-extension e-repo-interpreter"
+		d="M575.7,230 C575.7,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-compaction-extension e-repo-shared"
+		d="M575.7,230 C575.7,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-compaction-extension e-repo-tsconfigs"
+		d="M575.7,230 C575.7,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-components e-repo-tsconfigs"
+		d="M385.0,354 C385.0,369.0 529.0,369.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-evals e-repo-env"
+		d="M433.0,168 C433.0,276.0 337.0,276.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-evals e-repo-shared"
+		d="M433.0,168 C433.0,276.0 433.0,276.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-evals e-repo-tsconfigs"
+		d="M433.0,168 C433.0,276.0 529.0,276.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-interpreter e-repo-shared"
+		d="M433.0,292 C433.0,338.0 433.0,338.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-interpreter e-repo-tsconfigs"
+		d="M433.0,292 C433.0,338.0 529.0,338.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-llm-extension e-repo-env"
+		d="M290.3,230 C290.3,307.0 337.0,307.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-llm-extension e-repo-interpreter"
+		d="M290.3,230 C290.3,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-llm-extension e-repo-shared"
+		d="M290.3,230 C290.3,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-llm-extension e-repo-tsconfigs"
+		d="M290.3,230 C290.3,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-mcp-extension e-repo-env"
+		d="M361.7,230 C361.7,307.0 337.0,307.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-mcp-extension e-repo-interpreter"
+		d="M361.7,230 C361.7,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-mcp-extension e-repo-shared"
+		d="M361.7,230 C361.7,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-mcp-extension e-repo-tsconfigs"
+		d="M361.7,230 C361.7,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-memory-extension e-repo-env"
+		d="M433.0,230 C433.0,307.0 337.0,307.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-memory-extension e-repo-interpreter"
+		d="M433.0,230 C433.0,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-memory-extension e-repo-shared"
+		d="M433.0,230 C433.0,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-memory-extension e-repo-tsconfigs"
+		d="M433.0,230 C433.0,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-promises-extension e-repo-interpreter"
+		d="M647.0,230 C647.0,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-promises-extension e-repo-shared"
+		d="M647.0,230 C647.0,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-promises-extension e-repo-tsconfigs"
+		d="M647.0,230 C647.0,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-prose-extension e-repo-interpreter"
+		d="M718.3,230 C718.3,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-prose-extension e-repo-shared"
+		d="M718.3,230 C718.3,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-prose-extension e-repo-tsconfigs"
+		d="M718.3,230 C718.3,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-repl e-repo-env"
+		d="M529.0,168 C529.0,276.0 337.0,276.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-repl e-repo-interpreter"
+		d="M529.0,168 C529.0,214.0 433.0,214.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-repl e-repo-shared"
+		d="M529.0,168 C529.0,276.0 433.0,276.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-repl e-repo-tsconfigs"
+		d="M529.0,168 C529.0,276.0 529.0,276.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-secrets-extension e-repo-env"
+		d="M504.3,230 C504.3,307.0 337.0,307.0 337.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-secrets-extension e-repo-interpreter"
+		d="M504.3,230 C504.3,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-secrets-extension e-repo-shared"
+		d="M504.3,230 C504.3,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-secrets-extension e-repo-tsconfigs"
+		d="M504.3,230 C504.3,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-syntax e-repo-shared"
+		d="M481.0,354 C481.0,369.0 433.0,369.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-syntax e-repo-tsconfigs"
+		d="M481.0,354 C481.0,369.0 529.0,369.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ui-extension e-repo-interpreter"
+		d="M219.0,230 C219.0,245.0 433.0,245.0 433.0,260"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ui-extension e-repo-shared"
+		d="M219.0,230 C219.0,307.0 433.0,307.0 433.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ui-extension e-repo-tsconfigs"
+		d="M219.0,230 C219.0,307.0 529.0,307.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<path
+		class="edge e-repo-ui e-repo-tsconfigs"
+		d="M577.0,354 C577.0,369.0 529.0,369.0 529.0,384"
+		marker-end="url(#ah-layers)"></path>
+	<g class="n n-repo-env">
+		<rect class="box" x="293.0" y="390" width="88.0" height="26" rx="3"></rect>
+		<text x="337.0" y="406.5" text-anchor="middle" class="t pkg">env</text>
+	</g>
+	<g class="n n-repo-shared">
+		<rect class="box" x="389.0" y="390" width="88.0" height="26" rx="3"></rect>
+		<text x="433.0" y="406.5" text-anchor="middle" class="t pkg">shared</text>
+	</g>
+	<g class="n n-repo-tsconfigs">
+		<rect class="box" x="485.0" y="390" width="88.0" height="26" rx="3"></rect>
+		<text x="529.0" y="406.5" text-anchor="middle" class="t pkg">tsconfigs</text>
+	</g>
+	<g class="n n-repo-bloub">
+		<rect class="box" x="245.0" y="328" width="88.0" height="26" rx="3"></rect>
+		<text x="289.0" y="344.5" text-anchor="middle" class="t pkg">bloub</text>
+	</g>
+	<g class="n n-repo-components">
+		<rect class="box" x="341.0" y="328" width="88.0" height="26" rx="3"></rect>
+		<text x="385.0" y="344.5" text-anchor="middle" class="t pkg">components</text>
+	</g>
+	<g class="n n-repo-syntax">
+		<rect class="box" x="437.0" y="328" width="88.0" height="26" rx="3"></rect>
+		<text x="481.0" y="344.5" text-anchor="middle" class="t pkg">syntax</text>
+	</g>
+	<g class="n n-repo-ui">
+		<rect class="box" x="533.0" y="328" width="88.0" height="26" rx="3"></rect>
+		<text x="577.0" y="344.5" text-anchor="middle" class="t pkg">ui</text>
+	</g>
+	<g class="n n-repo-interpreter">
+		<rect class="box" x="389.0" y="266" width="88.0" height="26" rx="3"></rect>
+		<text x="433.0" y="282.5" text-anchor="middle" class="t pkg">interpreter</text>
+	</g>
+	<g class="n n-repo-checks">
+		<rect class="box" x="116.0" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="147.7" y="220.5" text-anchor="middle" class="t pkg">checks</text>
+	</g>
+	<g class="n n-repo-ui-extension">
+		<rect class="box" x="187.3" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="219.0" y="220.5" text-anchor="middle" class="t pkg">ui-extensi…</text>
+	</g>
+	<g class="n n-repo-llm-extension">
+		<rect class="box" x="258.7" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="290.3" y="220.5" text-anchor="middle" class="t pkg">llm</text>
+	</g>
+	<g class="n n-repo-mcp-extension">
+		<rect class="box" x="330.0" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="361.7" y="220.5" text-anchor="middle" class="t pkg">mcp</text>
+	</g>
+	<g class="n n-repo-memory-extension">
+		<rect class="box" x="401.3" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="433.0" y="220.5" text-anchor="middle" class="t pkg">memory</text>
+	</g>
+	<g class="n n-repo-secrets-extension">
+		<rect class="box" x="472.7" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="504.3" y="220.5" text-anchor="middle" class="t pkg">secrets</text>
+	</g>
+	<g class="n n-repo-compaction-extension">
+		<rect class="box" x="544.0" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="575.7" y="220.5" text-anchor="middle" class="t pkg">compaction</text>
+	</g>
+	<g class="n n-repo-promises-extension">
+		<rect class="box" x="615.3" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="647.0" y="220.5" text-anchor="middle" class="t pkg">promises</text>
+	</g>
+	<g class="n n-repo-prose-extension">
+		<rect class="box" x="686.7" y="204" width="63.3" height="26" rx="3"></rect>
+		<text x="718.3" y="220.5" text-anchor="middle" class="t pkg">prose</text>
+	</g>
+	<g class="n n-repo-ai">
+		<rect class="box" x="293.0" y="142" width="88.0" height="26" rx="3"></rect>
+		<text x="337.0" y="158.5" text-anchor="middle" class="t pkg">ai</text>
+	</g>
+	<g class="n n-repo-evals">
+		<rect class="box" x="389.0" y="142" width="88.0" height="26" rx="3"></rect>
+		<text x="433.0" y="158.5" text-anchor="middle" class="t pkg">evals</text>
+	</g>
+	<g class="n n-repo-repl">
+		<rect class="box" x="485.0" y="142" width="88.0" height="26" rx="3"></rect>
+		<text x="529.0" y="158.5" text-anchor="middle" class="t pkg">repl</text>
+	</g>
+	<g class="n n-repo-backend">
+		<rect class="box" x="389.0" y="80" width="88.0" height="26" rx="3"></rect>
+		<text x="433.0" y="96.5" text-anchor="middle" class="t pkg">backend</text>
+	</g>
+	<g class="n n-lisptc-dashi-code">
+		<rect class="box" x="116.0" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="152.1" y="34.5" text-anchor="middle" class="t pkg">dashi-code</text>
+	</g>
+	<g class="n n-lisptc-mcp-toolkit">
+		<rect class="box" x="196.2" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="232.4" y="34.5" text-anchor="middle" class="t pkg">mcp-toolkit</text>
+	</g>
+	<g class="n n-lisptc-mcp-repl">
+		<rect class="box" x="276.5" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="312.6" y="34.5" text-anchor="middle" class="t pkg">mcp</text>
+	</g>
+	<g class="n n-lisptc-lsp">
+		<rect class="box" x="356.8" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="392.9" y="34.5" text-anchor="middle" class="t pkg">lsp</text>
+	</g>
+	<g class="n n-lisptc-cli">
+		<rect class="box" x="437.0" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="473.1" y="34.5" text-anchor="middle" class="t pkg">cli</text>
+	</g>
+	<g class="n n-app">
+		<rect class="box" x="517.2" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="553.4" y="34.5" text-anchor="middle" class="t pkg">app</text>
+	</g>
+	<g class="n n-lisptc-trace-viewer">
+		<rect class="box" x="597.5" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="633.6" y="34.5" text-anchor="middle" class="t pkg">trace-view…</text>
+	</g>
+	<g class="n n-api">
+		<rect class="box" x="677.8" y="18" width="72.2" height="26" rx="3"></rect>
+		<text x="713.9" y="34.5" text-anchor="middle" class="t pkg">api</text>
+	</g>
+	<text x="380.0" y="460" text-anchor="middle" class="t cap"
+		>140 dependencies over 7 layers, every arrow pointing down, that is the whole rule</text
+	>
+	<text x="380.0" y="478" text-anchor="middle" class="t cap"
+		>hover a package to pick its dependencies out of the pile</text
+	>
+</svg>

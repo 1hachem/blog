@@ -1,0 +1,127 @@
+<svg
+	class="agents-diagram"
+	viewBox="0 0 760 400"
+	xmlns="http://www.w3.org/2000/svg"
+	fill="none"
+	role="img"
+	aria-label="The root AGENTS.md holds the repo-wide rules, and every package carries an AGENTS.md of its own listing what is inside that package and where to find it"
+>
+	<style>
+		svg.agents-diagram {
+			color: var(--fg);
+		}
+		svg.agents-diagram .s {
+			stroke: currentColor;
+			stroke-width: 1.6;
+		}
+		svg.agents-diagram .box {
+			stroke: currentColor;
+			stroke-width: 1.6;
+			fill: none;
+		}
+		svg.agents-diagram .dash {
+			stroke: currentColor;
+			stroke-width: 1.2;
+			fill: none;
+			stroke-dasharray: 4 4;
+			opacity: 0.55;
+		}
+		svg.agents-diagram .t {
+			fill: currentColor;
+			font-family:
+				'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code',
+				'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+		}
+		svg.agents-diagram .lbl {
+			font-size: 13px;
+		}
+		svg.agents-diagram .ttl {
+			font-size: 15px;
+			font-weight: 600;
+		}
+		svg.agents-diagram .cap {
+			font-size: 12px;
+			opacity: 0.72;
+		}
+		svg.agents-diagram .mono {
+			font-size: 12px;
+		}
+		svg.agents-diagram .sm {
+			font-size: 11px;
+		}
+		svg.agents-diagram .dim {
+			opacity: 0.55;
+		}
+	</style>
+	<defs>
+		<marker
+			id="ah-agents"
+			viewBox="0 0 10 10"
+			refX="9"
+			refY="5"
+			markerWidth="7"
+			markerHeight="7"
+			orient="auto-start-reverse"
+		>
+			<path d="M0 0L10 5L0 10z" fill="currentColor"></path>
+		</marker>
+	</defs>
+	<rect class="box" x="40" y="63" width="84" height="44" rx="7"></rect>
+	<text x="82" y="90" text-anchor="middle" class="t lbl">agent</text>
+	<line class="s" x1="124" y1="85" x2="226" y2="85" marker-end="url(#ah-agents)"></line>
+	<text x="175" y="77" text-anchor="middle" class="t cap">starts here</text>
+	<rect class="box" x="230" y="24" width="300" height="122" rx="7"></rect>
+	<text x="246" y="48" class="t ttl">AGENTS.md</text>
+	<text x="246" y="66" class="t cap dim">the rules, repo wide</text>
+	<line class="dash" x1="246" y1="78" x2="514" y2="78"></line>
+	<text x="246" y="98" class="t mono">dependency flow</text>
+	<text x="246" y="116" class="t mono">host ports</text>
+	<text x="246" y="134" class="t mono">no comments</text>
+	<text x="390" y="98" class="t mono">typed env access</text>
+	<text x="390" y="116" class="t mono">no new md files</text>
+	<text x="390" y="134" class="t mono">where tests live</text>
+	<line class="s" x1="380" y1="146" x2="380" y2="164"></line>
+	<line class="s" x1="138" y1="164" x2="622" y2="164"></line>
+	<line class="s" x1="138" y1="164" x2="138" y2="176" marker-end="url(#ah-agents)"></line>
+	<line class="s" x1="380" y1="164" x2="380" y2="176" marker-end="url(#ah-agents)"></line>
+	<line class="s" x1="622" y1="164" x2="622" y2="176" marker-end="url(#ah-agents)"></line>
+	<rect class="dash" x="28" y="180" width="220" height="160" rx="8"></rect>
+	<text x="42" y="200" class="t cap dim">packages/interpreter</text>
+	<rect class="box" x="42" y="208" width="192" height="40" rx="6"></rect>
+	<text x="138" y="233" text-anchor="middle" class="t lbl">AGENTS.md</text>
+	<line class="dash" x1="58" y1="248" x2="58" y2="316"></line>
+	<line class="dash" x1="58" y1="272" x2="72" y2="272"></line>
+	<text x="78" y="276" class="t sm dim">src/reader/</text>
+	<line class="dash" x1="58" y1="294" x2="72" y2="294"></line>
+	<text x="78" y="298" class="t sm dim">src/eval/</text>
+	<line class="dash" x1="58" y1="316" x2="72" y2="316"></line>
+	<text x="78" y="320" class="t sm dim">src/seam/</text>
+	<rect class="dash" x="270" y="180" width="220" height="160" rx="8"></rect>
+	<text x="284" y="200" class="t cap dim">packages/backend</text>
+	<rect class="box" x="284" y="208" width="192" height="40" rx="6"></rect>
+	<text x="380" y="233" text-anchor="middle" class="t lbl">AGENTS.md</text>
+	<line class="dash" x1="300" y1="248" x2="300" y2="316"></line>
+	<line class="dash" x1="300" y1="272" x2="314" y2="272"></line>
+	<text x="320" y="276" class="t sm dim">convex/</text>
+	<line class="dash" x1="300" y1="294" x2="314" y2="294"></line>
+	<text x="320" y="298" class="t sm dim">src/stores/</text>
+	<line class="dash" x1="300" y1="316" x2="314" y2="316"></line>
+	<text x="320" y="320" class="t sm dim">src/agent-repl/</text>
+	<rect class="dash" x="512" y="180" width="220" height="160" rx="8"></rect>
+	<text x="526" y="200" class="t cap dim">apps/cli</text>
+	<rect class="box" x="526" y="208" width="192" height="40" rx="6"></rect>
+	<text x="622" y="233" text-anchor="middle" class="t lbl">AGENTS.md</text>
+	<line class="dash" x1="542" y1="248" x2="542" y2="316"></line>
+	<line class="dash" x1="542" y1="272" x2="556" y2="272"></line>
+	<text x="562" y="276" class="t sm dim">src/repl/</text>
+	<line class="dash" x1="542" y1="294" x2="556" y2="294"></line>
+	<text x="562" y="298" class="t sm dim">src/render/</text>
+	<line class="dash" x1="542" y1="316" x2="556" y2="316"></line>
+	<text x="562" y="320" class="t sm dim">test/</text>
+	<text x="380" y="366" text-anchor="middle" class="t cap"
+		>the root holds the rules, each package's AGENTS.md holds its own map</text
+	>
+	<text x="380" y="384" text-anchor="middle" class="t cap"
+		>what is inside the package, and where to find it</text
+	>
+</svg>
