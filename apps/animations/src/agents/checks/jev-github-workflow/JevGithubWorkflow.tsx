@@ -174,373 +174,371 @@ export const JevGithubWorkflow: React.FC = () => {
         fontFamily: mono,
       }}
     >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 16,
-            color: c.purple,
-            fontSize: 20,
-          }}
-        >
-          <GitHubMark size={30} />
-          <span>AGENTS.md pull request check</span>
-        </div>
-        <Caption text={caption} />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          color: c.purple,
+          fontSize: 20,
+        }}
+      >
+        <GitHubMark size={30} />
+        <span>AGENTS.md pull request check</span>
+      </div>
+      <Caption text={caption} />
 
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 80px 1fr",
+          alignItems: "center",
+          gap: 24,
+          marginTop: 24,
+        }}
+      >
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 80px 1fr",
-            alignItems: "center",
-            gap: 24,
-            marginTop: 24,
-          }}
-        >
-          <div
-            style={{
-              opacity: diff,
-              minHeight: 220,
-              padding: 24,
-              border: `1px solid ${c.border}`,
-              borderRadius: 14,
-              background: c.panel,
-            }}
-          >
-            <div style={{ color: c.muted, fontSize: 16, marginBottom: 14 }}>
-              PULL REQUEST DIFF
-            </div>
-            <div style={{ color: c.muted, fontSize: 16, marginBottom: 16 }}>
-              packages/interpreter/AGENTS.md
-            </div>
-            <div style={{ color: c.green, fontSize: 18, lineHeight: 1.7 }}>
-              + run `pnpm check:seams`
-              <br />+ before touching `makeReader()`
-            </div>
-            <div
-              style={{ borderTop: `1px dashed ${c.border}`, margin: "13px 0" }}
-            />
-            <div style={{ color: c.green, fontSize: 18, lineHeight: 1.7 }}>
-              + the reader walks the tokens
-              <br />+ and returns a form for each
-            </div>
-          </div>
-          <div
-            style={{
-              opacity: workflow,
-              textAlign: "center",
-              color: c.purple,
-              fontSize: 44,
-            }}
-          >
-            →
-          </div>
-          <div
-            style={{
-              opacity: workflow,
-              minHeight: 220,
-              padding: 24,
-              border: `1px solid ${c.border}`,
-              borderRadius: 14,
-              background: c.panel,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 18,
-            }}
-          >
-            <GitHubMark size={54} />
-            <div style={{ fontSize: 23 }}>GitHub Actions</div>
-            <Tag color={c.yellow}>check:agents started</Tag>
-            <div style={{ color: c.muted, fontSize: 15 }}>
-              Changed AGENTS.md hunks collected
-            </div>
-          </div>
-        </div>
-
-        <div
-          style={{
-            opacity: prompt,
-            marginTop: 23,
-            padding: "18px 28px",
-            border: `1px solid ${c.purple}77`,
-            background: `${c.purple}0c`,
+            opacity: diff,
+            minHeight: 220,
+            padding: 24,
+            border: `1px solid ${c.border}`,
             borderRadius: 14,
-            display: "grid",
-            gridTemplateColumns: "56px 1fr",
-            gap: 20,
-            alignItems: "start",
+            background: c.panel,
           }}
         >
-          <div style={{ color: c.purple }}>
-            <JevMark size={48} />
+          <div style={{ color: c.muted, fontSize: 16, marginBottom: 14 }}>
+            PULL REQUEST DIFF
           </div>
-          <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                marginBottom: 12,
-              }}
-            >
-              <span style={{ color: c.purple, fontSize: 20 }}>
-                JEV CLASSIFICATION INSTRUCTIONS
-              </span>
-              <Tag color={c.purple}>one changed hunk at a time</Tag>
+          <div style={{ color: c.muted, fontSize: 16, marginBottom: 16 }}>
+            packages/interpreter/AGENTS.md
+          </div>
+          <div style={{ color: c.green, fontSize: 18, lineHeight: 1.7 }}>
+            + run `pnpm check:seams`
+            <br />+ before touching `makeReader()`
+          </div>
+          <div
+            style={{ borderTop: `1px dashed ${c.border}`, margin: "13px 0" }}
+          />
+          <div style={{ color: c.green, fontSize: 18, lineHeight: 1.7 }}>
+            + the reader walks the tokens
+            <br />+ and returns a form for each
+          </div>
+        </div>
+        <div
+          style={{
+            opacity: workflow,
+            textAlign: "center",
+            color: c.purple,
+            fontSize: 44,
+          }}
+        >
+          →
+        </div>
+        <div
+          style={{
+            opacity: workflow,
+            minHeight: 220,
+            padding: 24,
+            border: `1px solid ${c.border}`,
+            borderRadius: 14,
+            background: c.panel,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 18,
+          }}
+        >
+          <GitHubMark size={54} />
+          <div style={{ fontSize: 23 }}>GitHub Actions</div>
+          <Tag color={c.yellow}>check:agents started</Tag>
+          <div style={{ color: c.muted, fontSize: 15 }}>
+            Changed AGENTS.md hunks collected
+          </div>
+        </div>
+      </div>
+
+      <div
+        style={{
+          opacity: prompt,
+          marginTop: 23,
+          padding: "18px 28px",
+          border: `1px solid ${c.purple}77`,
+          background: `${c.purple}0c`,
+          borderRadius: 14,
+          display: "grid",
+          gridTemplateColumns: "56px 1fr",
+          gap: 20,
+          alignItems: "start",
+        }}
+      >
+        <div style={{ color: c.purple }}>
+          <JevMark size={48} />
+        </div>
+        <div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              marginBottom: 12,
+            }}
+          >
+            <span style={{ color: c.purple, fontSize: 20 }}>
+              JEV CLASSIFICATION INSTRUCTIONS
+            </span>
+            <Tag color={c.purple}>one changed hunk at a time</Tag>
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "6px 26px",
+              fontSize: 17,
+              lineHeight: 1.4,
+            }}
+          >
+            <div style={{ opacity: rules[0] }}>
+              <span style={{ color: c.green }}>✓</span> Keep useful pointers.
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "6px 26px",
-                fontSize: 17,
-                lineHeight: 1.4,
-              }}
-            >
-              <div style={{ opacity: rules[0] }}>
-                <span style={{ color: c.green }}>✓</span> Keep useful pointers.
-              </div>
-              <div style={{ opacity: rules[1] }}>
-                <span style={{ color: c.red }}>×</span> Reject implementation
-                details.
-              </div>
-              <div style={{ opacity: rules[2] }}>
-                <span style={{ color: c.muted }}>→</span> Judge only the added
-                hunk.
-              </div>
-              <div style={{ opacity: rules[3] }}>
-                <span style={{ color: c.muted }}>→</span> Return pass or fail.
-              </div>
+            <div style={{ opacity: rules[1] }}>
+              <span style={{ color: c.red }}>×</span> Reject implementation
+              details.
+            </div>
+            <div style={{ opacity: rules[2] }}>
+              <span style={{ color: c.muted }}>→</span> Judge only the added
+              hunk.
+            </div>
+            <div style={{ opacity: rules[3] }}>
+              <span style={{ color: c.muted }}>→</span> Return pass or fail.
             </div>
           </div>
         </div>
+      </div>
 
+      <div
+        style={{
+          opacity: requests,
+          textAlign: "center",
+          color: c.muted,
+          fontSize: 15,
+          margin: "15px 0 12px",
+        }}
+      >
+        CLASSIFICATION REQUESTS
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
         <div
           style={{
             opacity: requests,
-            textAlign: "center",
-            color: c.muted,
-            fontSize: 15,
-            margin: "15px 0 12px",
+            border: `1px solid ${pass > 0.1 ? c.green : c.border}`,
+            borderRadius: 14,
+            background: pass > 0.1 ? `${c.green}12` : c.panel,
+            padding: 20,
           }}
         >
-          CLASSIFICATION REQUESTS
-        </div>
-        <div
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}
-        >
           <div
             style={{
-              opacity: requests,
-              border: `1px solid ${pass > 0.1 ? c.green : c.border}`,
-              borderRadius: 14,
-              background: pass > 0.1 ? `${c.green}12` : c.panel,
-              padding: 20,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 11,
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 11,
-              }}
-            >
-              <span style={{ color: c.muted, fontSize: 15 }}>
-                HUNK 01 · JEV REQUEST
-              </span>
-              {pass > 0.1 ? (
-                <Tag color={c.green}>✓ COMPLIANT</Tag>
-              ) : load1 ? (
-                <span style={{ color: c.yellow, fontSize: 14 }}>CHECKING…</span>
-              ) : null}
-            </div>
-            <div
-              style={{
-                color: c.text,
-                fontSize: 17,
-                lineHeight: 1.5,
-                minHeight: 51,
-              }}
-            >
-              “Is this a useful pointer?”
-            </div>
-            {load1 && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  color: c.yellow,
-                  fontSize: 14,
-                  marginTop: 12,
-                }}
-              >
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: 14,
-                    height: 14,
-                    border: `2px solid ${c.yellow}55`,
-                    borderTopColor: c.yellow,
-                    borderRadius: "50%",
-                    transform: `rotate(${spin}deg)`,
-                  }}
-                />
-                Jev is classifying this hunk…
-              </div>
-            )}
-            {pass > 0.1 && (
-              <div
-                style={{
-                  color: c.green,
-                  fontSize: 16,
-                  marginTop: 10,
-                  lineHeight: 1.5,
-                }}
-              >
-                + run `pnpm check:seams`
-                <br />+ before touching `makeReader()`
-              </div>
-            )}
-            {pass > 0.1 && (
-              <div
-                style={{
-                  borderTop: `1px solid ${c.border}`,
-                  marginTop: 12,
-                  paddingTop: 9,
-                }}
-              >
-                <div style={{ color: c.muted, fontSize: 12, marginBottom: 7 }}>
-                  EXAMPLE JEV SCORES · ALL BELOW 0.85
-                </div>
-                <ScoreRow label="implementation" score={0.12} start={264} />
-                <ScoreRow label="mechanism" score={0.08} start={274} />
-                <ScoreRow label="identifiers" score={0.31} start={284} />
-              </div>
-            )}
+            <span style={{ color: c.muted, fontSize: 15 }}>
+              HUNK 01 · JEV REQUEST
+            </span>
+            {pass > 0.1 ? (
+              <Tag color={c.green}>✓ COMPLIANT</Tag>
+            ) : load1 ? (
+              <span style={{ color: c.yellow, fontSize: 14 }}>CHECKING…</span>
+            ) : null}
           </div>
           <div
             style={{
-              opacity: requests,
-              border: `1px solid ${fail > 0.1 ? c.red : c.border}`,
-              borderRadius: 14,
-              background: fail > 0.1 ? `${c.red}12` : c.panel,
-              padding: 20,
+              color: c.text,
+              fontSize: 17,
+              lineHeight: 1.5,
+              minHeight: 51,
             }}
           >
+            “Is this a useful pointer?”
+          </div>
+          {load1 && (
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: 11,
+                gap: 10,
+                color: c.yellow,
+                fontSize: 14,
+                marginTop: 12,
               }}
             >
-              <span style={{ color: c.muted, fontSize: 15 }}>
-                HUNK 02 · JEV REQUEST
-              </span>
-              {fail > 0.1 ? (
-                <Tag color={c.red}>× NONCOMPLIANT</Tag>
-              ) : load2 ? (
-                <span style={{ color: c.yellow, fontSize: 14 }}>CHECKING…</span>
-              ) : null}
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 14,
+                  height: 14,
+                  border: `2px solid ${c.yellow}55`,
+                  borderTopColor: c.yellow,
+                  borderRadius: "50%",
+                  transform: `rotate(${spin}deg)`,
+                }}
+              />
+              Jev is classifying this hunk…
             </div>
+          )}
+          {pass > 0.1 && (
             <div
               style={{
-                color: c.text,
-                fontSize: 17,
+                color: c.green,
+                fontSize: 16,
+                marginTop: 10,
                 lineHeight: 1.5,
-                minHeight: 51,
               }}
             >
-              “Does this explain how code works?”
+              + run `pnpm check:seams`
+              <br />+ before touching `makeReader()`
             </div>
-            {load2 && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  color: c.yellow,
-                  fontSize: 14,
-                  marginTop: 12,
-                }}
-              >
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: 14,
-                    height: 14,
-                    border: `2px solid ${c.yellow}55`,
-                    borderTopColor: c.yellow,
-                    borderRadius: "50%",
-                    transform: `rotate(${spin}deg)`,
-                  }}
-                />
-                Jev is classifying this hunk…
+          )}
+          {pass > 0.1 && (
+            <div
+              style={{
+                borderTop: `1px solid ${c.border}`,
+                marginTop: 12,
+                paddingTop: 9,
+              }}
+            >
+              <div style={{ color: c.muted, fontSize: 12, marginBottom: 7 }}>
+                EXAMPLE JEV SCORES · ALL BELOW 0.85
               </div>
-            )}
-            {fail > 0.1 && (
-              <div
-                style={{
-                  color: c.red,
-                  fontSize: 16,
-                  marginTop: 10,
-                  lineHeight: 1.5,
-                }}
-              >
-                + the reader walks the tokens
-                <br />+ and returns a form for each
-              </div>
-            )}
-            {fail > 0.1 && (
-              <div
-                style={{
-                  borderTop: `1px solid ${c.border}`,
-                  marginTop: 12,
-                  paddingTop: 9,
-                }}
-              >
-                <div style={{ color: c.muted, fontSize: 12, marginBottom: 7 }}>
-                  EXAMPLE JEV SCORES · FAIL ABOVE 0.85
-                </div>
-                <ScoreRow label="implementation" score={0.92} start={314} />
-                <ScoreRow label="mechanism" score={0.88} start={324} />
-                <ScoreRow label="identifiers" score={0.31} start={334} />
-              </div>
-            )}
-          </div>
+              <ScoreRow label="implementation" score={0.12} start={264} />
+              <ScoreRow label="mechanism" score={0.08} start={274} />
+              <ScoreRow label="identifiers" score={0.31} start={284} />
+            </div>
+          )}
         </div>
-
         <div
           style={{
-            opacity: result,
-            marginTop: 17,
-            padding: "14px 21px",
-            border: `1px solid ${c.red}70`,
-            borderRadius: 12,
-            background: `${c.red}0c`,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+            opacity: requests,
+            border: `1px solid ${fail > 0.1 ? c.red : c.border}`,
+            borderRadius: 14,
+            background: fail > 0.1 ? `${c.red}12` : c.panel,
+            padding: 20,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
-            <GitHubMark size={30} />
-            <div>
-              <div style={{ color: c.red, fontSize: 18 }}>
-                check:agents · FAILED
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 11,
+            }}
+          >
+            <span style={{ color: c.muted, fontSize: 15 }}>
+              HUNK 02 · JEV REQUEST
+            </span>
+            {fail > 0.1 ? (
+              <Tag color={c.red}>× NONCOMPLIANT</Tag>
+            ) : load2 ? (
+              <span style={{ color: c.yellow, fontSize: 14 }}>CHECKING…</span>
+            ) : null}
+          </div>
+          <div
+            style={{
+              color: c.text,
+              fontSize: 17,
+              lineHeight: 1.5,
+              minHeight: 51,
+            }}
+          >
+            “Does this explain how code works?”
+          </div>
+          {load2 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                color: c.yellow,
+                fontSize: 14,
+                marginTop: 12,
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-block",
+                  width: 14,
+                  height: 14,
+                  border: `2px solid ${c.yellow}55`,
+                  borderTopColor: c.yellow,
+                  borderRadius: "50%",
+                  transform: `rotate(${spin}deg)`,
+                }}
+              />
+              Jev is classifying this hunk…
+            </div>
+          )}
+          {fail > 0.1 && (
+            <div
+              style={{
+                color: c.red,
+                fontSize: 16,
+                marginTop: 10,
+                lineHeight: 1.5,
+              }}
+            >
+              + the reader walks the tokens
+              <br />+ and returns a form for each
+            </div>
+          )}
+          {fail > 0.1 && (
+            <div
+              style={{
+                borderTop: `1px solid ${c.border}`,
+                marginTop: 12,
+                paddingTop: 9,
+              }}
+            >
+              <div style={{ color: c.muted, fontSize: 12, marginBottom: 7 }}>
+                EXAMPLE JEV SCORES · FAIL ABOVE 0.85
               </div>
-              <div style={{ color: c.muted, fontSize: 14 }}>
-                The noncompliant hunk fails the pull request check.
-              </div>
+              <ScoreRow label="implementation" score={0.92} start={314} />
+              <ScoreRow label="mechanism" score={0.88} start={324} />
+              <ScoreRow label="identifiers" score={0.31} start={334} />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div
+        style={{
+          opacity: result,
+          marginTop: 17,
+          padding: "14px 21px",
+          border: `1px solid ${c.red}70`,
+          borderRadius: 12,
+          background: `${c.red}0c`,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+          <GitHubMark size={30} />
+          <div>
+            <div style={{ color: c.red, fontSize: 18 }}>
+              check:agents · FAILED
+            </div>
+            <div style={{ color: c.muted, fontSize: 14 }}>
+              The noncompliant hunk fails the pull request check.
             </div>
           </div>
-          <Tag color={c.red}>1 passed · 1 failed</Tag>
         </div>
+        <Tag color={c.red}>1 passed · 1 failed</Tag>
+      </div>
     </AbsoluteFill>
   );
 };
