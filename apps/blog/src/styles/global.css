@@ -147,6 +147,11 @@ blockquote {
 	color: var(--muted);
 }
 
+/* MDX parses a caption on its own line as a block, so it arrives wrapped in <p>. */
+figcaption p {
+	margin: 0;
+}
+
 hr {
 	border: none;
 	border-top: 1px solid var(--border);
