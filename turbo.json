@@ -1,0 +1,26 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"envMode": "loose",
+	"tasks": {
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"build": {
+			"inputs": ["$TURBO_DEFAULT$"],
+			"outputs": ["apps/blog/dist/**", "apps/blog/.astro/**"],
+			"dependsOn": ["^build"]
+		},
+		"lint": {
+			"dependsOn": ["^lint"]
+		},
+		"test": {
+			"dependsOn": ["^test"],
+			"outputs": []
+		},
+		"deploy": {
+			"dependsOn": ["build"],
+			"cache": false
+		}
+	}
+}

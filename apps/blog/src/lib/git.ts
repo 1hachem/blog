@@ -1,11 +1,14 @@
 import { execSync } from 'child_process';
+import { fileURLToPath } from 'node:url';
+
+const REPO_ROOT = fileURLToPath(new URL('../../../', import.meta.url));
 
 export interface GitInfo {
 	lastUpdated: string;
 	commitHash: string;
 }
 
-export function getGitInfo(cwd = process.cwd()): GitInfo {
+export function getGitInfo(cwd = REPO_ROOT): GitInfo {
 	try {
 		const lastUpdated = execSync('git log -1 --format=%cd --date=format:"%m/%d/%y %H:%M"', { cwd })
 			.toString()

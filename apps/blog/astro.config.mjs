@@ -21,6 +21,7 @@ export default defineConfig({
 				context: 'client',
 				access: 'public',
 				url: true,
+				default: 'https://cdn.d4shi.com',
 			}),
 		},
 	},

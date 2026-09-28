@@ -3,7 +3,7 @@ version: '3'
 tasks:
   dev:
     desc: Run dev server for blog
-    cmd: pnpm dev
+    cmd: pnpm --filter blog dev
 
   new:
     desc: Bootstrap a new blog post from a TUI prompt
@@ -12,5 +12,5 @@ tasks:
     cmds:
       - >-
         go run .
-        -out {{.ROOT_DIR}}/src/content/blog
-        -categories {{.ROOT_DIR}}/src/lib/categories.ts
+        -out {{.ROOT_DIR}}/apps/blog/src/content/blog
+        -categories {{.ROOT_DIR}}/apps/blog/src/lib/categories.ts

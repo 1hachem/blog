@@ -18,7 +18,7 @@
         buildInputs = with pkgs; [
           pre-commit
           nodejs
-          pnpm
+          pnpm_10
           wrangler
           go-task
           go

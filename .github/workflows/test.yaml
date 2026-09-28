@@ -13,14 +13,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v16
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Setup pnpm
+        run: corepack enable && corepack install
 
       - name: Install dependencies
-        run: nix develop --command pnpm install --frozen-lockfile
+        run: pnpm install --filter=blog... --frozen-lockfile
 
       - name: Lint
-        run: nix develop --command pnpm lint
+        run: pnpm --filter=blog lint
 
       - name: Test
-        run: nix develop --command pnpm test
+        run: pnpm --filter=blog test

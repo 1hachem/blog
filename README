@@ -1,10 +1,10 @@
-personal blog built with astro.
+Personal blog built with Astro in `apps/blog` and managed by pnpm and Turborepo.
 
 ## new post
 
 `task new` opens a TUI that asks for the frontmatter (title, slug, description,
 tl;dr, date, category, tags, link, og image, draft) and writes
-`src/content/blog/<slug>.md`. Categories are read from `src/lib/categories.ts`.
+`apps/blog/src/content/blog/<slug>.md`. Categories are read from `apps/blog/src/lib/categories.ts`.
 
 ## todo
 

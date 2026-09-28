@@ -1,6 +1,9 @@
 # build output
+apps/blog/dist/
 dist/
+.turbo/
 # generated types
+apps/blog/.astro/
 .astro/
 
 # dependencies
@@ -27,5 +30,5 @@ pnpm-debug.log*
 .claude/
 
 # R2 bucket mirror (synced to Cloudflare separately; keep the dir, ignore contents)
-public/r2/**
-!public/r2/.gitkeep
+apps/blog/public/r2/**
+!apps/blog/public/r2/.gitkeep
