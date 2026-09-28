@@ -13,7 +13,6 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"lint": "astro check",
-		"format": "prettier --write .",
 		"deploy": "wrangler deploy",
 		"optimize:photos": "node scripts/optimize-photos.mjs"
 	},
@@ -31,10 +30,7 @@
 		"@astrojs/check": "^0.9.10",
 		"@playwright/test": "^1.60.0",
 		"@vitest/coverage-v8": "^4.1.7",
-		"prettier": "^3.9.6",
-		"prettier-plugin-astro": "^0.14.1",
 		"typescript": "^6.0.3",
-		"turbo": "^2.5.0",
 		"vitest": "^4.1.7",
 		"wrangler": "^4.95.0"
 	}

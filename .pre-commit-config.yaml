@@ -8,8 +8,7 @@ repos:
     hooks:
       - id: prettier
         name: prettier
-        entry: >-
-          bash -c 'cd apps/blog && args=(); for file in "$@"; do args+=("../../$file"); done; pnpm exec prettier --write --ignore-unknown "${args[@]}"' --
+        entry: pnpm exec prettier --write --ignore-unknown
         language: system
         files: \.(js|mjs|cjs|ts|tsx|jsx|json|jsonc|css|astro|md)$
         pass_filenames: true
