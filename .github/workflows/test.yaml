@@ -22,10 +22,13 @@ jobs:
         run: corepack enable && corepack install
 
       - name: Install dependencies
-        run: pnpm install --filter=blog... --frozen-lockfile
+        run: pnpm install --filter=blog... --filter=blog-monorepo --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Lint
-        run: pnpm --filter=blog lint
+        run: pnpm lint
 
       - name: Test
-        run: pnpm --filter=blog test
+        run: pnpm test

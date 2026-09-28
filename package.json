@@ -5,7 +5,8 @@
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "turbo run dev --filter=blog",
-		"lint": "turbo run lint",
+		"lint": "prettier --check .",
+		"typecheck": "turbo run typecheck",
 		"test": "turbo run test",
 		"deploy": "turbo run deploy --filter=blog",
 		"format": "prettier --write ."

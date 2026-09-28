@@ -8,14 +8,16 @@
 		},
 		"build": {
 			"inputs": ["$TURBO_DEFAULT$"],
-			"outputs": ["apps/blog/dist/**", "apps/blog/.astro/**"],
+			"outputs": ["dist/**", ".astro/**"],
+			"env": ["PUBLIC_R2_URL"],
 			"dependsOn": ["^build"]
 		},
-		"lint": {
-			"dependsOn": ["^lint"]
+		"typecheck": {
+			"dependsOn": ["^typecheck"],
+			"outputLogs": "new-only"
 		},
 		"test": {
-			"dependsOn": ["^test"],
+			"dependsOn": ["typecheck"],
 			"outputs": []
 		},
 		"deploy": {

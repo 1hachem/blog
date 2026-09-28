@@ -1,0 +1,11 @@
+.git/
+node_modules/
+.turbo/
+.direnv/
+.astro/
+dist/
+apps/*/.astro/
+apps/*/dist/
+.claude/
+.agents/
+.codex/
