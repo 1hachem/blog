@@ -5,7 +5,7 @@ pubDate: 2026-09-27
 category: 'tech'
 tags: ['agents', 'dev']
 tldr: 'agents are forbidden from writing docs and comments, scripts run in ci checking that dependency flow is respected, jit docs with artifacts, vibe feature -> test feature -> like feature -> write tests -> refactor but keep tests working'
-draft: true
+draft: false
 ---
 
 since absolutely nobody asked me how I use my agent for coding tasks, here I am writing a blog in detail about it.
@@ -130,77 +130,39 @@ every one of these is a rule an agent can break in a single line and a script ca
 
 in ci I make sure that any change to `AGENTS.md` is only a pointer toward what is there, not how it works and implementation details, by running jev classification on each hunk of change.
 
+<figure>
+  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-gif-src="https://cdn.d4shi.com/animations/jev-github-workflow.gif" width="1440" height="810" alt="GitHub Actions sends each added AGENTS.md hunk to Jev with classification rules; a useful pointer passes, while an implementation detail fails the check" loading="lazy" decoding="async" style="width:100%;height:auto" />
+  <figcaption>Each added hunk is checked on its own: pointers pass, implementation details fail.</figcaption>
+</figure>
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const gifs = document.querySelectorAll('img[data-gif-src]');
+    if ('IntersectionObserver' in window) {
+      const gifObserver = new IntersectionObserver((entries, observer) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const image = entry.target;
+          image.src = image.dataset.gifSrc;
+          image.removeAttribute('data-gif-src');
+          observer.unobserve(image);
+        }
+      });
+      gifs.forEach((gif) => gifObserver.observe(gif));
+    } else {
+      gifs.forEach((image) => {
+        image.src = image.dataset.gifSrc;
+        image.removeAttribute('data-gif-src');
+      });
+    }
+  });
+</script>
+
 another script goes through all the `AGENTS.md` files in the repo and checks that any file path, class name, or function name actually exists in the repo and that it didn't get renamed or removed, in case of failure the agent is instructed to fix the file.
 
-<svg class="checks-diagram" viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="check:agents sends every changed paragraph to a classifier and fails the ones that explain how the code works, check:refs resolves every backticked name against the repo and fails the ones that no longer exist">
-  <style>
-    svg.checks-diagram { color: var(--fg); }
-    svg.checks-diagram .s{ stroke:currentColor; stroke-width:1.6; }
-    svg.checks-diagram .box{ stroke:currentColor; stroke-width:1.6; fill:none; }
-    svg.checks-diagram .dash{ stroke:currentColor; stroke-width:1.2; fill:none; stroke-dasharray:4 4; opacity:.55; }
-    svg.checks-diagram .t{ fill:currentColor; font-family:'JetBrains Mono','JetBrainsMono Nerd Font',ui-monospace,'Cascadia Code','Source Code Pro',Menlo,Consolas,'DejaVu Sans Mono',monospace; }
-    svg.checks-diagram .lbl{ font-size:13px; }
-    svg.checks-diagram .ttl{ font-size:14px; font-weight:600; }
-    svg.checks-diagram .cap{ font-size:12px; opacity:.72; }
-    svg.checks-diagram .mono{ font-size:12px; }
-    svg.checks-diagram .sm{ font-size:11px; }
-    svg.checks-diagram .dim{ opacity:.55; }
-  </style>
-  <defs>
-    <marker id="ah-checks" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0L10 5L0 10z" fill="currentColor"/>
-    </marker>
-  </defs>
-  <line class="dash" x1="380" y1="16" x2="380" y2="420"/>
-  <text x="190" y="30" text-anchor="middle" class="t ttl">pnpm check:agents</text>
-  <text x="190" y="50" text-anchor="middle" class="t cap dim">judges the prose a PR adds</text>
-  <text x="570" y="30" text-anchor="middle" class="t ttl">pnpm check:refs</text>
-  <text x="570" y="50" text-anchor="middle" class="t cap dim">resolves every name it mentions</text>
-  <rect class="box" x="24" y="68" width="332" height="76" rx="7"/>
-  <text x="38" y="90" class="t sm dim">packages/interpreter/AGENTS.md</text>
-  <text x="38" y="114" class="t mono">+ the reader walks the tokens</text>
-  <text x="38" y="132" class="t mono">+ and returns a form for each</text>
-  <line class="s" x1="190" y1="144" x2="190" y2="172" marker-end="url(#ah-checks)"/>
-  <rect class="box" x="24" y="176" width="332" height="128" rx="7"/>
-  <text x="38" y="198" class="t mono">~typesafe/jev-latest</text>
-  <line class="dash" x1="38" y1="210" x2="342" y2="210"/>
-  <text x="38" y="232" class="t mono">implementation</text>
-  <text x="342" y="232" text-anchor="end" class="t mono">0.92</text>
-  <text x="38" y="254" class="t mono">mechanism</text>
-  <text x="342" y="254" text-anchor="end" class="t mono">0.88</text>
-  <text x="38" y="276" class="t mono">identifiers</text>
-  <text x="342" y="276" text-anchor="end" class="t mono">0.31</text>
-  <text x="38" y="296" class="t sm dim">kind=mechanism</text>
-  <line class="s" x1="190" y1="304" x2="190" y2="332" marker-end="url(#ah-checks)"/>
-  <text x="206" y="322" class="t cap dim">over 0.85, it fails</text>
-  <rect class="box" x="24" y="336" width="332" height="74" rx="7"/>
-  <text x="38" y="362" class="t mono">FAIL  interpreter/AGENTS.md:31</text>
-  <text x="38" y="386" class="t sm dim">it says what the code does while it runs</text>
-  <rect class="box" x="404" y="68" width="332" height="76" rx="7"/>
-  <text x="418" y="90" class="t sm dim">apps/cli/AGENTS.md</text>
-  <text x="418" y="114" class="t mono">+ run `pnpm check:seams`</text>
-  <text x="418" y="132" class="t mono">+ before touching `makeReader()`</text>
-  <line class="s" x1="570" y1="144" x2="570" y2="172" marker-end="url(#ah-checks)"/>
-  <rect class="box" x="404" y="176" width="332" height="128" rx="7"/>
-  <text x="418" y="198" class="t mono">every backticked token</text>
-  <line class="dash" x1="418" y1="210" x2="722" y2="210"/>
-  <text x="418" y="232" class="t mono">path</text>
-  <text x="722" y="232" text-anchor="end" class="t sm dim">the tracked file list</text>
-  <text x="418" y="254" class="t mono">command</text>
-  <text x="722" y="254" text-anchor="end" class="t sm dim">package.json, Taskfile.yml</text>
-  <text x="418" y="276" class="t mono">identifier</text>
-  <text x="722" y="276" text-anchor="end" class="t sm dim">git grep in the source</text>
-  <text x="418" y="296" class="t sm dim">prose without backticks is not a reference</text>
-  <line class="s" x1="570" y1="304" x2="570" y2="332" marker-end="url(#ah-checks)"/>
-  <text x="586" y="322" class="t cap dim">nothing matched</text>
-  <rect class="box" x="404" y="336" width="332" height="74" rx="7"/>
-  <text x="418" y="362" class="t mono">DEAD  check:seams</text>
-  <text x="722" y="362" text-anchor="end" class="t sm dim">no script declares it</text>
-  <text x="418" y="386" class="t mono">DEAD  makeReader()</text>
-  <text x="722" y="386" text-anchor="end" class="t sm dim">no source file names it</text>
-  <text x="380" y="442" text-anchor="middle" class="t cap">one keeps the prose to rules and pointers, the other keeps the pointers alive</text>
-  <text x="380" y="460" text-anchor="middle" class="t cap">both run on the hunks a PR adds, and sweep every AGENTS.md with --all</text>
-</svg>
+<figure>
+  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-gif-src="https://cdn.d4shi.com/animations/check-refs-workflow.gif" width="1440" height="810" alt="check:refs extracts backticked references from AGENTS.md, confirms existing paths, commands, and identifiers, and fails when a referenced file is missing" loading="lazy" decoding="async" style="width:100%;height:auto" />
+  <figcaption>Every backticked path, command, and identifier must still resolve in the repository.</figcaption>
+</figure>
 
 ## boundaries and dependencies
 
