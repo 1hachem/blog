@@ -1,6 +1,12 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"envMode": "loose",
+	"remoteCache": {
+		"enabled": true,
+		"apiUrl": "https://turbo.d4shi.com",
+		"teamSlug": "lisptc",
+		"signature": true
+	},
 	"tasks": {
 		"dev": {
 			"cache": false,
