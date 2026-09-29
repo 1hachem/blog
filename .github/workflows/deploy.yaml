@@ -32,7 +32,7 @@ jobs:
           export-type: env
 
       - name: Install dependencies
-        run: pnpm install --filter=blog --frozen-lockfile
+        run: pnpm install --filter=blog... --frozen-lockfile
 
       - name: Build
         env:
