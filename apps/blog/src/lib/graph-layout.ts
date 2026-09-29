@@ -1,21 +1,14 @@
 import type { Commit } from '../data/graph';
 
-// FNV-ish string hash -> stable 16-bit int (same value across rebuilds).
 export const hash = (s: string): number => {
 	let h = 0;
 	for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) & 0xffff;
 	return h;
 };
 
-// deterministic per-id decorations so photos look casually pinned without
-// shifting on every build. tilt ~ -7..7 deg, horizontal nudge ~ -14..14 px.
 export const tiltOf = (id: string): number => (hash(id) % 15) - 7;
 export const shiftOf = (id: string): number => (hash(`~${id}`) % 29) - 14;
 
-// Pin every branch to a deliberate side (1 = right, -1 = left) so the two gutters
-// stay balanced. Career branches live on the right; wandering/personal/oss on the
-// left. `research` is intentionally absent: it forks from a `contests` commit, so
-// the nesting logic must place it one lane further out on the same side.
 const FORCE_SIDE: Record<string, number> = {
 	contests: 1,
 	bigmama: 1,
@@ -34,10 +27,6 @@ export type LaneLayout = {
 	laneCount: number;
 };
 
-// main holds lane 0. A branch off main alternates right (+) / left (-); a branch
-// off another branch stays on that parent's side, one lane further out. Concurrent
-// branches on the same side take the lowest free magnitude so they never collide.
-// Expects `commits` pre-sorted chronologically (parents before their children).
 export function assignLanes(commits: Commit[]): LaneLayout {
 	const indexOf: Record<string, number> = {};
 	commits.forEach((c, i) => {
@@ -52,7 +41,6 @@ export function assignLanes(commits: Commit[]): LaneLayout {
 			spans[c.branch] = { branch: c.branch, start: indexOf[c.id], end: indexOf[c.id] };
 		spans[c.branch].end = indexOf[c.id];
 	}
-	// extend each span up to the merge commit that consumes its tip
 	for (const c of commits) {
 		if (c.parents.length < 2) continue;
 		for (const p of c.parents) {
@@ -101,9 +89,6 @@ export type Edge = {
 	railFrom: boolean;
 };
 
-// child -> parent edges, tinted with the colour of whichever branch they belong to
-// (pure trunk edges stay null). `railFrom` marks which end sits on the coloured
-// branch — the child on a checkout, the parent on a merge.
 export function buildEdges(commits: Commit[], colorOf: (branch: string) => string | null): Edge[] {
 	const branchOf: Record<string, string> = {};
 	for (const c of commits) branchOf[c.id] = c.branch;
@@ -123,8 +108,6 @@ export function buildEdges(commits: Commit[], colorOf: (branch: string) => strin
 	);
 }
 
-// One label per distinct year in render order. Commits without a year (branch
-// episodes) don't reset the run, so a year isn't repeated when one interrupts it.
 export function yearMarks(rows: { year?: string }[]): (string | null)[] {
 	let seen = '';
 	return rows.map((r) => {

@@ -1,4 +1,5 @@
 import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig, envField } from 'astro/config';
 import rehypeLinkFavicons from './src/lib/rehype-link-favicons.mjs';
@@ -25,9 +26,14 @@ export default defineConfig({
 			}),
 		},
 	},
-	integrations: [mdx(), sitemap()],
+	integrations: [react(), mdx(), sitemap()],
 	devToolbar: { enabled: false },
 	vite: {
+		// `animations` is a workspace package that ships raw .tsx, so Vite has to
+		// compile it instead of externalising it.
+		ssr: {
+			noExternal: ['animations'],
+		},
 		server: {
 			watch: {
 				// don't reload the dev server on Claude Code worktree/agent churn, and

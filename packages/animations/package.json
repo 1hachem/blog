@@ -1,0 +1,32 @@
+{
+  "name": "animations",
+  "version": "1.0.0",
+  "description": "Remotion compositions shared by the Remotion studio app and the blog",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./compositions": "./src/compositions.ts",
+    "./scenes": "./src/scenes.ts",
+    "./theme": "./src/theme.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@remotion/google-fonts": "4.0.529",
+    "@remotion/transitions": "4.0.529",
+    "remotion": "4.0.529"
+  },
+  "peerDependencies": {
+    "react": "19.2.3"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.529",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "react": "19.2.3",
+    "typescript": "5.9.3"
+  }
+}

@@ -54,8 +54,6 @@ const resolvedOgImage = ogImage ?? image ?? defaultOgImage;
 			}
 		}
 		applyTheme();
-		// ClientRouter swaps the document but keeps <html>; re-apply so the
-		// theme never flashes to default during a view transition.
 		document.addEventListener('astro:after-swap', applyTheme);
 	})();
 </script>

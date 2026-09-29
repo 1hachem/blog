@@ -6,7 +6,7 @@ interface Category {
 
 interface Props {
 	categories: Category[];
-	active?: string; // current category slug, undefined = all
+	active?: string;
 }
 
 import { categorySlug as slug } from '../lib/posts';
@@ -96,6 +96,5 @@ const { categories, active } = Astro.props;
 		});
 	}
 
-	// Runs on first load and after every ClientRouter swap.
 	document.addEventListener('astro:page-load', initTooltips);
 </script>

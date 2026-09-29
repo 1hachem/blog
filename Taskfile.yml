@@ -5,6 +5,10 @@ tasks:
     desc: Run dev server for blog
     cmd: pnpm --filter blog dev
 
+  animations:
+    desc: Render animation GIFs (or MP4 videos) into the mounted R2 animations folder
+    cmd: pnpm --filter animations render {{.CLI_ARGS}}
+
   new:
     desc: Bootstrap a new blog post from a TUI prompt
     dir: tools/newpost

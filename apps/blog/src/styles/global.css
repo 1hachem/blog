@@ -6,11 +6,10 @@
 	--accent: #00f;
 	--secondary: #8a6d3b;
 	--code-bg: #f0ede9;
-	--max-width: 46rem;
+	--max-width: 52rem;
 	--font-mono:
 		'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code', 'Source Code Pro',
 		Menlo, Consolas, 'DejaVu Sans Mono', monospace;
-	/* git-graph category colours (shared by the about graph + its landing preview) */
 	--c-main: #3b82f6;
 	--c-education: #8e4ec6;
 	--c-accident: #e5484d;
@@ -35,14 +34,13 @@
 	box-sizing: border-box;
 }
 
-/* Speed up ClientRouter's default fade on page/category swaps */
 ::view-transition-old(root),
 ::view-transition-new(root) {
 	animation-duration: 0.08s;
 }
 
 html {
-	font-size: 16px;
+	font-size: 22px;
 	height: 100%;
 	scrollbar-gutter: stable;
 }
@@ -53,7 +51,7 @@ body {
 	color: var(--fg);
 	margin: 0;
 	padding: 0;
-	line-height: 1.6;
+	line-height: 1.7;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	overflow-x: clip;
@@ -86,22 +84,23 @@ h5,
 h6 {
 	font-family: var(--font-mono);
 	font-weight: bold;
-	line-height: 1.2;
-	margin: 1.5rem 0 0.5rem;
+	line-height: 1.25;
+	margin: 2.25rem 0 1rem;
+	clear: both;
 }
 h1 {
-	font-size: 1.4rem;
+	font-size: 2rem;
 }
 h2 {
-	font-size: 1.2rem;
+	font-size: 1.5rem;
 }
 h3 {
-	font-size: 1.1rem;
+	font-size: 1.25rem;
 }
 h4,
 h5,
 h6 {
-	font-size: 1rem;
+	font-size: 1.1rem;
 }
 
 p {
@@ -128,9 +127,6 @@ pre > code {
 	font-family: var(--font-mono);
 }
 
-/* Shiki dual-theme syntax highlighting: colours follow the site's light/dark
-   toggle instead of prefers-color-scheme (see astro.config.mjs shikiConfig).
-   Background/border stay on the site's own --code-bg/--border, set above. */
 pre.astro-code,
 pre.astro-code span {
 	color: var(--shiki-light);
@@ -147,6 +143,10 @@ blockquote {
 	color: var(--muted);
 }
 
+figcaption p {
+	margin: 0;
+}
+
 hr {
 	border: none;
 	border-top: 1px solid var(--border);
@@ -158,9 +158,17 @@ img {
 	height: auto;
 }
 
-/* a table won't shrink below its content's min-width on its own — wrap it in
-   this so the scrollbar (and any overflow) is contained to the table itself
-   instead of the table forcing the whole page wider */
+.figure-float {
+	float: right;
+	width: 17rem;
+	max-width: 45%;
+	margin: 0.25rem 0 1rem 1.5rem;
+}
+.figure-float img {
+	display: block;
+	width: 100%;
+}
+
 .table-wrap {
 	overflow-x: auto;
 	margin-bottom: 1.5rem;
@@ -207,21 +215,18 @@ ol {
 	white-space: normal;
 }
 
-/* post-date byline, shared by every post-list rendering (home, timeline, related posts) */
 .date {
 	color: var(--muted);
 	font-size: 0.85rem;
 	flex-shrink: 0;
 }
 
-/* favicon prepended to a link's title (about-page links, post source link, prose links) */
 .link-favicon {
 	width: 1em;
 	height: 1em;
 	border-radius: 2px;
 }
 
-/* bare post list, shared by the home page and the blog timeline */
 .post-list {
 	list-style: none;
 	padding: 0;
@@ -236,8 +241,14 @@ ol {
 }
 
 @media (max-width: 600px) {
+	.figure-float {
+		float: none;
+		width: 24rem;
+		max-width: 100%;
+		margin: 0 auto 1rem;
+	}
 	html {
-		font-size: 15px;
+		font-size: 19px;
 	}
 	main {
 		padding: 1rem;

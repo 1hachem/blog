@@ -1,3 +1,9 @@
 # Packages
 
-Put reusable libraries here when an app or more than one workspace needs them. Keep deployment and application entry points in `apps/`. Each package owns its dependencies, scripts, tests, and public API. Add a package-level `AGENTS.md` when it needs more specific guidance.
+Reusable libraries. Each package owns its dependencies, scripts, tests, and
+public API; deployment and application entry points stay in `apps/`.
+
+- `animations` — Remotion compositions shared by the studio app and the blog.
+  See `animations/AGENTS.md`.
+
+Add a package-level `AGENTS.md` when a package needs guidance beyond this file.

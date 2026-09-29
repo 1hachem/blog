@@ -128,13 +128,13 @@ const linkFavicon = link && faviconUrl(link);
 					}
 				</header>
 
+				<TableOfContents headings={headings} />
+
 				<div class="post-body">
 					<div class="prose">
 						<slot />
 					</div>
 				</div>
-
-				<TableOfContents headings={headings} />
 
 				{
 					related.length > 0 && (
@@ -167,37 +167,40 @@ const linkFavicon = link && faviconUrl(link);
 </html>
 
 <style is:global>
-	/* Blog post widens the global main so the prose + TOC grid has room,
-	   while keeping the side padding so content isn't flush to the edges */
 	body:has(article) main {
-		max-width: 1150px;
+		max-width: none;
+		padding-left: 0;
+		padding-right: 0;
 	}
 </style>
 
 <style>
-	/* Content spans the wide middle column; the TOC lives in a
-	   dedicated column out in the right margin */
 	article {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 14rem;
-		column-gap: 7rem;
-		align-items: start;
+		grid-template-columns: minmax(0, 1fr) min(var(--max-width), 100% - 2rem) minmax(0, 1fr);
 	}
 	.post-header {
-		grid-column: 1;
+		grid-column: 2;
 		grid-row: 1;
 	}
 	.post-body {
-		grid-column: 1;
+		grid-column: 2;
 		grid-row: 2;
 	}
 	.related {
-		grid-column: 1;
+		grid-column: 2;
 		grid-row: 3;
 	}
 
+	@media (min-width: 1700px) {
+		article :global(.toc) {
+			grid-column: 3;
+			grid-row: 2 / span 2;
+		}
+	}
+
 	.post-header {
-		margin-bottom: 1rem;
+		margin-bottom: 2.5rem;
 	}
 	.post-header h1 {
 		margin-top: 0.25rem;
@@ -258,19 +261,12 @@ const linkFavicon = link && faviconUrl(link);
 		font-size: 0.95rem;
 	}
 
-	.prose {
-		min-width: 0;
-	}
-
-	/* Favicon prepended to a link's title: the post's own source link above, and
-	   external links inside the prose (added by the rehype-link-favicons plugin). */
 	.post-link .link-favicon,
 	.prose :global(.link-favicon) {
 		display: inline-block;
 		margin-right: 0.3em;
 		vertical-align: -0.15em;
 	}
-	/* keep the prose icon crisp and unaffected by link color/underline */
 	.prose :global(.link-favicon) {
 		text-decoration: none;
 	}
@@ -278,36 +274,7 @@ const linkFavicon = link && faviconUrl(link);
 	.prose :global(h2),
 	.prose :global(h3),
 	.prose :global(h4) {
-		margin-top: 2rem;
-	}
-
-	/* TOC out in the right margin, spanning the content rows, sticky */
-	article :global(.toc) {
-		grid-column: 2;
-		/* start at the post body row, not the header, so it lines up
-		   with the blog body */
-		grid-row: 2;
-		position: sticky;
-		top: 3.5rem;
-	}
-
-	/* Mobile: single column, TOC under the title, above the prose */
-	@media (max-width: 700px) {
-		article {
-			grid-template-columns: minmax(0, 1fr);
-		}
-		article :global(.toc) {
-			grid-column: 1;
-			grid-row: 2;
-			position: static;
-			margin-bottom: 1.5rem;
-		}
-		.post-body {
-			grid-row: 3;
-		}
-		.related {
-			grid-row: 4;
-		}
+		margin-top: 3rem;
 	}
 
 	.related {
