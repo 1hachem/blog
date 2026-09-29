@@ -6,7 +6,7 @@
 	--accent: #00f;
 	--secondary: #8a6d3b;
 	--code-bg: #f0ede9;
-	--max-width: 46rem;
+	--max-width: 52rem;
 	--font-mono:
 		'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code', 'Source Code Pro',
 		Menlo, Consolas, 'DejaVu Sans Mono', monospace;
@@ -40,7 +40,7 @@
 }
 
 html {
-	font-size: 16px;
+	font-size: 22px;
 	height: 100%;
 	scrollbar-gutter: stable;
 }
@@ -51,7 +51,7 @@ body {
 	color: var(--fg);
 	margin: 0;
 	padding: 0;
-	line-height: 1.6;
+	line-height: 1.7;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	overflow-x: clip;
@@ -84,23 +84,23 @@ h5,
 h6 {
 	font-family: var(--font-mono);
 	font-weight: bold;
-	line-height: 1.2;
-	margin: 1.5rem 0 0.5rem;
+	line-height: 1.25;
+	margin: 2.25rem 0 1rem;
 	clear: both;
 }
 h1 {
-	font-size: 1.4rem;
+	font-size: 2rem;
 }
 h2 {
-	font-size: 1.2rem;
+	font-size: 1.5rem;
 }
 h3 {
-	font-size: 1.1rem;
+	font-size: 1.25rem;
 }
 h4,
 h5,
 h6 {
-	font-size: 1rem;
+	font-size: 1.1rem;
 }
 
 p {
@@ -248,7 +248,7 @@ ol {
 		margin: 0 auto 1rem;
 	}
 	html {
-		font-size: 15px;
+		font-size: 19px;
 	}
 	main {
 		padding: 1rem;
