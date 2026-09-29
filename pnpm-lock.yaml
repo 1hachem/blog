@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      no-comments:
+        specifier: github:1hachem/no-comments#v1
+        version: https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -1962,6 +1965,11 @@ packages:
 
   nlcst-to-string@4.0.0:
     resolution: {integrity: sha512-YKLBCcUYKAg0FNlOBT6aI91qFmSiFKiluk655WzPF+DDMA02qIyy8uiRqI8QXtcFpEvll12LpL5MXqEmAZ+dcA==}
+
+  no-comments@https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040:
+    resolution: {tarball: https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040}
+    version: 1.1.0
+    hasBin: true
 
   node-fetch-native@1.6.7:
     resolution: {integrity: sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q==}
@@ -4910,6 +4918,8 @@ snapshots:
   nlcst-to-string@4.0.0:
     dependencies:
       '@types/nlcst': 2.0.3
+
+  no-comments@https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040: {}
 
   node-fetch-native@1.6.7: {}
 

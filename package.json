@@ -6,12 +6,15 @@
 		"build": "turbo run build",
 		"dev": "turbo run dev --filter=blog",
 		"lint": "prettier --check .",
+		"check:comments": "no-comments",
+		"fix:comments": "no-comments --fix",
 		"typecheck": "turbo run typecheck",
 		"test": "turbo run test",
 		"deploy": "turbo run deploy --filter=blog",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"no-comments": "github:1hachem/no-comments#v1",
 		"prettier": "^3.9.6",
 		"prettier-plugin-astro": "^0.14.1",
 		"turbo": "^2.5.0"

@@ -1,0 +1,4 @@
+{
+	"extensions": ["*.ts", "*.tsx", "*.astro", "*.css"],
+	"ignore": ["^\\.agents/", "^\\.claude/", "/_generated/"]
+}
