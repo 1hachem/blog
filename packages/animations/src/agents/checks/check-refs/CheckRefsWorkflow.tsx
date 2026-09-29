@@ -1,6 +1,7 @@
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { AbsoluteFill } from "remotion";
+import { ProgressBar } from "../../../ProgressBar";
 import { palette, type ThemedProps } from "../../../theme";
 import { FailScene } from "./scenes/FailScene";
 import { ResolvedScene } from "./scenes/ResolvedScene";
@@ -54,6 +55,7 @@ export const CheckRefsWorkflow: React.FC<ThemedProps> = ({ theme }) => {
           <FailScene theme={theme} />
         </TransitionSeries.Sequence>
       </TransitionSeries>
+      <ProgressBar theme={theme} />
     </AbsoluteFill>
   );
 };
