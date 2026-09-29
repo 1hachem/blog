@@ -15,7 +15,7 @@ import LayerBoundaries from '../../components/diagrams/LayerBoundaries.astro';
 
 Since absolutely nobody asked me how I use my agent for coding tasks, here I am writing a blog in detail about it.
 
-Lately while developing lisptc - a neuro-symbolic language harness - I decided to fully build it with AI agents, no handwritten code, however that doesn't mean that I am going to follow the vibe-coded app path where I let agents do whatever they want,
+Lately while developing [lisptc](/blog/lisptc) - a neuro-symbolic language harness, the code is on [github](https://github.com/1hachem/lisptc) - I decided to fully build it with AI agents, no handwritten code, however that doesn't mean that I am going to follow the vibe-coded app path where I let agents do whatever they want,
 it's going to be I design, you code.
 
 <figure class="figure-float">
@@ -62,6 +62,20 @@ How I enforce this in the codebase:
 - rule in AGENTS.md that forbids comments
 
 - a whole codebase with no comments, agents tend to follow the convention of the code they read
+
+I pulled that script out into its own repo, [no-comments](https://github.com/1hachem/no-comments), it walks the ast instead of grepping, so a `//` inside a string is left alone, and it comes in both shapes, a github action that fails the build and posts the removal as a pr suggestion:
+
+```yaml
+- uses: actions/checkout@v4
+- uses: 1hachem/no-comments@v1
+```
+
+and a binary you hang on a pre-commit or pre-push hook so the comments never land in the first place:
+
+```bash
+pnpm add -D github:1hachem/no-comments#v1
+no-comments --staged --fix
+```
 
 ## No implementation details in `AGENTS.md`
 
@@ -139,7 +153,7 @@ As I develop the product, I ask an agent to add a new functionality, I describe 
 
 Since my application is based on natural language interaction, I collect these conversations using posthog,
 which allows me to run a bunch of scouting agents that look for signal to enhance the product,
-sometimes I would just pull a list of traces and their user reports and look for what the product is missing, since the product is also a programming language, I can directly go from traces into new builtins in the language, better error reports, better built in context compaction and sometimes completely new features.
+sometimes I would just pull a list of traces and their user reports and look for what the product is missing, since the product is also a programming language, I can directly go from traces into new builtins in the language, better error reports, better built-in context compaction and sometimes completely new features.
 
 ## Dashicodes a dashboard to visualize technical debt
 
