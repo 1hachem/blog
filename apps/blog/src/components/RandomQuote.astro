@@ -20,7 +20,6 @@ const { quotes } = Astro.props;
 	}
 	.random-quote p {
 		margin: 0;
-		/* Reserve two lines so swapping quotes of different length doesn't shift the layout. */
 		line-height: 1.5;
 		min-height: 4.5em;
 		display: flex;
@@ -46,6 +45,5 @@ const { quotes } = Astro.props;
 		});
 	}
 
-	// Runs on first load and after every ClientRouter swap.
 	document.addEventListener('astro:page-load', pickQuote);
 </script>

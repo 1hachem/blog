@@ -1,8 +1,5 @@
 import { PUBLIC_R2_URL } from 'astro:env/client';
 
-// --- Tech / skill badge metadata -------------------------------------------
-// `dark: true`  -> solid dark brand color, white text, devicon glyph on the left.
-// `dark: false` -> light solid color, black text, no icon (soft skill / concept).
 export const TECH = {
 	python: {
 		label: 'Python',
@@ -262,10 +259,6 @@ export const TECH = {
 	french: { label: 'French — working', bg: '#e3d5f0', dark: false, icon: null },
 };
 
-// --- Commit categories (the legend) ----------------------------------------
-// Single source of truth: keys are the category ids (used as `Commit.type`
-// and as the node-colour class), values are the legend labels. `Category`
-// is derived from the keys so the history and the legend can never drift.
 export const CATEGORY_LABEL = {
 	main: 'main',
 	education: 'education',
@@ -276,38 +269,26 @@ export const CATEGORY_LABEL = {
 } as const;
 export type Category = keyof typeof CATEGORY_LABEL;
 
-// --- The history as a git DAG ----------------------------------------------
-// Each entry is a commit. `parents` are other commit ids (a merge commit has
-// two+). `main` is the long-lived trunk; every side-episode lives on its own
-// branch that checks out from a commit and (sometimes) merges back later.
 type BaseCommit = {
 	id: string;
 	branch: string;
 	parents: string[];
-	t: number; // sortable time — drives the chronological (vertical) order
-	year?: string; // the label shown to the reader (omit to skip the year divider)
+	t: number;
+	year?: string;
 	type: Category;
 	title: string;
 	desc?: string;
 	links?: { label: string; href: string }[];
 	tech?: (keyof typeof TECH)[];
-	card?: 'left' | 'right'; // force the card to a side (its node stays on its lane)
-	hidden?: boolean; // a bare merge junction on the trunk: no card, just a dot (+ any links)
+	card?: 'left' | 'right';
+	hidden?: boolean;
 	root?: boolean;
 };
 
-// The outer gutter fits one decoration per commit, so `tip` (typed margin note)
-// and `photos` (hover gallery) are mutually exclusive — a commit is one or the other.
 export type Commit = BaseCommit &
 	({ tip?: string; photos?: never } | { photos?: string[]; tip?: never });
 
-// --- Photo assets ----------------------------------------------------------
-// Photos live in a Cloudflare R2 bucket (mirrored locally under public/r2/,
-// which is gitignored). Base URL is validated by Astro's builtin env schema
-// (see the `env` block in astro.config.mjs).
 const photo = (name: string) => `${PUBLIC_R2_URL}/about/${name}.webp`;
-// Screen-recording clips live beside the photos as GIFs; they get the full
-// width of the hover gutter (see `.photo.clip` in GitGraph.astro).
 const clip = (name: string) => `${PUBLIC_R2_URL}/about/${name}.gif`;
 
 export const history: Commit[] = [

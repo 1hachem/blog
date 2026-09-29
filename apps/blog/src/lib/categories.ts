@@ -34,7 +34,6 @@ export const CATEGORIES = {
 	},
 } as const;
 
-/** Quotes shown on the "all" view (no category active). */
 export const ALL_QUOTES = [
 	'Welcome to my corner of the internet. Mind the typos.',
 	'A blog nobody asked for, delivered anyway.',
@@ -43,7 +42,6 @@ export const ALL_QUOTES = [
 	'Blame the wizard, not the wand.',
 ];
 
-/** Quotes for a category slug, or the "all" set when no category is active. */
 export function getQuotes(activeSlug?: string): string[] {
 	if (!activeSlug) return [...ALL_QUOTES];
 	const cats = Object.values(CATEGORIES);

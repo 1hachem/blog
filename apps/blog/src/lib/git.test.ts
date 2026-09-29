@@ -9,7 +9,6 @@ beforeEach(() => {
 	vi.resetAllMocks();
 });
 
-// import after mock is set up
 const { getGitInfo } = await import('./git');
 
 describe('getGitInfo', () => {

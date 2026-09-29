@@ -157,10 +157,8 @@ export function getList(slug: string): List | undefined {
 	return lists.find((list) => list.slug === slug);
 }
 
-/** Flattened item titles across all categories, in order. */
 export function previewTitles(list: List): string[] {
 	return list.categories.flatMap((category) => category.items.map((item) => item.title));
 }
 
-/** Number of items shown per list on the /lists index preview. */
 export const PREVIEW_COUNT = 3;

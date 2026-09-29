@@ -16,7 +16,6 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			category: z.enum(CATEGORY_KEYS as [string, ...string[]]).optional(),
 			tags: z.array(z.string()).optional(),
-			// SEO extras
 			keywords: z.array(z.string()).optional(),
 			canonicalURL: z.url().optional(),
 			noindex: z.boolean().optional(),

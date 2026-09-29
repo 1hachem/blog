@@ -5,11 +5,8 @@ import { assignLanes, buildEdges, tiltOf, shiftOf, yearMarks } from '../lib/grap
 import { faviconUrl } from '../lib/favicon';
 import ObfuscatedMailto from './ObfuscatedMailto.astro';
 
-// chronological order, parents before children — the lane algorithm relies on it
 const commits: Commit[] = [...history].sort((a, b) => a.t - b.t);
 
-// Every branch gets its own label + colour; commits on `main` take a chip derived
-// from their kind, overridable per-commit.
 type Chip = { label: string; color: string };
 const BRANCH_META: Record<string, Chip> = {
 	streets: { label: 'free roam', color: '#e5722a' },
@@ -37,7 +34,6 @@ const chipFor = (c: Commit): Chip | undefined =>
 
 const { laneOf, minLane, laneCount } = assignLanes(commits);
 
-// newest -> oldest (top of page = latest); `card` overrides the default side
 const rows = [...commits].reverse().map((c) => ({
 	...c,
 	lane: laneOf[c.branch] - minLane,
@@ -56,9 +52,9 @@ const LEGEND = (Object.keys(CATEGORY_LABEL) as Category[]).map((type) => ({
 }));
 
 interface Props {
-	limit?: number; // render only the newest N commits (a teaser)
-	showLegend?: boolean; // show the colour key
-	preview?: boolean; // non-interactive teaser mode
+	limit?: number;
+	showLegend?: boolean;
+	preview?: boolean;
 }
 const { limit, showLegend = false, preview = false } = Astro.props;
 const visibleRows = typeof limit === 'number' ? rows.slice(0, limit) : rows;

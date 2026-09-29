@@ -3,7 +3,6 @@ import type { Commit } from '../data/graph';
 import { history } from '../data/graph';
 import { assignLanes, buildEdges, hash, shiftOf, tiltOf, yearMarks } from './graph-layout';
 
-// minimal commit factory — only the fields the layout cares about
 const c = (id: string, branch: string, parents: string[], extra: Partial<Commit> = {}): Commit => ({
 	id,
 	branch,
@@ -33,7 +32,6 @@ describe('hash / tiltOf / shiftOf', () => {
 	});
 
 	it('decorrelates tilt and shift (different salts)', () => {
-		// they should not be trivially equal for most ids
 		const ids = sorted.map((x) => x.id);
 		const equal = ids.filter((id) => tiltOf(id) === shiftOf(id)).length;
 		expect(equal).toBeLessThan(ids.length);
@@ -55,7 +53,6 @@ describe('assignLanes', () => {
 	});
 
 	it('nests a branch one lane further out than its parent branch, same side', () => {
-		// research forks from a contests commit and is not force-pinned
 		const { laneOf } = assignLanes(sorted);
 		if (laneOf.research !== undefined && laneOf.contests !== undefined) {
 			expect(Math.sign(laneOf.research)).toBe(Math.sign(laneOf.contests));
@@ -72,8 +69,6 @@ describe('assignLanes', () => {
 			c('b2', 'bb', ['b1']),
 		];
 		const { laneOf } = assignLanes(commits);
-		// force both to the same side by construction: alternating puts them apart,
-		// so assert they never share a lane regardless
 		expect(laneOf.aa).not.toBe(laneOf.bb);
 	});
 
@@ -109,7 +104,7 @@ describe('buildEdges', () => {
 		const [edge] = buildEdges(commits, colorOf);
 		expect(edge.branch).toBe('feat');
 		expect(edge.color).toBe('#feat');
-		expect(edge.railFrom).toBe(true); // child is off-main
+		expect(edge.railFrom).toBe(true);
 	});
 
 	it('a merge back into main keeps railFrom false and belongs to the feature branch', () => {

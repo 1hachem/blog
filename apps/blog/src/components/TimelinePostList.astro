@@ -15,7 +15,6 @@ const { posts, currentPage, totalPages, baseURL = '/blog' } = Astro.props;
 const THREE_MONTHS = 1000 * 60 * 60 * 24 * 90;
 const now = Date.now();
 
-// Group posts into "recent" and per-year buckets
 const groups: { label: string; posts: CollectionEntry<'blog'>[] }[] = [];
 const recentPosts = posts.filter((p) => now - p.data.pubDate.valueOf() < THREE_MONTHS);
 const olderPosts = posts.filter((p) => now - p.data.pubDate.valueOf() >= THREE_MONTHS);

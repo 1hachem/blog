@@ -10,7 +10,6 @@
 	--font-mono:
 		'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code', 'Source Code Pro',
 		Menlo, Consolas, 'DejaVu Sans Mono', monospace;
-	/* git-graph category colours (shared by the about graph + its landing preview) */
 	--c-main: #3b82f6;
 	--c-education: #8e4ec6;
 	--c-accident: #e5484d;
@@ -35,7 +34,6 @@
 	box-sizing: border-box;
 }
 
-/* Speed up ClientRouter's default fade on page/category swaps */
 ::view-transition-old(root),
 ::view-transition-new(root) {
 	animation-duration: 0.08s;
@@ -88,7 +86,6 @@ h6 {
 	font-weight: bold;
 	line-height: 1.2;
 	margin: 1.5rem 0 0.5rem;
-	/* a heading never shares a line with a floated figure, it starts the next section */
 	clear: both;
 }
 h1 {
@@ -130,9 +127,6 @@ pre > code {
 	font-family: var(--font-mono);
 }
 
-/* Shiki dual-theme syntax highlighting: colours follow the site's light/dark
-   toggle instead of prefers-color-scheme (see astro.config.mjs shikiConfig).
-   Background/border stay on the site's own --code-bg/--border, set above. */
 pre.astro-code,
 pre.astro-code span {
 	color: var(--shiki-light);
@@ -149,7 +143,6 @@ blockquote {
 	color: var(--muted);
 }
 
-/* MDX parses a caption on its own line as a block, so it arrives wrapped in <p>. */
 figcaption p {
 	margin: 0;
 }
@@ -165,7 +158,6 @@ img {
 	height: auto;
 }
 
-/* a figure the prose runs alongside instead of breaking around */
 .figure-float {
 	float: right;
 	width: 17rem;
@@ -177,9 +169,6 @@ img {
 	width: 100%;
 }
 
-/* a table won't shrink below its content's min-width on its own — wrap it in
-   this so the scrollbar (and any overflow) is contained to the table itself
-   instead of the table forcing the whole page wider */
 .table-wrap {
 	overflow-x: auto;
 	margin-bottom: 1.5rem;
@@ -226,21 +215,18 @@ ol {
 	white-space: normal;
 }
 
-/* post-date byline, shared by every post-list rendering (home, timeline, related posts) */
 .date {
 	color: var(--muted);
 	font-size: 0.85rem;
 	flex-shrink: 0;
 }
 
-/* favicon prepended to a link's title (about-page links, post source link, prose links) */
 .link-favicon {
 	width: 1em;
 	height: 1em;
 	border-radius: 2px;
 }
 
-/* bare post list, shared by the home page and the blog timeline */
 .post-list {
 	list-style: none;
 	padding: 0;
@@ -255,7 +241,6 @@ ol {
 }
 
 @media (max-width: 600px) {
-	/* one column is too narrow to wrap text beside anything */
 	.figure-float {
 		float: none;
 		width: 24rem;

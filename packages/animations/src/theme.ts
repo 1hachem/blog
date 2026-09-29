@@ -14,8 +14,6 @@ export type Palette = {
   yellow: string;
 };
 
-// Mirrors the blog's --bg/--fg/--muted/--border/--code-bg custom properties so an
-// embedded composition sits on the same surface as the prose around it.
 const palettes: Record<Theme, Palette> = {
   dark: {
     bg: "#0a0a0a",
@@ -48,8 +46,6 @@ const { fontFamily } = loadFont("normal", {
   subsets: ["latin"],
 });
 
-// loadFont() blocks rendering until the face is ready; a bare CSS stack silently
-// falls back to the generic mono in renders.
 export const mono = `${fontFamily}, ui-monospace, SFMono-Regular, monospace`;
 
 export type ThemedProps = { theme: Theme };
