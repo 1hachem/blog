@@ -42,7 +42,7 @@ jobs:
         run: pnpm lint
 
       - name: No comments
-        run: pnpm check:comments
+        uses: 1hachem/no-comments@v1
 
       - name: Test
         run: pnpm test

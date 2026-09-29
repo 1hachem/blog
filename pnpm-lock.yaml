@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      no-comments:
+        specifier: github:1hachem/no-comments#v1
+        version: https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -3530,6 +3533,11 @@ packages:
 
   no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
+
+  no-comments@https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040:
+    resolution: {tarball: https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040}
+    version: 1.1.0
+    hasBin: true
 
   node-fetch-native@1.6.7:
     resolution: {integrity: sha512-g9yhqoedzIUm0nTnTqAQvueMPVOuIY16bqgAJJC8XOOubYFNwz6IER9qs0Gq2Xd0+CecCKFjtdDTMA4u4xG06Q==}
@@ -8460,6 +8468,8 @@ snapshots:
     dependencies:
       lower-case: 2.0.2
       tslib: 2.8.1
+
+  no-comments@https://codeload.github.com/1hachem/no-comments/tar.gz/a38a075ce66c272071c9470bf5579bc7c0df5040: {}
 
   node-fetch-native@1.6.7: {}
 

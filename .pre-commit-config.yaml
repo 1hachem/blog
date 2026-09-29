@@ -6,6 +6,19 @@ repos:
         stages: [commit-msg]
   - repo: local
     hooks:
+      - id: no-comments
+        name: no-comments
+        entry: pnpm exec no-comments --staged --fix
+        language: system
+        files: \.(ts|tsx|astro|css)$
+        pass_filenames: false
+      - id: no-comments-all
+        name: no-comments (whole tree)
+        entry: pnpm exec no-comments
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
       - id: prettier
         name: prettier
         entry: pnpm exec prettier --write --ignore-unknown
