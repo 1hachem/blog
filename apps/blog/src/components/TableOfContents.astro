@@ -11,40 +11,76 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 {
 	toc.length >= 2 && (
-		<div class="toc">
-			<button type="button" class="toc-toggle" aria-expanded="false" aria-controls="toc-panel">
-				Table of contents
-			</button>
-			<nav class="toc-panel" id="toc-panel" aria-label="Table of contents">
-				<ol class="toc-list">
-					{toc.map((h) => (
-						<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'} data-id={h.slug}>
-							<a href={`#${h.slug}`}>{h.text}</a>
-						</li>
-					))}
-				</ol>
-			</nav>
+		<div class="toc" data-open="false">
+			<div class="toc-inner">
+				<button type="button" class="toc-open" aria-expanded="false" aria-controls="toc-panel">
+					contents
+				</button>
+				<div class="toc-panel" id="toc-panel">
+					<div class="toc-head">
+						<span class="toc-title">contents</span>
+						<button type="button" class="toc-close" aria-label="Close table of contents">
+							&times;
+						</button>
+					</div>
+					<nav aria-label="Table of contents">
+						<ol class="toc-list">
+							{toc.map((h) => (
+								<li class={h.depth === 3 ? 'toc-h3' : 'toc-h2'} data-id={h.slug}>
+									<a href={`#${h.slug}`}>{h.text}</a>
+								</li>
+							))}
+						</ol>
+					</nav>
+				</div>
+			</div>
 		</div>
 	)
 }
 
 <script>
+	const GUTTER = '(min-width: 1700px)';
+	const STORE = 'toc-open';
+
 	let io: IntersectionObserver | undefined;
 
 	function setupToc() {
 		io?.disconnect();
 
 		const toc = document.querySelector<HTMLElement>('.toc');
-		const toggle = toc?.querySelector<HTMLButtonElement>('.toc-toggle');
-		if (toc && toggle && !toggle.dataset.bound) {
-			toggle.dataset.bound = 'true';
-			toggle.addEventListener('click', () => {
-				const expanded = toc.classList.toggle('expanded');
-				toggle.setAttribute('aria-expanded', String(expanded));
+		if (!toc) return;
+
+		const opener = toc.querySelector<HTMLButtonElement>('.toc-open')!;
+		const closer = toc.querySelector<HTMLButtonElement>('.toc-close')!;
+
+		const setOpen = (open: boolean) => {
+			toc.dataset.open = String(open);
+			opener.setAttribute('aria-expanded', String(open));
+		};
+
+		let stored: string | null = null;
+		try {
+			stored = localStorage.getItem(STORE);
+		} catch {}
+		setOpen(stored === null ? window.matchMedia(GUTTER).matches : stored === 'true');
+
+		if (!toc.dataset.bound) {
+			toc.dataset.bound = 'true';
+			const remember = (open: boolean) => {
+				setOpen(open);
+				try {
+					localStorage.setItem(STORE, String(open));
+				} catch {}
+			};
+			opener.addEventListener('click', () => remember(true));
+			closer.addEventListener('click', () => remember(false));
+			toc.addEventListener('click', (e) => {
+				if (!(e.target instanceof Element)) return;
+				if (e.target.closest('.toc-list a') && !window.matchMedia(GUTTER).matches) setOpen(false);
 			});
 		}
 
-		const list = document.querySelector('.toc-list');
+		const list = toc.querySelector('.toc-list');
 		if (!list) return;
 
 		const items = list.querySelectorAll<HTMLElement>('li[data-id]');
@@ -107,11 +143,69 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
 <style>
 	.toc {
+		position: fixed;
+		bottom: 1.25rem;
+		right: 1.25rem;
+		z-index: 20;
+		width: 14rem;
+		max-width: calc(100vw - 2.5rem);
 		font-size: 0.78rem;
 		line-height: 1.4;
-		border-left: 2px solid var(--border);
-		padding-left: 0.75rem;
 	}
+
+	.toc-open {
+		background: var(--bg);
+		border: 1px solid var(--border);
+		color: var(--muted);
+		font: inherit;
+		padding: 0.25rem 0.6rem;
+		cursor: pointer;
+		float: right;
+	}
+	.toc-open:hover {
+		color: var(--fg);
+		border-color: var(--fg);
+	}
+	.toc[data-open='true'] .toc-open {
+		display: none;
+	}
+
+	.toc-panel {
+		display: none;
+		background: var(--bg);
+		border: 1px solid var(--border);
+		padding: 0.5rem 0.75rem 0.7rem;
+		max-height: calc(100vh - 6.5rem);
+		overflow-y: auto;
+	}
+	.toc[data-open='true'] .toc-panel {
+		display: block;
+	}
+
+	.toc-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		margin-bottom: 0.4rem;
+	}
+	.toc-title {
+		color: var(--muted);
+	}
+	.toc-close {
+		background: none;
+		border: none;
+		color: var(--muted);
+		font: inherit;
+		font-size: 1.1rem;
+		line-height: 1;
+		padding: 0 0.15rem;
+		cursor: pointer;
+	}
+	.toc-close:hover {
+		color: var(--fg);
+	}
+
 	.toc-list {
 		list-style: none;
 		margin: 0;
@@ -138,40 +232,26 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 		padding-left: 0.8rem;
 	}
 
-	.toc-toggle {
-		display: none;
-	}
-
-	@media (max-width: 700px) {
-		.toc-toggle {
-			display: flex;
-			align-items: center;
-			width: 100%;
-			background: none;
-			border: none;
-			padding: 0;
-			cursor: pointer;
-			font: inherit;
-			font-size: 0.85rem;
-			color: var(--fg);
+	@media (min-width: 1700px) {
+		.toc {
+			position: static;
+			width: auto;
+			max-width: none;
+			padding-left: 2rem;
 		}
-		.toc-toggle::before {
-			content: '▸';
-			display: inline-block;
-			margin-right: 0.4rem;
-			transition: transform 0.15s ease;
+		.toc-inner {
+			position: sticky;
+			top: 4.5rem;
+			max-width: 15rem;
 		}
-		.toc.expanded .toc-toggle::before {
-			transform: rotate(90deg);
+		.toc-open {
+			float: none;
 		}
 		.toc-panel {
-			display: none;
-		}
-		.toc.expanded .toc-panel {
-			display: block;
-		}
-		.toc-list {
-			padding-top: 0.6rem;
+			background: none;
+			border: none;
+			border-left: 2px solid var(--border);
+			padding: 0 0 0 0.75rem;
 		}
 	}
 </style>
