@@ -18,11 +18,7 @@ Since absolutely nobody asked me how I use my agent for coding tasks, here I am 
 Lately while developing lisptc - a neuro-symbolic language harness - I decided to fully build it with AI agents, no handwritten code, however that doesn't mean that I am going to follow the vibe-coded app path where I let agents do whatever they want,
 it's going to be I design, you code.
 
-Giving up code completely to agents meant that I have to make sure to set up the right harness and develop the right tools that would keep things under control, I don't want to end up 2 months down the line with a mess that no one can debug, not even the agents that built it.
-
-The thing is that one bad practice in your code is the context for the next agent, which is going to follow the same bad practice +1, this is the failure mode that most vibe coded codebases usually fall into, thinking that agents are immune to technical debt.
-
-<figure>
+<figure class="figure-float">
 	<img
 		src="https://cdn.d4shi.com/illustrations/technical-debt.webp"
 		width="1080"
@@ -30,16 +26,30 @@ The thing is that one bad practice in your code is the context for the next agen
 		alt="Comic: two builders stand in front of a cracked, propped-up house labelled technical debt, one asking why it takes so long to add a new window"
 		loading="lazy"
 		decoding="async"
-		style="width:100%;height:auto"
 	/>
 	<figcaption>
 		Comic by <a href="https://vincentdnl.com/">@vincentdnl</a>
 	</figcaption>
 </figure>
 
+Giving up code completely to agents meant that I have to make sure to set up the right harness and develop the right tools that would keep things under control, I don't want to end up 2 months down the line with a mess that no one can debug, not even the agents that built it.
+
+The thing is that one bad practice in your code is the context for the next agent, which is going to follow the same bad practice +1, this is the failure mode that most vibe coded codebases usually fall into, thinking that agents are immune to technical debt.
+
 ## Forbid comments and dev docs, they are obsolete
 
 Code is the only source of truth, this means less context for the agent to read, if the agent needs certain details about the implementation it has to read the code.
+
+<figure class="figure-float">
+	<img
+		src="https://cdn.d4shi.com/illustrations/no-comment.webp"
+		width="456"
+		height="498"
+		alt="A deer held up to a TV interview microphone, captioned NO COMMENT"
+		loading="lazy"
+		decoding="async"
+	/>
+</figure>
 
 Agents instead of actually adding the functionality would stick a comment on top pretending that it already works, misguiding any other agent that actually reads the context.
 
@@ -52,18 +62,6 @@ How I enforce this in the codebase:
 - rule in AGENTS.md that forbids comments
 
 - a whole codebase with no comments, agents tend to follow the convention of the code they read
-
-<figure>
-	<img
-		src="https://cdn.d4shi.com/illustrations/no-comment.webp"
-		width="456"
-		height="498"
-		alt="A deer held up to a TV interview microphone, captioned NO COMMENT"
-		loading="lazy"
-		decoding="async"
-		style="display:block;width:100%;max-width:456px;height:auto;margin-inline:auto"
-	/>
-</figure>
 
 ## No implementation details in `AGENTS.md`
 
@@ -91,7 +89,7 @@ In ci I make sure that any change to `AGENTS.md` is only a pointer toward what i
 
 <figure>
 	<Animation
-		client:visible
+		client:load
 		id="JevGithubWorkflow"
 		label="GitHub Actions sends each added AGENTS.md hunk to Jev with classification rules; a useful pointer passes, while an implementation detail fails the check"
 	/>
@@ -104,7 +102,7 @@ Another script goes through all the `AGENTS.md` files in the repo and checks tha
 
 <figure>
 	<Animation
-		client:visible
+		client:load
 		id="CheckRefsWorkflow"
 		label="check:refs extracts backticked references from AGENTS.md, confirms existing paths, commands, and identifiers, and fails when a referenced file is missing"
 	/>

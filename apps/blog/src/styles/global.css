@@ -88,6 +88,8 @@ h6 {
 	font-weight: bold;
 	line-height: 1.2;
 	margin: 1.5rem 0 0.5rem;
+	/* a heading never shares a line with a floated figure, it starts the next section */
+	clear: both;
 }
 h1 {
 	font-size: 1.4rem;
@@ -161,6 +163,18 @@ hr {
 img {
 	max-width: 100%;
 	height: auto;
+}
+
+/* a figure the prose runs alongside instead of breaking around */
+.figure-float {
+	float: right;
+	width: 17rem;
+	max-width: 45%;
+	margin: 0.25rem 0 1rem 1.5rem;
+}
+.figure-float img {
+	display: block;
+	width: 100%;
 }
 
 /* a table won't shrink below its content's min-width on its own — wrap it in
@@ -241,6 +255,13 @@ ol {
 }
 
 @media (max-width: 600px) {
+	/* one column is too narrow to wrap text beside anything */
+	.figure-float {
+		float: none;
+		width: 24rem;
+		max-width: 100%;
+		margin: 0 auto 1rem;
+	}
 	html {
 		font-size: 15px;
 	}

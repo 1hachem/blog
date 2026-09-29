@@ -44,10 +44,11 @@ export default function Animation({ id, label }: Props) {
 			compositionHeight={height}
 			style={frame}
 			aria-label={label}
+			playbackRate={0.8}
 			autoPlay
 			initiallyMuted
 			loop
-			clickToPlay={false}
+			controls
 			acknowledgeRemotionLicense
 		/>
 	);
