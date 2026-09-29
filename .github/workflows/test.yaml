@@ -41,5 +41,8 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: No comments
+        run: pnpm check:comments
+
       - name: Test
         run: pnpm test

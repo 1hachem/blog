@@ -6,6 +6,8 @@
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"lint": "prettier --check .",
+		"check:comments": "node --no-warnings --experimental-transform-types ./scripts/check-comments.ts",
+		"fix:comments": "node --no-warnings --experimental-transform-types ./scripts/check-comments.ts --fix",
 		"typecheck": "turbo run typecheck",
 		"test": "turbo run test",
 		"deploy": "turbo run deploy --filter=blog",
@@ -14,6 +16,7 @@
 	"devDependencies": {
 		"prettier": "^3.9.6",
 		"prettier-plugin-astro": "^0.14.1",
-		"turbo": "^2.5.0"
+		"turbo": "^2.5.0",
+		"typescript": "^6.0.3"
 	}
 }
