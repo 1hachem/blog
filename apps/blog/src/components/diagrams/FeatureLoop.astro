@@ -1,0 +1,99 @@
+<svg
+	class="loop-diagram"
+	viewBox="0 0 760 270"
+	xmlns="http://www.w3.org/2000/svg"
+	fill="none"
+	role="img"
+	aria-label="A five step flow: prompt and try it repeat until the feature is right, then tests pin the behavior, the implementation is read, and the refactor runs with the tests holding"
+>
+	<style>
+		svg.loop-diagram {
+			color: var(--fg);
+		}
+		svg.loop-diagram .s {
+			stroke: currentColor;
+			stroke-width: 1.6;
+		}
+		svg.loop-diagram .box {
+			stroke: currentColor;
+			stroke-width: 1.6;
+			fill: none;
+		}
+		svg.loop-diagram .dash {
+			stroke: currentColor;
+			stroke-width: 1.2;
+			fill: none;
+			stroke-dasharray: 4 4;
+			opacity: 0.55;
+		}
+		svg.loop-diagram .t {
+			fill: currentColor;
+			font-family:
+				'JetBrains Mono', 'JetBrainsMono Nerd Font', ui-monospace, 'Cascadia Code',
+				'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+		}
+		svg.loop-diagram .ttl {
+			font-size: 13px;
+		}
+		svg.loop-diagram .cap {
+			font-size: 12px;
+			opacity: 0.72;
+		}
+		svg.loop-diagram .sm {
+			font-size: 11px;
+			opacity: 0.72;
+		}
+		svg.loop-diagram .gls {
+			font-size: 10px;
+			opacity: 0.6;
+		}
+	</style>
+	<defs>
+		<marker
+			id="ah-loop"
+			viewBox="0 0 10 10"
+			refX="9"
+			refY="5"
+			markerWidth="7"
+			markerHeight="7"
+			orient="auto-start-reverse"
+		>
+			<path d="M0 0L10 5L0 10z" fill="currentColor"></path>
+		</marker>
+	</defs>
+	<text x="154" y="56" text-anchor="middle" class="t cap">is this the feature I want?</text>
+	<text x="532" y="56" text-anchor="middle" class="t cap">is this how I want it built?</text>
+	<rect class="dash" x="6" y="68" width="296" height="140" rx="8"></rect>
+	<rect class="dash" x="312" y="68" width="440" height="140" rx="8"></rect>
+	<rect class="box" x="14" y="96" width="124" height="56" rx="7"></rect>
+	<text x="76" y="120" text-anchor="middle" class="t ttl">prompt</text>
+	<text x="76" y="136" text-anchor="middle" class="t gls">how it behaves</text>
+	<rect class="box" x="166" y="96" width="124" height="56" rx="7"></rect>
+	<text x="228" y="120" text-anchor="middle" class="t ttl">try it</text>
+	<text x="228" y="136" text-anchor="middle" class="t gls">change my mind</text>
+	<rect class="box" x="318" y="96" width="124" height="56" rx="7"></rect>
+	<text x="380" y="120" text-anchor="middle" class="t ttl">tests</text>
+	<text x="380" y="136" text-anchor="middle" class="t gls">pin what I liked</text>
+	<rect class="box" x="470" y="96" width="124" height="56" rx="7"></rect>
+	<text x="532" y="120" text-anchor="middle" class="t ttl">read it</text>
+	<text x="532" y="136" text-anchor="middle" class="t gls">brief, workarounds</text>
+	<rect class="box" x="622" y="96" width="124" height="56" rx="7"></rect>
+	<text x="684" y="120" text-anchor="middle" class="t ttl">refactor</text>
+	<text x="684" y="136" text-anchor="middle" class="t gls">better design</text>
+	<line class="s" x1="138" y1="124" x2="164" y2="124" marker-end="url(#ah-loop)"></line>
+	<line class="s" x1="290" y1="124" x2="316" y2="124" marker-end="url(#ah-loop)"></line>
+	<line class="s" x1="442" y1="124" x2="468" y2="124" marker-end="url(#ah-loop)"></line>
+	<line class="s" x1="594" y1="124" x2="620" y2="124" marker-end="url(#ah-loop)"></line>
+	<path class="s" d="M228 152C228 184 76 184 76 154" marker-end="url(#ah-loop)"></path>
+	<text x="152" y="200" text-anchor="middle" class="t sm">iterate until I like it</text>
+	<line class="dash" x1="380" y1="164" x2="684" y2="164"></line>
+	<line class="dash" x1="380" y1="164" x2="380" y2="154"></line>
+	<line class="dash" x1="684" y1="164" x2="684" y2="154"></line>
+	<text x="532" y="184" text-anchor="middle" class="t sm">the tests hold the behavior</text>
+	<text x="380" y="238" text-anchor="middle" class="t cap"
+		>the first half is about the feature, the second about the code</text
+	>
+	<text x="380" y="256" text-anchor="middle" class="t cap"
+		>the tests are the hinge between them</text
+	>
+</svg>

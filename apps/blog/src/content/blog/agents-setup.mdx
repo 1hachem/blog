@@ -12,6 +12,7 @@ import Animation from '../../components/Animation';
 import Callout from '../../components/Callout.astro';
 import AgentsRouters from '../../components/diagrams/AgentsRouters.astro';
 import CoreRings from '../../components/diagrams/CoreRings.astro';
+import FeatureLoop from '../../components/diagrams/FeatureLoop.astro';
 
 Since absolutely nobody asked me how I use my coding agents, here I am writing a blog post about it.
 
@@ -48,6 +49,10 @@ I ask an agent to add a feature and describe how I want it to behave. It builds 
 Once I'm happy with it, I ask for tests that capture the behavior I just approved. That's me committing to it. Now I turn to the implementation: I ask the agent to brief me on its changes, visualize them, and list the workarounds it used. I read the parts of the code that matter.
 
 That's when I decide what to redesign, a better architecture, a different technology, the right abstraction, and the refactor starts. The tests stay in place to catch changes to the behavior I already approved.
+
+<FeatureLoop />
+
+Every step of that loop depends on what the agent reads before it starts. The code is most of it, and anything else I leave lying around in the repo competes with it.
 
 ## What agents read
 
