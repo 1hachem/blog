@@ -13,13 +13,11 @@ import Callout from '../../components/Callout.astro';
 import AgentsRouters from '../../components/diagrams/AgentsRouters.astro';
 import CoreRings from '../../components/diagrams/CoreRings.astro';
 
-Since absolutely nobody asked me how I use my coding agents, here I am writing a blog in detail about it.
+Since absolutely nobody asked me how I use my coding agents, here I am writing a blog post about it.
 
-Lately while developing [lisptc](/blog/lisptc) - a neuro-symbolic language and AI harness, find it at [github](https://github.com/1hachem/lisptc) - I decided to fully build it with coding agents,
-no handwritting code.
+While developing [lisptc](/blog/lisptc), a programming language for self-modifying agents ([github](https://github.com/1hachem/lisptc)), I decided to build it entirely with coding agents, without writing any code by hand.
 
-**BUT** that doesn't mean that I am going to follow the vibe-coded app path where I prompt for features and let agents do whatever they do these days,
-instead it's going to be **I think, I design, you code**.
+**BUT** that doesn't mean I follow the vibe-coded app path where I prompt for features and let agents do whatever they do these days. It's **I think, I design, they code**.
 
 <figure class="figure-float">
 	<img
@@ -35,29 +33,113 @@ instead it's going to be **I think, I design, you code**.
 	</figcaption>
 </figure>
 
-Giving up code completely to agents meant that I have to make sure to set up the right coding harness and develop the right tools that would keep things under control,
-I didn't want to end up 2 months down the line with a mess that no one can debug,
-not even the agents that built it.
+Letting agents write all the code meant I had to build the right harness, process and mindset. I didn't want to end up two months later with a mess nobody can debug, not even the agents that built it. One bad practice in the code becomes the context for the next agent, which follows it and adds one more. That is the failure mode most vibe-coded codebases fall into, assuming agents are somehow immune to **technical debt**.
 
-The thing is that one bad practice in your code is the context for the next agent, which is going to follow the same bad practice +1, this is the failure mode that most vibe coded codebases usually fall into, thinking that agents are immune to **technical debt**.
+## Get the feature right, then refactor
 
-The name of the game is how can you detect, illustrate, visualize and then reduce technical debt.
+<Callout variant="failure">
 
-## Dashicodes a dashboard to visualize technical debt
+**A feature can work and still be built badly.** The agent gives me exactly what I asked for, and I don't find out what it did to get there until the next feature is much harder to add than it should be.
 
-Scripts catch a rule the moment it breaks, but technical debt doesn't break anything, it accumulates, a file that gets a little hairier every week never fails ci, so I built a dashboard for lisptc
-whose only job is to show me the shape of the codebase and how it is moving.
+</Callout>
 
-The app runs its own analysis using different tools like `fallow`, `git` and `gh` github cli, it draws:
+I ask an agent to add a feature and describe how I want it to behave. It builds it, and at this point I don't care how. We iterate, I try it, I change my mind about parts of it. The only question in this phase is whether I want the feature at all.
 
-- **hotspot quadrant**, prioritize refactors
-- **layered dependency graph and DSM**, spot layer violations
-- **import cycles**, reveal circular dependencies
-- **temporal coupling arcs**, uncover hidden coupling
-- **blast radius per pull request**, assess change impact
-- **pull request flow and lifetimes**, track progress and bottlenecks
+Once I'm happy with it, I ask for tests that capture the behavior I just approved. That's me committing to it. Now I turn to the implementation: I ask the agent to brief me on its changes, visualize them, and list the workarounds it used. I read the parts of the code that matter.
 
-I can compare results over time to see the progress.
+That's when I decide what to redesign, a better architecture, a different technology, the right abstraction, and the refactor starts. The tests stay in place to catch changes to the behavior I already approved.
+
+## What agents read
+
+Comments, docs and `AGENTS.md` files are all the same decision: what context do I hand an agent, and can it be trusted.
+
+### No comments
+
+Code is the only source of truth. I forbid comments because I don't want an agent relying on an explanation that can drift from the implementation it describes.
+
+<figure class="figure-float">
+	<img
+		src="https://cdn.d4shi.com/illustrations/no-comment.webp"
+		width="456"
+		height="498"
+		alt="A deer held up to a TV interview microphone, captioned NO COMMENT"
+		loading="lazy"
+		decoding="async"
+	/>
+</figure>
+
+<Callout variant="failure">
+
+**A comment can claim behavior the code never implements.** An agent describes the intended functionality, leaves the actual work incomplete, and the next agent trusts the comment instead of checking. Even an accurate one goes stale the moment someone edits the line under it.
+
+</Callout>
+
+What I gain is not less reading for the agent, it may well have to inspect more code. What I gain is a single description of the implementation instead of two competing ones.
+
+### No permanent docs, just-in-time instead
+
+LLMs love wasting tokens rambling about implementation details, and I never read the docs an agent writes. They fail the same way comments do, with more surface area: the code moves, the file path in the doc doesn't, and the next agent starts from a wrong assumption and builds on top of it. Long docs also bury the few pointers that were actually useful.
+
+So dev docs become **just-in-time**, generated directly from the code and scoped to what you need to know. When I want to understand a module I ask an agent to produce an interactive artifact about how it works, with illustrations of the data flow, the dependencies, the pros, cons and tradeoffs. In five minutes I have an HTML page I can explore. I use it to review the design, and I don't keep it.
+
+### `AGENTS.md` files are routers
+
+`AGENTS.md` is dev docs written for coding agents, the file one reads when it opens the repo. They nest, so any directory can carry its own and an agent reads the nearest one. Mine hold a map and nothing else: every workspace lists where its things are, so an agent lands on the root file, finds the workspace it needs, and goes straight to the relevant code.
+
+<AgentsRouters />
+
+The root file holds only what is true across the repo, the rules no single package owns. Dependencies point inward. External effects stay behind an interface. An agent can break either one in a single line, which is exactly why they belong there: a rule goes in the root file only if something in CI catches it, with a pointer to where that check lives. Everything package-specific stays in the code, and the package's `AGENTS.md` points at it.
+
+## What CI enforces
+
+A rule in a markdown file is a suggestion. The root `AGENTS.md` does forbid comments, but what keeps them out is that the codebase has none, agents copy the conventions of the code they read, and a script fails the build when one slips through anyway.
+
+That script walks the AST instead of grepping, so a `//` inside a string is left alone. It has a check mode that fails on an added comment and a `--fix` mode that rewrites the file. I pulled it out into its own repo, [no-comments](https://github.com/1hachem/no-comments), packaged as a GitHub Action that fails the build and posts the removal as a PR suggestion:
+
+```yaml
+- uses: actions/checkout@v4
+- uses: 1hachem/no-comments@v1
+```
+
+The same binary runs on a pre-commit or pre-push hook, if you'd rather the comments never land in the first place.
+
+`AGENTS.md` files get two checks of their own. The first runs each added diff hunk through [Jev](https://docs.typesafe.ai), a classifier that takes the rule in plain English and returns a typed judgment. The question is whether the hunk explains how something works. A pointer passes and an implementation detail fails, while the root file's rules pass because a rule is not an explanation of the code.
+
+<figure>
+	<Animation
+		client:load
+		id="JevGithubWorkflow"
+		label="GitHub Actions sends each added AGENTS.md hunk to Jev with classification rules; a useful pointer passes, while an implementation detail fails the check"
+	/>
+	<figcaption>
+		Each added hunk is checked on its own: pointers pass, implementation details fail.
+	</figcaption>
+</figure>
+
+The second walks every `AGENTS.md` in the repo and checks that each backticked path, class name and function name still exists and hasn't been renamed or removed. When it fails, the agent is instructed to fix the file.
+
+<figure>
+	<Animation
+		client:load
+		id="CheckRefsWorkflow"
+		label="check:refs extracts backticked references from AGENTS.md, confirms existing paths, commands, and identifiers, and fails when a referenced file is missing"
+	/>
+	<figcaption>
+		Every backticked path, command, and identifier must still resolve in the repository.
+	</figcaption>
+</figure>
+
+Dependencies get the same treatment. I decide which parts of the codebase can depend on which, and Turborepo's boundary checks fail on a dependency I've forbidden, in CI and before pushing. Custom checks cover the rules they can't express.
+
+During refactoring I also ask for an illustration of how the modules fit together. This is a simplified example from lisptc, showing the core logic staying separate from external systems:
+
+<CoreRings />
+
+## What I still inspect myself
+
+Some technical debt passes every check I have. A file gets a little hairier every week and never fails CI, so I built a dashboard for lisptc that answers the questions a check can't.
+
+It runs its own analysis with `fallow`, `git` and the `gh` GitHub CLI. Where does change concentrate? A hotspot quadrant, and its top corner is my refactor queue. What depends on what? A layered dependency graph and a dependency structure matrix for the imports crossing a layer they shouldn't, and a separate view for import cycles. What changes together? Temporal coupling arcs pair files that keep landing in the same commits with nothing in the code connecting them. How far does a change reach? Blast radius per pull request, and pull request flow and lifetimes for the ones sitting open too long.
 
 <figure style={{ margin: '1.5rem 0' }}>
 	<video
@@ -75,151 +157,14 @@ I can compare results over time to see the progress.
 	<figcaption>Dashicodes: visualizing technical debt and tracking progress over time.</figcaption>
 </figure>
 
-## Test driven refactors
+I compare the results over time to see where it's going.
 
-<Callout variant="failure">
+[fallow](https://fallow.tools/) also finds duplicated logic and dead code, which fills the other half of that queue. A slightly different request gets a slightly different copy of a function, and now a fix has to reach every copy while the copies drift apart. Replacing an implementation tends to leave the old one behind. Both are signals for a better abstraction or some shared logic.
 
-**A working feature can hide a fragile implementation.** An agent can satisfy the request while adding workarounds and coupling that make the next change harder. A later refactor can also change behaviour I already liked unless tests protect it.
+Scouting agents that run periodically automate most of this, but I still go looking myself.
 
-</Callout>
+## Finding problems in real conversations
 
-As I develop the product, I ask an agent to add a new functionality, I describe how it has to work, the agent goes and builds it, I don't care how, we iterate, I test the feature, modify it, once I like it, I commit to it by asking for tests that the feature passes, now I turn my eye to the implementation, I ask the agent to brief me about its changes and how it works and all the workarounds it used, I ask it to vizualize it for me, I read some parts of the code,
-I then propose a better design, an architecture choice, a technology choice, the right abstraction and the refactor work starts, we have the tests as guidelines that the refactor didn't change the feature.
+Real usage decides what I improve next. In lisptc I collect conversations with [PostHog](https://posthog.com/) and have scouting agents look for recurring problems. Sometimes I read the traces myself. They show where people get stuck and give me concrete cases to bring into the next round of features, tests and refactors.
 
-## Forbid comments and dev docs, they are obsolete
-
-Code is the only source of truth, this means less context for the agent to read, if the agent needs certain details about the implementation it has to read the code.
-
-<figure class="figure-float">
-	<img
-		src="https://cdn.d4shi.com/illustrations/no-comment.webp"
-		width="456"
-		height="498"
-		alt="A deer held up to a TV interview microphone, captioned NO COMMENT"
-		loading="lazy"
-		decoding="async"
-	/>
-</figure>
-
-<Callout variant="failure">
-
-**Comments can claim behaviour the code never implements.** An agent can describe the intended functionality in a comment and leave the actual work incomplete. Even an accurate comment can drift after a change, and the next agent may trust it instead of checking the code.
-
-</Callout>
-
-Comments are made for humans since they can't hold enough in working memory, agents don't need comments
-
-How I enforce this in the codebase:
-
-- `no-comments` script that strips all comments and fails ci in case there was an added comment
-
-- rule in top level AGENTS.md that forbids comments
-
-- a whole codebase with no comments, agents tend to follow the convention of the code they read
-
-I pulled that script out into its own repo, [no-comments](https://github.com/1hachem/no-comments), it walks the ast instead of grepping, so a `//` inside a string is left alone, and it comes in both shapes, a github action that fails the build and posts the removal as a pr suggestion:
-
-```yaml
-- uses: actions/checkout@v4
-- uses: 1hachem/no-comments@v1
-```
-
-and a binary you hang on a pre-commit or pre-push hook so the comments never land in the first place:
-
-```bash
-pnpm add -D github:1hachem/no-comments#v1
-no-comments --staged --fix
-```
-
-## No implementation details in `AGENTS.md`
-
-<Callout variant="failure">
-
-**Documentation drifts, then becomes misleading context.** An agent changes the code but leaves an old explanation or file path behind. The next agent follows it, starts from the wrong assumptions, and can build more mistakes on top. Longer docs also bury the few pointers it actually needs.
-
-</Callout>
-
-This one is a bit tricky to enforce since llms love wasting tokens rambling about implementation details, I never read the docs the agent writes, instead I ask an agent to go and produce an interactive artifact about how something works, data flow, dependency, pros, cons and tradeoffs
-
-Dev docs become **just-in-time**, generated directly from the code and scoped to what you need to know. In five minutes you have an interactive HTML page with illustrations of the data flow, module relationships and tradeoffs, so you can explore how things fit together. A fresh explanation when you need it, without maintaining separate docs that keep growing, drifting and misleading your agents.
-
-So what is left in these files is a map, `AGENTS.md` files become routers, every workspace carries its own and lists where things are found. The agent lands on the root file, finds the workspace it needs and goes straight to the relevant code.
-
-<AgentsRouters />
-
-The root file holds only what is true repo wide, the rules that no single package owns. Things like dependency direction, keeping external effects behind interfaces, decoupling modules, centralizing typed configuration, and keeping tests with the package that owns the behaviour. Even small conventions count, like using one icon library or carrying no comments.
-
-The exact choices depend on the project, the point is to make them enforceable. An agent can break any of these rules in a single line, and a script should catch it in ci. That is the bar for putting a rule in the root file, with a pointer to where it is enforced. Package-specific details stay in the code, and the package's `AGENTS.md` points there.
-
-In ci I make sure that any change to `AGENTS.md` is only a pointer toward what is there, not how it works and implementation details, by running jev classification on each hunk of change.
-
-<figure>
-	<Animation
-		client:load
-		id="JevGithubWorkflow"
-		label="GitHub Actions sends each added AGENTS.md hunk to Jev with classification rules; a useful pointer passes, while an implementation detail fails the check"
-	/>
-	<figcaption>
-		Each added hunk is checked on its own: pointers pass, implementation details fail.
-	</figcaption>
-</figure>
-
-Another script goes through all the `AGENTS.md` files in the repo and checks that any file path, class name, or function name actually exists in the repo and that it didn't get renamed or removed, in case of failure the agent is instructed to fix the file.
-
-<figure>
-	<Animation
-		client:load
-		id="CheckRefsWorkflow"
-		label="check:refs extracts backticked references from AGENTS.md, confirms existing paths, commands, and identifiers, and fails when a referenced file is missing"
-	/>
-	<figcaption>
-		Every backticked path, command, and identifier must still resolve in the repository.
-	</figcaption>
-</figure>
-
-## Boundaries and dependencies
-
-<Callout variant="failure">
-
-**A local shortcut can break the architecture.** An agent reaches across a module boundary to get a feature working, introducing coupling or a circular dependency. The feature can still pass its tests while the codebase becomes harder to change.
-
-</Callout>
-
-I decide which parts of the codebase can depend on which, then make those boundaries part of the checks an agent runs. This keeps modules decoupled as new features land.
-
-In lisptc I use Turborepo's boundary checks for this, along with custom checks for rules it cannot cover. They run in ci and before pushing, so a dependency that breaks the architecture fails a check.
-
-During refactoring, I also ask for illustrations of how the modules fit together. This is a simplified example from lisptc, showing how the core logic can stay separate from external systems:
-
-<CoreRings />
-
-## Closing the loop with traces
-
-I use real usage and user reports to decide what needs improving. In lisptc, for example, I collect conversations using [PostHog](https://posthog.com/) and have scouting agents look for recurring problems.
-
-Sometimes I review those traces myself. They show where users get stuck and give me concrete cases to bring into the next round of feature work, tests and refactoring.
-
-## Check for code duplication
-
-<Callout variant="failure">
-
-**Agents can duplicate logic instead of finding what already exists.** A slightly different request gets a slightly different copy of a function. Now a bug fix has to reach every copy, and the versions start drifting apart. Replacing an implementation can also leave the old one behind as dead code.
-
-</Callout>
-
-Using tools like [fallow](https://fallow.tools/) you can detect code duplication and dead code, these can be your signals for better abstractions and shared logic.
-
-Having scouting agents that occasionally kick off and look for these opportunities automates most of this, however it stays important to keep an eye on the code and try to find these yourself.
-
-## Less technical debt means better agent code
-
-<Callout variant="failure">
-
-**One workaround becomes the next agent's example.** Allow a cyclic import once and patch around it, and a later agent **will** copy that solution elsewhere. A temporary exception becomes a convention through repetition.
-
-</Callout>
-
-Clear architecture and good design patterns are the signal your agents copy, and so are the bad ones. That is why I keep checking the shape of the codebase even when the features work and ci is green.
-
-Follow the right design patterns, respect convetions in your code, create interfaces and decouple your modules, follow good file hygenes and your coding
-agents will follow.
+I don't write code anymore, but I still decide what gets built, what the design should be, and what gets thrown out when the implementation turns out worse than the feature it delivers. Agents write every line of lisptc, and they copy whatever is already in it, good and bad. That is why the harness came first.
