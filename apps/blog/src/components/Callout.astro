@@ -1,0 +1,52 @@
+---
+interface Props {
+	variant?: 'failure' | 'note' | 'take';
+}
+
+const { variant = 'note' } = Astro.props;
+---
+
+<aside class="callout" data-variant={variant}>
+	<slot />
+</aside>
+
+<style>
+	.callout {
+		--callout-accent: #a67508;
+		display: flow-root;
+		margin: 1.5rem 0;
+		padding: 1rem 1.15rem;
+		border: 1px solid color-mix(in srgb, var(--callout-accent) 25%, var(--bg));
+		border-inline-start: 3px solid var(--callout-accent);
+		background: color-mix(in srgb, var(--callout-accent) 6%, var(--bg));
+		color: var(--fg);
+	}
+
+	.callout[data-variant='failure'] {
+		--callout-accent: #b42332;
+	}
+
+	.callout[data-variant='take'] {
+		--callout-accent: #237747;
+	}
+
+	:global([data-theme='dark']) .callout {
+		--callout-accent: #f0c550;
+	}
+
+	:global([data-theme='dark']) .callout[data-variant='failure'] {
+		--callout-accent: #ff8792;
+	}
+
+	:global([data-theme='dark']) .callout[data-variant='take'] {
+		--callout-accent: #71d69a;
+	}
+
+	.callout :global(> :first-child) {
+		margin-top: 0;
+	}
+
+	.callout :global(> :last-child) {
+		margin-bottom: 0;
+	}
+</style>

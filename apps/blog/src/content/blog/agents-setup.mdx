@@ -9,14 +9,17 @@ draft: false
 ---
 
 import Animation from '../../components/Animation';
+import Callout from '../../components/Callout.astro';
 import AgentsRouters from '../../components/diagrams/AgentsRouters.astro';
 import CoreRings from '../../components/diagrams/CoreRings.astro';
-import LayerBoundaries from '../../components/diagrams/LayerBoundaries.astro';
 
-Since absolutely nobody asked me how I use my agent for coding tasks, here I am writing a blog in detail about it.
+Since absolutely nobody asked me how I use my coding agents, here I am writing a blog in detail about it.
 
-Lately while developing [lisptc](/blog/lisptc) - a neuro-symbolic language harness, the code is on [github](https://github.com/1hachem/lisptc) - I decided to fully build it with AI agents, no handwritten code, however that doesn't mean that I am going to follow the vibe-coded app path where I let agents do whatever they want,
-it's going to be I design, you code.
+Lately while developing [lisptc](/blog/lisptc) - a neuro-symbolic language and AI harness, find it at [github](https://github.com/1hachem/lisptc) - I decided to fully build it with coding agents,
+no handwritting code.
+
+**BUT** that doesn't mean that I am going to follow the vibe-coded app path where I prompt for features and let agents do whatever they do these days,
+instead it's going to be **I think, I design, you code**.
 
 <figure class="figure-float">
 	<img
@@ -32,9 +35,56 @@ it's going to be I design, you code.
 	</figcaption>
 </figure>
 
-Giving up code completely to agents meant that I have to make sure to set up the right harness and develop the right tools that would keep things under control, I don't want to end up 2 months down the line with a mess that no one can debug, not even the agents that built it.
+Giving up code completely to agents meant that I have to make sure to set up the right coding harness and develop the right tools that would keep things under control,
+I didn't want to end up 2 months down the line with a mess that no one can debug,
+not even the agents that built it.
 
-The thing is that one bad practice in your code is the context for the next agent, which is going to follow the same bad practice +1, this is the failure mode that most vibe coded codebases usually fall into, thinking that agents are immune to technical debt.
+The thing is that one bad practice in your code is the context for the next agent, which is going to follow the same bad practice +1, this is the failure mode that most vibe coded codebases usually fall into, thinking that agents are immune to **technical debt**.
+
+The name of the game is how can you detect, illustrate, visualize and then reduce technical debt.
+
+## Dashicodes a dashboard to visualize technical debt
+
+Scripts catch a rule the moment it breaks, but technical debt doesn't break anything, it accumulates, a file that gets a little hairier every week never fails ci, so I built a dashboard for lisptc
+whose only job is to show me the shape of the codebase and how it is moving.
+
+The app runs its own analysis using different tools like `fallow`, `git` and `gh` github cli, it draws:
+
+- **hotspot quadrant**, prioritize refactors
+- **layered dependency graph and DSM**, spot layer violations
+- **import cycles**, reveal circular dependencies
+- **temporal coupling arcs**, uncover hidden coupling
+- **blast radius per pull request**, assess change impact
+- **pull request flow and lifetimes**, track progress and bottlenecks
+
+I can compare results over time to see the progress.
+
+<figure style={{ margin: '1.5rem 0' }}>
+	<video
+		src="https://cdn.d4shi.com/screen-recordings/dashi-codes-overview.mp4"
+		controls
+		playsInline
+		preload="metadata"
+		aria-label="Dashicodes dashboard overview"
+		style={{ display: 'block', width: '100%', height: 'auto' }}
+	>
+		<a href="https://cdn.d4shi.com/screen-recordings/dashi-codes-overview.mp4">
+			Watch the Dashicodes dashboard overview
+		</a>
+	</video>
+	<figcaption>Dashicodes: visualizing technical debt and tracking progress over time.</figcaption>
+</figure>
+
+## Test driven refactors
+
+<Callout variant="failure">
+
+**A working feature can hide a fragile implementation.** An agent can satisfy the request while adding workarounds and coupling that make the next change harder. A later refactor can also change behaviour I already liked unless tests protect it.
+
+</Callout>
+
+As I develop the product, I ask an agent to add a new functionality, I describe how it has to work, the agent goes and builds it, I don't care how, we iterate, I test the feature, modify it, once I like it, I commit to it by asking for tests that the feature passes, now I turn my eye to the implementation, I ask the agent to brief me about its changes and how it works and all the workarounds it used, I ask it to vizualize it for me, I read some parts of the code,
+I then propose a better design, an architecture choice, a technology choice, the right abstraction and the refactor work starts, we have the tests as guidelines that the refactor didn't change the feature.
 
 ## Forbid comments and dev docs, they are obsolete
 
@@ -51,15 +101,19 @@ Code is the only source of truth, this means less context for the agent to read,
 	/>
 </figure>
 
-Agents instead of actually adding the functionality would stick a comment on top pretending that it already works, misguiding any other agent that actually reads the context.
+<Callout variant="failure">
+
+**Comments can claim behaviour the code never implements.** An agent can describe the intended functionality in a comment and leave the actual work incomplete. Even an accurate comment can drift after a change, and the next agent may trust it instead of checking the code.
+
+</Callout>
 
 Comments are made for humans since they can't hold enough in working memory, agents don't need comments
 
 How I enforce this in the codebase:
 
-- check comments script that strips all comments and fails ci in case there was an added comment
+- `no-comments` script that strips all comments and fails ci in case there was an added comment
 
-- rule in AGENTS.md that forbids comments
+- rule in top level AGENTS.md that forbids comments
 
 - a whole codebase with no comments, agents tend to follow the convention of the code they read
 
@@ -79,25 +133,23 @@ no-comments --staged --fix
 
 ## No implementation details in `AGENTS.md`
 
+<Callout variant="failure">
+
+**Documentation drifts, then becomes misleading context.** An agent changes the code but leaves an old explanation or file path behind. The next agent follows it, starts from the wrong assumptions, and can build more mistakes on top. Longer docs also bury the few pointers it actually needs.
+
+</Callout>
+
 This one is a bit tricky to enforce since llms love wasting tokens rambling about implementation details, I never read the docs the agent writes, instead I ask an agent to go and produce an interactive artifact about how something works, data flow, dependency, pros, cons and tradeoffs
 
-Dev docs now become just in time, from the code directly and scoped to exactly what you need to know, in five minutes you have it, this is superior big time to having to maintain separate docs that keep growing, drifting and misguiding your agents.
+Dev docs become **just-in-time**, generated directly from the code and scoped to what you need to know. In five minutes you have an interactive HTML page with illustrations of the data flow, module relationships and tradeoffs, so you can explore how things fit together. A fresh explanation when you need it, without maintaining separate docs that keep growing, drifting and misleading your agents.
 
-So what is left in these files is a map, `AGENTS.md` files become routers, every workspace carries its own, `packages/interpreter/AGENTS.md`, `packages/backend/AGENTS.md`, `apps/cli/AGENTS.md`, and it holds the shape of that package and nothing more, where each thing is found and where a new one belongs, the agent lands on the root file, finds the one workspace it needs and goes straight there instead of grepping a monorepo of 20 packages.
+So what is left in these files is a map, `AGENTS.md` files become routers, every workspace carries its own and lists where things are found. The agent lands on the root file, finds the workspace it needs and goes straight to the relevant code.
 
 <AgentsRouters />
 
-The root file holds only what is true repo wide, the rules that no single package owns, in lisptc these are:
+The root file holds only what is true repo wide, the rules that no single package owns. Things like dependency direction, keeping external effects behind interfaces, decoupling modules, centralizing typed configuration, and keeping tests with the package that owns the behaviour. Even small conventions count, like using one icon library or carrying no comments.
 
-- the dependency flow, `interpreter -> extensions -> repl front-ends -> agent -> apps`, declared as turbo tags rather than described
-- everything an extension does that reaches outside the process, the filesystem, the network, the clock, a subprocess, goes through a port it declares itself, no importing `node:fs` "just for this one path"
-- nothing above an extension names it, behaviour crosses the seam through a chain, a capability through a slot, data through an annotation, never through an import
-- the code carries no comments
-- never read the environment directly, every variable is declared in `packages/env` and read typed
-- every icon comes from hugeicons, adding `lucide-react` fails the arch check
-- tests live in each package's `test/`, and a test belongs to the package that owns what it asserts
-
-Every one of these is a rule an agent can break in a single line and a script can catch in ci, that is the bar for putting it in the root file, a rule that belongs to one package goes in that package's file instead, the convex deployment's environment is `packages/backend/AGENTS.md` business, not the workspace's.
+The exact choices depend on the project, the point is to make them enforceable. An agent can break any of these rules in a single line, and a script should catch it in ci. That is the bar for putting a rule in the root file, with a pointer to where it is enforced. Package-specific details stay in the code, and the package's `AGENTS.md` points there.
 
 In ci I make sure that any change to `AGENTS.md` is only a pointer toward what is there, not how it works and implementation details, by running jev classification on each hunk of change.
 
@@ -127,70 +179,47 @@ Another script goes through all the `AGENTS.md` files in the repo and checks tha
 
 ## Boundaries and dependencies
 
-For lisptc I set up a monorepo with turborepo, you have `apps/` and `packages/`, a feature that I discovered lately on turbo is called `boundaries`
+<Callout variant="failure">
 
-It allows you to define rules of how your apps and packages can depend on one another, this means you can set up groups, deny and allow dependencies between these groups.
+**A local shortcut can break the architecture.** An agent reaches across a module boundary to get a feature working, introducing coupling or a circular dependency. The feature can still pass its tests while the codebase becomes harder to change.
 
-In lisptc every workspace carries a tag in its own `turbo.json`, `foundation`, `ui`, `language`, `extension`, `runtime`, `backend`, `product`, and the root `turbo.json` says which tag is not allowed to depend on which, the whole graph then has to point one way, down:
+</Callout>
 
-<LayerBoundaries />
+I decide which parts of the codebase can depend on which, then make those boundaries part of the checks an agent runs. This keeps modules decoupled as new features land.
 
-I run `turbo boundaries` in ci checks as well as in a pre-push hook to make sure that everything is following my rules.
+In lisptc I use Turborepo's boundary checks for this, along with custom checks for rules it cannot cover. They run in ci and before pushing, so a dependency that breaks the architecture fails a check.
 
-For rules that turbo boundaries cannot enforce I have a separate script `check-arch`
-
-The big one is host ports, an extension declares an interface for everything it does that reaches outside the process and is handed an implementation of it, so the only ring of code that touches the filesystem, the network, a subprocess or an sdk is the adapter ring, the language surface itself stays sealed:
+During refactoring, I also ask for illustrations of how the modules fit together. This is a simplified example from lisptc, showing how the core logic can stay separate from external systems:
 
 <CoreRings />
 
-`check-arch` fails on a `node:fs` inside an extension module and names the `-host.ts` file to move it to, a boundary an agent can feel in one command is a boundary that survives.
-
-## Test driven refactors
-
-As I develop the product, I ask an agent to add a new functionality, I describe how it has to work, the agent goes and builds it, I don't care how, we iterate, I test the feature, modify it, once I like it, I commit to it by asking for tests that the feature passes, now I turn my eye to the implementation, I read the code, ask the agent to brief me about its changes and how it works and all the workarounds it used, I then propose a better design, an architecture choice, a technology choice, the right abstraction and the refactor work starts, we have the tests as guidelines that the refactor didn't change the feature.
-
 ## Closing the loop with traces
 
-Since my application is based on natural language interaction, I collect these conversations using posthog,
-which allows me to run a bunch of scouting agents that look for signal to enhance the product,
-sometimes I would just pull a list of traces and their user reports and look for what the product is missing, since the product is also a programming language, I can directly go from traces into new builtins in the language, better error reports, better built-in context compaction and sometimes completely new features.
+I use real usage and user reports to decide what needs improving. In lisptc, for example, I collect conversations using [PostHog](https://posthog.com/) and have scouting agents look for recurring problems.
 
-## Dashicodes a dashboard to visualize technical debt
-
-Scripts catch a rule the moment it breaks, but technical debt doesn't break anything, it accumulates, a file that gets a little hairier every week never fails ci, so I built a dashboard inside the monorepo, `apps/dashi-code`, tagged `product` like any other app, whose only job is to show me the shape of the codebase and how it is moving.
-
-The important part is that nothing is run by hand, there is no script I remember to invoke and no json I copy somewhere, the app runs its own analysis: `fallow dead-code` and `fallow health` for the ast side, a walk of `git log --numstat` for the history side, the workspace graph read off the turbo tags, and the open pull requests pulled through a `Forge` port, all written into an r2 bucket as timestamped documents, the last twelve of each kind kept, the rest pruned. a page can only show what the store holds, so what I am looking at and what was actually measured cannot drift apart.
-
-What it draws:
-
-- **hotspot quadrant**, churn on one axis and complexity on the other, the top right is the only place where a refactor pays for itself, code that is both hard to understand and changing constantly, everything else is either stable or simple and can be left alone
-
-- **layered dependency graph and a dsm of the same edges**, the graph pins every package to the layer its turbo tag already declares so a violation is an edge that climbs, the matrix orders both axes by layer so a violation is a mark in the empty triangle, which is much easier to spot than an arrow in a tangle
-
-- **import cycles**, one ring per cycle drawn on its own, every edge in a cycle looks fine in isolation, the only way to see one is to isolate the loop and follow it round
-
-- **temporal coupling arcs**, two packages that always change in the same commit are coupled whether or not either imports the other, this one comes purely from git history and it routinely finds coupling the import graph cannot see, which is exactly the kind of thing an agent creates when it copies logic instead of sharing it
-
-- **blast radius per pull request**, the changed files closed over the reverse dependency graph, what a pr edits is the small part, what transitively depends on what it edited is what a mistake actually reaches
-
-- **pull request flow and lifetimes**, opened above the line, resolved below it, backlog underneath, and one lane per pr with a dot per commit sized by the churn it landed, a branch that grew quietly for a week and then doubled overnight reads differently from one that arrived whole
-
-Every frame carries its own spec next to the chart, what it is built from, how many marks before it stops being readable, and the condition under which it lies, a treemap where you compare areas of non adjacent tiles, a quadrant you read as a ranking instead of a triage, a lifetimes chart on a rebased branch whose commit dates predate the pr. agents are very good at producing a chart that looks right and means nothing, writing down the failure mode next to the chart is how I keep myself and them honest about what each view can actually be used for.
-
-Snapshots are the reason it is worth storing anything at all, `/versions` lists them and `/compare` puts two side by side, so the question stops being "is this file bad" and becomes "was this worse or better a month ago", debt you can only see as a level is debt you argue about, debt you can see as a slope is debt you act on.
-
-The app follows the same rules as everything else in the repo, the same layers, the same ports, the same checks in ci. the dashboard that measures the debt is not allowed to be the place where it accumulates.
-
-## Less technical debt means better agent code
-
-Clear architecture and good design patterns are the signal your agents copy, and so are the bad ones,
-allow for a cyclic import once, solve it with a lazy load one time, come back 2 days later and your codebase is full of this pattern.
+Sometimes I review those traces myself. They show where users get stuck and give me concrete cases to bring into the next round of feature work, tests and refactoring.
 
 ## Check for code duplication
 
-Using tools like [fallow](https://fallow.tools/) you can detect code duplication and dead code, these can be your signals for better abstractions and shared logic
+<Callout variant="failure">
 
-Agents are notoriously good at creating whole functions to do the same thing with some extra spice or changes
-making your codebase a headache to change, you need to keep track of every occurrence of that piece of logic.
+**Agents can duplicate logic instead of finding what already exists.** A slightly different request gets a slightly different copy of a function. Now a bug fix has to reach every copy, and the versions start drifting apart. Replacing an implementation can also leave the old one behind as dead code.
+
+</Callout>
+
+Using tools like [fallow](https://fallow.tools/) you can detect code duplication and dead code, these can be your signals for better abstractions and shared logic.
 
 Having scouting agents that occasionally kick off and look for these opportunities automates most of this, however it stays important to keep an eye on the code and try to find these yourself.
+
+## Less technical debt means better agent code
+
+<Callout variant="failure">
+
+**One workaround becomes the next agent's example.** Allow a cyclic import once and patch around it, and a later agent **will** copy that solution elsewhere. A temporary exception becomes a convention through repetition.
+
+</Callout>
+
+Clear architecture and good design patterns are the signal your agents copy, and so are the bad ones. That is why I keep checking the shape of the codebase even when the features work and ci is green.
+
+Follow the right design patterns, respect convetions in your code, create interfaces and decouple your modules, follow good file hygenes and your coding
+agents will follow.
