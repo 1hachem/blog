@@ -40,7 +40,7 @@
 }
 
 html {
-	font-size: 22px;
+	font-size: clamp(19px, 14px + 0.3125vw, 22px);
 	height: 100%;
 	scrollbar-gutter: stable;
 }
@@ -246,9 +246,6 @@ ol {
 		width: 24rem;
 		max-width: 100%;
 		margin: 0 auto 1rem;
-	}
-	html {
-		font-size: 19px;
 	}
 	main {
 		padding: 1rem;
