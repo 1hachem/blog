@@ -3,6 +3,7 @@
 	"private": true,
 	"packageManager": "pnpm@10.28.0",
 	"scripts": {
+		"bootstrap": "pnpm install && pre-commit install --install-hooks",
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"lint": "prettier --check .",

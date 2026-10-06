@@ -18,6 +18,7 @@ workspace.
 
 Run from the root; Turbo fans them out across workspaces.
 
+- `pnpm bootstrap` installs dependencies and the git hooks; it needs `pre-commit` on the PATH
 - `pnpm dev`, `pnpm build`, `pnpm typecheck`, `pnpm test`, `pnpm deploy`
 - `pnpm lint` checks formatting, `pnpm format` writes it
 - `pnpm check:comments` lists comments, `pnpm fix:comments` strips them
