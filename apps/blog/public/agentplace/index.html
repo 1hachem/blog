@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Agentplace Product Review</title>
+<title>HACHEM BETROUNI · Product Manager</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
@@ -187,9 +187,10 @@
   .roast-anim .gnote:not(.live) { opacity: 0; translate: 0 8px; }
   .gnote.typing .typed::after { content: "▍"; color: var(--fire); animation: caret 1s steps(1) infinite; }
   @keyframes caret { 50% { opacity: 0; } }
-  @media screen and (min-width: 1140px) {
-    /* Fill whatever margin the viewport leaves beside the 860px column, minus room for the scrollbar. */
-    .gnote { --gw: min(190px, calc((100vw - 860px) / 2 - 34px)); width: var(--gw); margin-top: 2px; }
+  @media screen and (min-width: 760px) {
+    /* When zoom leaves too little margin beside the 828px column, the column shrinks so the gutters keep at least 120px; the extra 10px covers the scrollbar. */
+    main { --gw: clamp(120px, calc((100vw - 828px) / 2 - 44px), 190px); max-width: calc(828px + 2 * (var(--gw) + 34px)); padding-inline: calc(var(--gw) + 34px); }
+    .gnote { width: var(--gw); margin-top: 2px; }
     /* Negative margin past the float's own width takes it out of the text flow, so it sits in the gutter without wrapping the content beside it. */
     .gnote.r { float: right; clear: right; margin-right: calc(-1 * var(--gw) - 26px); rotate: 1.2deg; }
     .gnote.l { float: left; clear: left; margin-left: calc(-1 * var(--gw) - 26px); rotate: -1.2deg; }
