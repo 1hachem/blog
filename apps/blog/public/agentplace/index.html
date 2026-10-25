@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Agentplace Product Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+  // Runs before first paint so the roasts start hidden instead of flashing on refresh.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) document.documentElement.classList.add('roast-anim');
+</script>
+<style>
+  :root {
+    --ink: #171717;
+    --muted: #737373;
+    --line: #e5e5e5;
+    --accent: #1f4adc;
+    --green: #a9d683;
+    --lime: #d7f491;
+    --accent-soft: #eef2fd;
+    --warn-soft: #f4f9ea;
+    --good-soft: #f3f9ec;
+    --surface: #f3f3f3;
+    --paper: #fcfaf5;
+    --bg: #ffffff;
+    --on-accent: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 8.8pt/1.72 "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 40px; }
+  header {
+    position: relative; overflow: hidden; background: var(--accent); color: var(--on-accent);
+    border-radius: 14px; padding: 18px 22px 28px; margin-bottom: 22px;
+  }
+  header::after {
+    content: ""; position: absolute; left: -10%; right: -10%; bottom: -150px; height: 175px;
+    background: var(--green); border-radius: 50% 50% 0 0;
+  }
+  header > * { position: relative; z-index: 1; }
+  h1 { font-size: 15pt; margin: 0; letter-spacing: -0.02em; text-transform: uppercase; }
+  .byline { font-size: 8pt; margin-top: 3px; opacity: 0.9; }
+  h2 { font-size: 9.2pt; margin: 26px 0 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
+  p { margin: 0 0 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 8.3pt; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; }
+  .note { color: var(--muted); font-size: 7.5pt; margin-top: 6px; }
+  .problems { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { border: 1px solid var(--line); background: var(--paper); border-radius: 10px; padding: 15px 16px; font-size: 8.2pt; display: flex; flex-direction: column; }
+  .card p { margin: 0 0 12px; flex: 1; }
+  .card h3 { font-size: 8.9pt; margin: 0 0 8px; line-height: 1.35; }
+  .num { display: inline-block; background: var(--accent); color: var(--on-accent); border-radius: 3px; padding: 0 5px; margin-right: 4px; }
+  .proof { background: var(--lime); border-radius: 8px; padding: 8px 11px; font-size: 7.9pt; line-height: 1.55; }
+  .fix { margin-top: 10px; font-size: 7.9pt; color: var(--muted); }
+  .prio { margin: 0; padding-left: 18px; }
+  .prio li { margin-bottom: 8px; }
+  .spec { background: var(--accent-soft); border-radius: 12px; padding: 12px 16px; margin-top: 14px; font-size: 7.9pt; }
+  .spec h3 { margin: 0 0 8px; font-size: 9.6pt; }
+  .spec ul { margin: 0 0 10px; padding-left: 18px; }
+  .spec li { margin-bottom: 4px; }
+  .metric { border-left: 3px solid var(--accent); padding: 12px 16px; margin-top: 12px; background: var(--bg); border-radius: 0 4px 4px 0; }
+  .good { background: var(--good-soft); border: 1px solid var(--green); border-radius: 12px; padding: 14px 18px; font-size: 8.3pt; margin-top: 0; line-height: 1.65; }
+  .nitpick { border: 1px dashed var(--accent); border-radius: 12px; padding: 16px 18px; font-size: 8.2pt; background: var(--paper); }
+  code { font-family: inherit; background: var(--surface); padding: 0 3px; border-radius: 3px; font-size: 0.95em; }
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  figure { margin: 0; }
+  figure img { width: 100%; height: 320px; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 6px; display: block; }
+  figcaption { font-size: 7.4pt; color: var(--muted); margin-top: 3px; }
+  .me { display: grid; grid-template-columns: 180px 1fr; gap: 22px; align-items: start; }
+  .me img { width: 100%; border-radius: 10px; display: block; border: 3px solid var(--green); }
+  .witty { font-style: italic; border-left: 3px solid var(--accent); padding-left: 8px; margin: 8px 0; }
+  .skills { display: grid; grid-template-columns: 255px 1fr; gap: 14px; align-items: center; margin-top: 4px; }
+  .timeline { list-style: none; margin: 0; padding: 0; font-size: 7.9pt; }
+  .timeline li { padding: 8px 0 8px 14px; border-left: 2px solid var(--green); margin-left: 4px; }
+  .timeline b { color: var(--accent); }
+  .hire { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 10px; }
+  .hire div { background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-size: 8.2pt; line-height: 1.65; }
+  .hire b { display: block; margin-bottom: 2px; }
+  .page-break { break-before: page; page-break-before: always; margin-top: 28px; }
+  @media (max-width: 640px) {
+    .problems, .shots, .hire, .me, .skills { grid-template-columns: 1fr; }
+    .me img { max-width: 220px; }
+  }
+  @page { size: A4; margin: 14mm 15mm; }
+  @media print {
+    main { padding: 0; max-width: none; }
+    .card, .spec, figure, tr, .hire div, .me, .nitpick, .skills { break-inside: avoid; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  .made { border: 1px solid var(--line); background: var(--paper); border-radius: 12px; padding: 14px 18px; margin-bottom: 6px; font-size: 8.2pt; line-height: 1.7; }
+  .made-title { font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; font-size: 8pt; margin-bottom: 4px; }
+  .made-title span { color: var(--muted); text-transform: none; letter-spacing: 0; font-weight: 400; }
+  .made ol { margin: 0; padding-left: 16px; display: grid; grid-template-columns: repeat(4, 1fr); column-gap: 22px; }
+  .spec .tag { font-weight: 400; color: var(--muted); font-size: 7.4pt; margin-left: 6px; }
+  .spec p { margin: 0 0 4px; }
+  .sk-head { background: var(--accent); color: var(--on-accent); border-radius: 14px; padding: 18px 22px; margin-bottom: 16px; }
+  .sk-kicker { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.85; }
+  .sk-title { color: var(--on-accent) !important; font-size: 13pt !important; text-transform: none !important; letter-spacing: -0.01em !important; margin: 3px 0 6px !important; }
+  .sk-meta { display: flex; gap: 18px; flex-wrap: wrap; font-size: 7.8pt; }
+  .sk-meta code { background: rgba(255,255,255,0.18); color: var(--on-accent); }
+  .sk-input { margin: 8px 0 0; font-size: 7.9pt; opacity: 0.95; }
+  .sk-h { font-size: 8.8pt; color: var(--accent); margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .story { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--paper); font-size: 8.1pt; line-height: 1.65; }
+  .story.p1 { border-color: var(--accent); }
+  .story p { margin: 0 0 6px; }
+  .story-t { font-weight: 700; font-size: 8.6pt; margin-bottom: 6px; }
+  .pr { display: inline-block; background: var(--accent); color: var(--on-accent); border-radius: 4px; padding: 0 6px; margin-right: 6px; font-size: 7.6pt; }
+  .stories2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .gwt { margin: 0; padding-left: 18px; }
+  .gwt li { margin-bottom: 6px; }
+  .edge { font-size: 8.1pt; margin-top: 14px; }
+  .sk-cols { display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px; }
+  .fr { margin: 0; padding-left: 0; list-style: none; font-size: 8pt; line-height: 1.65; }
+  .fr li { margin-bottom: 7px; }
+  .fr li b { color: var(--accent); margin-right: 4px; }
+  .nc { background: var(--lime); border-radius: 4px; padding: 0 4px; }
+  .logos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .lg { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--paper); }
+  .lg-name { font-size: 7.4pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .lg-row { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+  .logo { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; font-size: 7pt; min-width: 44px; }
+  .logo img { width: 22px; height: 22px; }
+  .logo.chip span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 8px; background: var(--bg); }
+  .logo.chip { justify-content: center; }
+  .arch { width: 100%; height: auto; display: block; margin: 4px 0 10px; }
+  .desc { font-size: 8pt; }
+  .nits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .nit { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; background: var(--paper); font-size: 8.1pt; line-height: 1.65; display: flex; flex-direction: column; }
+  .nits .nit p:not(.nfix) { flex: 1; }
+  .nit h3 { margin: 0 0 6px; font-size: 8.8pt; }
+  .nit p { margin: 0 0 10px; }
+  .nit .nfix { color: var(--ink); background: var(--lime); border-radius: 8px; padding: 8px 11px; margin: 0; }
+  .nit.wide { margin-top: 16px; }
+  .nit.wide figure { margin-top: 10px; }
+  .nit.wide img.console { height: auto; max-width: 78%; margin: 0 auto; object-fit: contain; }
+  @media (max-width: 640px) { .logos, .nits, .made ol, .stories2, .sk-cols { grid-template-columns: 1fr; } }
+  @media print { .lg, .nit, .made, .story { break-inside: avoid; } }
+  .ic { width: 1.05em; height: 1.05em; vertical-align: -0.16em; display: inline-block; margin-right: 1px; }
+  .ic.bot { fill: var(--accent); }
+  .ic.hum { fill: #3f7a1f; }
+  .ic.inv { fill: var(--on-accent); }
+  .legend { font-size: 7.2pt; color: var(--muted); margin: 0 0 5px; }
+  .legend .ic { margin-right: 2px; }
+  .card p.q { font-style: italic; }
+  .card p.q .ic { margin-right: 4px; font-style: normal; }
+  .tbs { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .tb { display: inline-flex; align-items: center; gap: 3px; border-radius: 4px; padding: 1px 5px; font-size: 6.4pt; line-height: 1.5; color: #111; }
+  .tb.dk { color: #fff; }
+  .tb i { font-size: 7.4pt; }
+  .logo.known { position: relative; }
+  .logo.known::after, .known-key::before { content: ""; position: absolute; top: -3px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: #3f7a1f; border: 1.5px solid var(--paper); }
+  .known-key { position: relative; display: inline-block; width: 9px; height: 9px; vertical-align: -1px; }
+  .known-key::before { top: 0; right: 0; }
+  h2 { break-after: avoid; page-break-after: avoid; }
+  .timeline li { line-height: 1.45; }
+  .tldr { border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 12px 12px 0; padding: 14px 20px; margin-bottom: 16px; font-size: 8.4pt; line-height: 1.7; }
+  .tldr b:first-child { color: var(--accent); letter-spacing: 0.05em; }
+  .tldr ul { margin: 3px 0 0; padding-left: 16px; }
+  .tldr li { margin-bottom: 5px; }
+  .spec.slim { padding: 14px 18px; margin-top: 18px; line-height: 1.7; }
+  .spec.slim .tag { margin-left: 4px; }
+  details.skd > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 6px; }
+  details.skd > summary::-webkit-details-marker { display: none; }
+  details.skd > summary::before { content: "▸"; color: var(--accent); font-size: 9pt; transition: transform .15s; }
+  details.skd[open] > summary::before { transform: rotate(90deg); }
+  details.skd > summary:hover { text-decoration: underline; }
+  details.skd.alt { border: 1px dashed var(--accent); border-radius: 10px; padding: 8px 12px; margin-top: 12px; background: var(--paper); }
+  details.skd.alt > summary { font-weight: 700; font-size: 8.6pt; color: var(--ink); }
+  details.skd.alt .tag { font-weight: 400; color: var(--muted); font-size: 7.4pt; }
+  .alt-body { margin-top: 8px; font-size: 7.6pt; }
+  .sk-input2 { margin: 0 0 8px; }
+  @media print { details.skd > summary::before { display: none; } details.skd.alt:not([open]) .tag::after { content: ""; } }
+  .prn { display: none; }
+  @media print { .scr { display: none; } .prn { display: inline; } }
+  :root { --fire: #d9480f; }
+  .gnote { font-size: 7.4pt; line-height: 1.5; font-style: italic; color: var(--ink); margin: 6px 0; transition: opacity .4s ease, translate .4s ease; }
+  .gnote p { margin: 0; }
+  .gnote p::before { content: "🔥 "; }
+  .gnote .ghost { visibility: hidden; }
+  .roast-anim .gnote:not(.live) { opacity: 0; translate: 0 8px; }
+  .gnote.typing .typed::after { content: "▍"; color: var(--fire); animation: caret 1s steps(1) infinite; }
+  @keyframes caret { 50% { opacity: 0; } }
+  @media screen and (min-width: 1140px) {
+    /* Fill whatever margin the viewport leaves beside the 860px column, minus room for the scrollbar. */
+    .gnote { --gw: min(190px, calc((100vw - 860px) / 2 - 34px)); width: var(--gw); margin-top: 2px; }
+    /* Negative margin past the float's own width takes it out of the text flow, so it sits in the gutter without wrapping the content beside it. */
+    .gnote.r { float: right; clear: right; margin-right: calc(-1 * var(--gw) - 26px); rotate: 1.2deg; }
+    .gnote.l { float: left; clear: left; margin-left: calc(-1 * var(--gw) - 26px); rotate: -1.2deg; }
+  }
+  @media print { .gnote { display: none; } }
+  .credit { margin-top: 26px; padding-top: 10px; break-before: avoid; page-break-before: avoid; border-top: 1px solid var(--line); color: var(--muted); font-size: 7.4pt; text-align: center; }
+  .made p { margin: 0; line-height: 1.75; }
+  .made p .made-title { display: inline; margin: 0 4px 0 0; }
+  .flow { margin-top: 8px; }
+  .lg, .nit, .story, .card, .good, .nitpick, .spec, .metric, figure, .hire div, details.skd.alt, .tldr, .made { break-inside: avoid; page-break-inside: avoid; }
+  .witty .cite { display: block; font-style: normal; color: var(--muted); font-size: 7.6pt; margin-top: 4px; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Agentplace, through a new user's eyes</h1>
+  <div class="byline">Hachem Betrouni · product review · October 2026 · 2 days, 4 agents, 13 builder sessions</div>
+</header>
+
+
+<div class="tldr"><b>TL;DR</b>
+  <ul>
+    <li>The builder kept talking about its own plumbing. I also couldn't tell what Agentplace does <i>for me</i>, and no one showed me around.</li>
+    <li>Fix first: <b>a builder that speaks outcomes</b>, guarded by a no-leak eval in CI. One metric: the % of replies a non-technical owner understands.</li>
+    <li>Under the hood, every agent runs its whole stack in dev mode, and login tokens sit in a WebSocket URL. Seven nitpicks, each with a one-line fix.</li>
+  </ul>
+</div>
+<div class="made">
+  <p><span class="made-title">How I made this report.</span> I used Agentplace as a new user for two days, building 4 agents across 13 builder sessions. Everything marked <svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> is that experience, in my words. Then I pointed AI agents at it <svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg>: a browser agent read the network, console and JS bundles to identify the stack, and I pulled all 13 builder conversations through the app's own API to count errors and jargon. Where I noticed something first and the agents measured it, you'll see both <svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg>. Every number traces back to a capture or a screenshot.<span class="scr"> The 🔥 notes in the margins are roasts, to be taken lightheartedly 😇.</span></p>
+</div>
+
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> What I tried to build</h2>
+<table>
+  <tr><th>Agent</th><th>The ask</th><th>Where it ended up</th><th>Link</th></tr>
+  <tr>
+    <td><b>CV Generator</b></td>
+    <td>Tailored CV as a PDF from my experience and a job post</td>
+    <td>A welcome screen after 137 tool steps. PDF "not wired yet"</td>
+    <td><a href="https://p8dnmhbrzzfc-preview.run.agentplace.io/agent/p8dnmhbrzzfc/preview">preview</a></td>
+  </tr>
+  <tr>
+    <td><b>Website Agent</b></td>
+    <td>Turn d4shi.com into an assistant that answers as me</td>
+    <td>Good opening, but the first turn took 10m45s</td>
+    <td><a href="https://mv1u3i0bxiuo-preview.run.agentplace.io/agent/mv1u3i0bxiuo/preview">preview</a></td>
+  </tr>
+  <tr>
+    <td><b>PostHog → Linear</b></td>
+    <td>Daily triage of user complaints into Linear issues</td>
+    <td>A "worker" after 94 messages that never ran</td>
+    <td><a href="https://cv4xw5ui5gtm-preview.run.agentplace.io/agent/cv4xw5ui5gtm/preview">preview</a></td>
+  </tr>
+  <tr>
+    <td><b>Renovation Concierge</b></td>
+    <td>"What can you do?"</td>
+    <td>Good brainstorms, no build</td>
+    <td><a href="https://5zsvzv6olml7-preview.run.agentplace.io/agent/5zsvzv6olml7/preview">preview</a></td>
+  </tr>
+</table>
+
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> The three biggest problems</h2>
+<aside class="gnote r" aria-label="roast"><p>I came to build a chatbot and left knowing three connection pools by name. I didn't want a pool, I wanted a receptionist.</p></aside>
+<div class="problems">
+  <div class="card">
+    <h3><span class="num">1</span>It talks to me about its plumbing</h3>
+    <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“Pools, workers, roles, "build is clean, 0 warnings". My Linear connection landed in the wrong pool, and I had to log in again.”</span></p>
+    <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> 27 of 43 builder replies used internal terms.</div>
+    <div class="fix"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Fix: spec 001, next page.</div>
+  </div>
+  <div class="card">
+    <h3><span class="num">2</span>It never tells me what it does for me</h3>
+    <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“The landing page is clean, but I couldn't tell whether it was for me. The hero examples are one-off vitamins: a Lake Como trip, a hotel room.”</span></p>
+    <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> 7 of my 13 sessions were "what can you do?". Only 3 built something.</div>
+    <div class="fix"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Fix: painkiller workspaces, salons first (spec 002).</div>
+  </div>
+  <div class="card">
+    <h3><span class="num">3</span>No one shows me around</h3>
+    <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“No onboarding. Templates can't be reached in the app, Pro models are pickable on free, and credits don't say what they buy.”</span></p>
+    <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> My first build ran 10m45s showing 100+ raw tool steps.</div>
+  </div>
+</div>
+
+<aside class="gnote l" aria-label="roast"><p>I asked for a CV. Three rounds later I had a gorgeous welcome screen and the confidence of a man with no CV.</p></aside>
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> How I'd prioritize</h2>
+<ol class="prio">
+  <li><b>Plumbing</b>: every user hits it in every reply, it makes the other two problems worse, and an eval can guard it.</li>
+  <li><b>What it does for me</b>: painkiller workspaces get the right users to the first request.</li>
+  <li><b>Orientation</b>: copy and UI quick wins that ship alongside.</li>
+</ol>
+
+<div class="spec slim"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> <b>Spec: a builder that speaks outcomes.</b> <b>One metric:</b> the % of builder replies a non-technical owner understands (LLM judge). <span class="tag">Full Spec Kit spec next page →</span></div>
+
+<!-- Spec page -->
+<section class="page-break sk">
+<aside class="gnote r" aria-label="roast"><p>Asked it to connect Linear and it read the architecture doc, browsed the catalog and walked off mid-sentence. Relatable, honestly.</p></aside>
+<div class="sk-head">
+  <div class="sk-kicker"><svg class="ic hum inv" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Feature Specification · Spec Kit template</div>
+  <h2 class="sk-title">A builder that speaks outcomes</h2>
+  <div class="sk-meta"><span><b>Branch</b> <code>001-plain-language-builder</code></span><span><b>Created</b> 2026-10-25</span><span><b>Status</b> Draft</span></div>
+  <p class="sk-input"><b>Input:</b> "A non-technical owner should understand every builder reply and know what to do next, without learning how Agentplace works inside."</p>
+</div>
+
+<details class="skd" open><summary class="sk-h">User Scenarios &amp; Testing</summary>
+<div class="story p1">
+  <div class="story-t"><span class="pr">P1</span>Replies in outcome language</div>
+  <p>The owner asks for a change. The builder reports what changed for their business and what to try next. No pools, workers, roles, builds or tool names.</p>
+  <p><b>Why this priority:</b> it reaches every user in every reply. 27 of my 43 builder replies used internal terms.<br><b>Independent test:</b> replay the eval set of real first sessions, and the judge scores every builder reply.</p>
+  <ol class="gwt">
+    <li><b>Given</b> a task that needs Linear, <b>when</b> the builder connects it, <b>then</b> it says "Linear is connected, only you can use it", not "connected to the team pool".</li>
+    <li><b>Given</b> a finished build, <b>when</b> the builder reports back, <b>then</b> it says what customers can now do, not "the build is clean, 0 errors and 0 warnings".</li>
+    <li><b>Given</b> a tool step that fails and is retried, <b>when</b> the turn ends, <b>then</b> the owner never sees the raw error.</li>
+  </ol>
+</div>
+<div class="stories2">
+  <div class="story">
+    <div class="story-t"><span class="pr">P2</span>Progress in phases, not tool logs</div>
+    <p>Researching → Building → Testing → Ready, with the elapsed time. Raw tool steps sit behind "details".</p>
+    <ol class="gwt"><li><b>Given</b> a turn longer than 30s, <b>when</b> a phase changes, <b>then</b> a one-line, plain status updates.</li></ol>
+  </div>
+  <div class="story">
+    <div class="story-t"><span class="pr">P3</span>The platform picks the plumbing</div>
+    <p>Where a connection lives is inferred from the task, with at most one plain question.</p>
+    <ol class="gwt"><li><b>Given</b> a private task, <b>when</b> a service is connected, <b>then</b> the public app can't use it, and the owner wasn't asked to choose a pool.</li></ol>
+  </div>
+</div>
+<p class="edge"><b>Edge cases:</b> asked "how does it work?" → answer technically. Technical users → "details" on demand.</p>
+</details>
+
+<details class="skd" open><summary class="sk-h">Requirements, entities &amp; assumptions</summary>
+<div class="sk-cols">
+  <div>
+    <h3 class="sk-h">Functional Requirements</h3>
+    <ul class="fr">
+      <li><b>FR-001</b> Builder replies MUST describe the outcome for the business and a next step, not internal mechanisms.</li>
+      <li><b>FR-002</b> System MUST map internal concepts to plain names: team pool → "private to you", agent pool → "used by your public app", worker → "a helper that runs on a schedule".</li>
+      <li><b>FR-003</b> System MUST collapse tool steps into four phases and hide raw errors and retries by default.</li>
+      <li><b>FR-004</b> System MUST decide a connection's destination from the task, asking at most one plain question.</li>
+      <li><b>FR-005</b> A no-leak eval MUST run in CI on every prompt or model change and block a release that lowers the score.</li>
+      <li><b>FR-006</b> The judge is calibrated on human-labelled replies <span class="nc">[NEEDS CLARIFICATION: labelled by support or by sampled real owners?]</span></li>
+    </ul>
+  </div>
+  <div>
+    <h3 class="sk-h">Key Entities</h3>
+    <ul class="fr">
+      <li><b>Glossary entry</b>: an internal term and its plain name.</li>
+      <li><b>Eval scenario</b>: a replayed first session plus the outcome the owner wanted.</li>
+      <li><b>Judge verdict</b>: understood? next step clear? internal terms found?</li>
+    </ul>
+    <h3 class="sk-h">Assumptions</h3>
+    <ul class="fr">
+      <li>The replay set starts from real first sessions, used with consent.</li>
+      <li>The judge uses a different model family than the builder.</li>
+      <li>Power users keep "details".</li>
+    </ul>
+  </div>
+</div>
+</details>
+
+
+<h3 class="sk-h">Success Criteria</h3>
+<div class="metric"><b>SC-001</b>: the comprehension score, the % of builder replies the judge rates "a non-technical owner understands what happened and knows what to do next". Target <b>90%+</b> on the replay set before shipping. Baseline likely under 40% (63% of my replies had internal terms).</div>
+<p class="note">Also saved as <code>specs/001-plain-language-builder/spec.md</code>, ready for <code>/speckit.plan</code>. Sections expand and collapse.</p>
+<details class="skd alt"><summary><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Spec 002 · Painkiller workspace for salons <span class="tag scr">(fix for problem 2, click to expand)</span><span class="tag prn">(fix for problem 2, full version in <code>specs/002-salon-workspace/spec.md</code>)</span></summary>
+<div class="alt-body">
+  <p class="sk-input2"><b>Branch</b> <code>002-salon-workspace</code> · <b>Input:</b> "A salon owner lands on Agentplace and, within one session, has agents that stop lost bookings, without having to learn how the platform works."</p>
+  <div class="stories2">
+    <div class="story"><div class="story-t"><span class="pr">P1</span>A ready receptionist from a salon landing page</div>
+      <p><code>salons.agentplace.io</code> → four questions (name, services and prices, hours, calendar) → a live booking receptionist on a shareable link.</p>
+      <ol class="gwt"><li><b>Given</b> a first-time visitor, <b>when</b> they click "Set up my receptionist", <b>then</b> they see four questions, not a blank prompt box.</li>
+      <li><b>Given</b> a finished setup, <b>when</b> a customer asks for a slot outside opening hours, <b>then</b> the agent offers the next free slots and books after confirmation.</li></ol></div>
+    <div class="story"><div class="story-t"><span class="pr">P2</span>No-show reminders · <span class="pr">P3</span>Prices and FAQ</div>
+      <p>A reminder 24h before, a rebooking offer after a no-show, and answers from the setup data. It never invents a price.</p>
+      <ul class="fr"><li><b>FR-001</b> Landing page in the trade's language, no vitamin examples.</li><li><b>FR-002</b> Three agents from the 94 salon painkiller templates after a four-question setup.</li><li><b>FR-003</b> Calendar connected via OAuth, with no pools shown.</li><li><b>FR-006</b> <span class="nc">[NEEDS CLARIFICATION: Google only, or also Fresha, Booksy, Square?]</span></li></ul></div>
+  </div>
+  <div class="metric"><b>SC-001</b>: the % of new salon workspaces whose agent answers a real customer within 7 days of signup.</div>
+  <p class="note">Full version: <code>specs/002-salon-workspace/spec.md</code></p>
+</div>
+</details>
+
+</section>
+
+<!-- Stack page -->
+<section class="flow">
+<aside class="gnote l" aria-label="roast"><p>Mid-build: &quot;Firecrawl, 50 credits, reads pages behind a login!&quot; I don't know what a credit is, but apparently I'm buying fifty.</p></aside>
+<h2><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Your stack</h2>
+<div class="logos"><div class="lg"><div class="lg-name">Web</div><div class="lg-row"><span class="logo"><img src="assets/logos/astro.svg" alt=""><span>Astro</span></span><span class="logo known"><img src="assets/logos/react.svg" alt=""><span>React</span></span><span class="logo known"><img src="assets/logos/vite.svg" alt=""><span>Vite</span></span><span class="logo"><img src="assets/logos/redux.svg" alt=""><span>Redux</span></span><span class="logo"><img src="assets/logos/radixui.svg" alt=""><span>Radix</span></span><span class="logo known"><img src="assets/logos/tailwindcss.svg" alt=""><span>Tailwind</span></span></div></div><div class="lg"><div class="lg-name">Backend</div><div class="lg-row"><span class="logo known"><img src="assets/logos/nodedotjs.svg" alt=""><span>Node.js</span></span><span class="logo"><img src="assets/logos/express.svg" alt=""><span>Express</span></span><span class="logo"><img src="assets/logos/nginx.svg" alt=""><span>nginx</span></span></div></div><div class="lg"><div class="lg-name">AWS</div><div class="lg-row"><span class="logo"><img src="assets/logos/amazonwebservices.svg" alt=""><span>CloudFront</span></span><span class="logo"><img src="assets/logos/amazons3.svg" alt=""><span>S3</span></span><span class="logo"><img src="assets/logos/amazonec2.svg" alt=""><span>EC2</span></span><span class="logo"><img src="assets/logos/amazoncognito.svg" alt=""><span>Cognito</span></span></div></div><div class="lg"><div class="lg-name">AI</div><div class="lg-row"><span class="logo"><img src="assets/logos/vercel.svg" alt=""><span>AI SDK</span></span><span class="logo"><img src="assets/logos/openai.svg" alt=""><span>OpenAI</span></span><span class="logo"><img src="assets/logos/anthropic.svg" alt=""><span>Anthropic</span></span><span class="logo"><img src="assets/logos/googlegemini.svg" alt=""><span>Gemini</span></span><span class="logo chip"><span>Langfuse</span></span><span class="logo chip known"><span>MCP</span></span><span class="logo chip"><span>A2UI</span></span></div></div><div class="lg"><div class="lg-name">Agent runtime</div><div class="lg-row"><span class="logo"><img src="assets/logos/esbuild.svg" alt=""><span>esbuild</span></span><span class="logo"><img src="assets/logos/mobx.svg" alt=""><span>MobX</span></span><span class="logo"><img src="assets/logos/react.svg" alt=""><span>React dev</span></span></div></div><div class="lg"><div class="lg-name">Telemetry</div><div class="lg-row"><span class="logo"><img src="assets/logos/sentry.svg" alt=""><span>Sentry</span></span><span class="logo chip"><span>Amplitude</span></span><span class="logo"><img src="assets/logos/googleanalytics.svg" alt=""><span>GA4</span></span><span class="logo"><img src="assets/logos/meta.svg" alt=""><span>Meta</span></span></div></div></div>
+<p class="note">Read from network traffic, response headers, JS bundles and server logs. Amplitude, Langfuse, MCP and A2UI are shown as text. <span class="known-key"></span> = I've shipped with it.</p>
+<h2><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Architecture at a glance</h2>
+<svg class="arch" viewBox="0 0 760 330" role="img" aria-label="Agentplace architecture diagram">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+  <g font-family="JetBrains Mono, monospace" font-size="10" fill="var(--ink)">
+    <rect x="10" y="120" width="110" height="60" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+    <text x="65" y="146" text-anchor="middle" font-weight="700">Browser</text>
+    <text x="65" y="162" text-anchor="middle" fill="var(--muted)">owner / visitor</text>
+    <rect x="170" y="40" width="150" height="150" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/>
+    <text x="245" y="66" text-anchor="middle" font-weight="700">CloudFront</text>
+    <text x="245" y="82" text-anchor="middle" fill="var(--muted)">agentplace.io</text>
+    <text x="186" y="110">/        static</text>
+    <text x="186" y="126">/admin   static</text>
+    <text x="186" y="142">/api     proxy</text>
+    <text x="186" y="158">/api/ws  proxy</text>
+    <rect x="370" y="14" width="380" height="50" rx="8" fill="var(--paper)" stroke="var(--line)"/>
+    <text x="382" y="35" font-weight="700">S3</text>
+    <text x="382" y="52" fill="var(--muted)">Astro marketing site · React/Vite SPA (/admin)</text>
+    <rect x="370" y="80" width="380" height="64" rx="8" fill="var(--paper)" stroke="var(--line)"/>
+    <text x="382" y="100" font-weight="700">nginx → Node/Express API</text>
+    <text x="382" y="116" fill="var(--muted)">auth: Cognito (Google) · connections: Composio</text>
+    <text x="382" y="132" fill="var(--muted)">builder chat: WebSocket JSON-RPC</text>
+    <rect x="370" y="160" width="380" height="50" rx="8" fill="var(--paper)" stroke="var(--line)"/>
+    <text x="382" y="181" font-weight="700">Builder agent loop</text>
+    <text x="382" y="198" fill="var(--muted)">AI SDK · GPT/Claude/Gemini/GLM · Langfuse · tool_search</text>
+    <rect x="170" y="240" width="580" height="80" rx="8" fill="var(--warn-soft)" stroke="var(--green)"/>
+    <text x="182" y="261" font-weight="700">*.run.agentplace.io: wildcard router on EC2 (us-east-1, no CDN)</text>
+    <text x="182" y="279" fill="var(--muted)">one stack per agent: Node agent server + React dev frontend (esbuild, MobX, A2UI)</text>
+    <text x="182" y="296" fill="var(--muted)">WebSocket JSON-RPC to the visitor · server logs over SSE · LLM turn on open</text>
+    <text x="182" y="312" fill="var(--muted)">MCP tools from mcp.json · Langfuse traces</text>
+    <g stroke="var(--muted)" stroke-width="1.4" fill="none">
+      <path d="M120,150 L168,130" marker-end="url(#ar)"/>
+      <path d="M320,60 L368,40" marker-end="url(#ar)"/>
+      <path d="M320,120 L368,112" marker-end="url(#ar)"/>
+      <path d="M560,144 L560,158" marker-end="url(#ar)"/>
+      <path d="M560,210 L560,238" marker-end="url(#ar)"/>
+      <path d="M65,180 L65,280 L168,280" marker-end="url(#ar)"/>
+    </g>
+    <text x="14" y="298" fill="var(--muted)" font-size="9">preview /</text><text x="14" y="310" fill="var(--muted)" font-size="9">published agent</text>
+    <text x="566" y="228" fill="var(--muted)" font-size="9">builds &amp; manages</text>
+  </g>
+</svg>
+<p class="desc">Everything enters through one CloudFront distribution. The marketing site and the dashboard are static files on S3. <code>/api</code> goes to a Node/Express API behind nginx that handles Cognito auth, Composio connections and the builder chat over a WebSocket. The builder is an AI SDK agent loop across four model providers, traced in Langfuse. Each agent you build is a separate app, a Node agent server plus its own React frontend, reached through a wildcard <code>*.run.agentplace.io</code> router on EC2 with no CDN in front.</p>
+
+<div class="good" style="margin-top:14px"><b><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> What already works well:</b> the builder is honest about what it hasn't tested. It cut my PostHog access down to read-only tools on its own, and refused both of my prompt-extraction attempts. The EU cookie banner is done right. The marketing site is a clean static build with JSON-LD and llms.txt.</div>
+</section>
+
+<!-- Nitpicks page -->
+<section class="flow">
+<h2><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> The biggest nitpicks</h2>
+<div class="nits"><div class="nit"><h3><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Every agent starts its whole stack</h3><p>Each agent boots its own Node server and React frontend in dev mode: a 5MB unminified bundle, livereload and a build server, even though most agents differ only in config, prompts and UI components.</p><p class="nfix"><b>Fix:</b> One shared, production-built runtime that loads each agent's config by subdomain. Build per agent only when it ships custom code.</p></div><div class="nit"><h3><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> An LLM call every time a preview opens</h3><p>Opening a preview runs a ~17k-input-token turn just to draw the greeting. All of it is cache writes, with zero cache reads.</p><p class="nfix"><b>Fix:</b> Cache the first screen per agent version, and call the model only when the visitor writes.</p></div><div class="nit"><h3><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Chat history downloaded twice</h3><p>Each dashboard load sends the same 988KB history query twice. The second one doesn't pass <code>afterSeq</code>.</p><p class="nfix"><b>Fix:</b> Load once, then fetch only new items. Lazy-load tool details when they're expanded.</p></div><div class="nit"><h3><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Login tokens in the WebSocket URL</h3><p><code>/api/dashboard/ws?token=…&amp;idToken=…</code> puts the Cognito access token and the 24h ID token (name, email) into CloudFront and nginx access logs.</p><p class="nfix"><b>Fix:</b> Use cookies, which the builder socket already does, or a 30-second one-time ticket.</p></div><div class="nit"><h3><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Model reasoning sent to the browser</h3><p>The UI hides it, but the history payload carries the model's third-person notes about &quot;the owner&quot;.</p><p class="nfix"><b>Fix:</b> Strip reasoning server-side before it leaves the API.</p></div><div class="nit"><h3><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Tracking without a banner outside Europe</h3><p>From Algeria, ~520KB of trackers load on first paint, including the session-replay setup. In the EU the banner works, but an Amplitude cookie is still written before consent.</p><p class="nfix"><b>Fix:</b> Load replay and pixels only after consent, everywhere. Proxy events through <code>agentplace.io/ingest</code> behind the gate.</p></div></div>
+<aside class="gnote r" aria-label="roast"><p>Nobody onboarded me as a user, but the console onboarded me as an engineer: debug logs, a red 401, WebSockets opening left and right, &quot;Unknown notification&quot; on every turn. Day one and I'm already on call for the dev server.</p></aside>
+<div class="nit wide">
+  <h3><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Dev noise in production</h3>
+  <p>Logged-out visitors see debug logs and a red 401 on every visit. The preview runs a React development build, prints connection chatter and "Unknown notification" on every turn, and streams its server logs twice over SSE, including the owner's email. Express is advertised with <code>x-powered-by</code>.</p>
+  <p class="nfix"><b>Fix:</b> strip logs at build time, treat the expected 401 as a quiet state, use one SSE connection, and ship production builds to previews.</p>
+  <figure><img class="console" src="evidence/console-dev-noise.png" alt="Captured console output from the logged-out app and the agent preview"><figcaption><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Real console output captured over CDP and rendered in a DevTools-style view.</figcaption></figure>
+</div>
+</section>
+<section class="flow">
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Appendix: consent and tracking</h2>
+<table>
+  <tr><th>Visit, no clicks</th><th>Banner</th><th>Loaded before any choice</th></tr>
+  <tr><td>Landing from Algeria</td><td>none</td><td>~520KB: Meta pixel, Google Tag Manager, Amplitude + session-replay config, Affonso, Ahrefs</td></tr>
+  <tr><td>Landing, simulated Spain</td><td>shown, done right</td><td>Nothing, except an Amplitude cookie written before consent</td></tr>
+</table>
+<p class="note" style="margin-top:5px">Suggestion: keep the EU behaviour, lazy-load session replay only after consent everywhere, and check the "Europe only" country list with legal (Brazil, Algeria). Then route Amplitude, PostHog and Sentry through <code>agentplace.io/ingest/*</code> (Sentry has a built-in <code>tunnel</code> option) so browser blockers stop dropping events. The proxy sits <i>behind</i> the consent gate, never around it. Measure the loss first by comparing database signups with analytics signups.</p>
+
+<div class="shots">
+  <figure>
+    <img src="evidence/website-turn1-10m45s.png" alt="Builder chat showing 'Worked for 10 minutes 45 seconds' after the user typed d4shi.com">
+    <figcaption><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> "Worked for 10 minutes 45 seconds" on the first build. Just above, I asked for questions in the chat input and got a plain-text one.</figcaption>
+  </figure>
+  <figure>
+    <img src="evidence/website-turn1-expanded-top.png" alt="The same turn expanded, listing file reads and structure scans">
+    <figcaption><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> The same turn expanded: what a new user watches while waiting. The full list is in <code>evidence/website-turn1-tool-wall.png</code>.</figcaption>
+  </figure>
+</div>
+</section>
+
+<!-- Page 3 -->
+<section class="page-break">
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Who am I</h2>
+<div class="me">
+  <img src="assets/me.jpg" alt="Hachem at GitHub HQ in a HyKO AI hoodie, copying the thinking pose of the statue next to him">
+  <div>
+    <p><b>Hachem Betrouni</b>, a product person who ships the code too. I was CTO at hyko.ai for four years. There I built a visual AI-workflow product (v1), then an agent platform (v2), on TypeScript, Kubernetes, Helm and Argo CD, with MCP and context engineering in the harness. Before that came yourscrib.ai, an AI ghostwriter that won over French authors and brought our first revenue. Today I'm building lisptc, a neuro-symbolic architecture for AI agents, and I run my whole machine on NixOS.</p>
+    <p>That's why this review reads the way it does. I judge a product by how it feels to a new user, and I can also open the network tab, find the reason and propose the fix.</p>
+    <p class="witty">“What appeared to be user friendly to us was too complicated for the non technical user.”</p>
+    <p class="note"><a href="https://d4shi.com">d4shi.com</a></p>
+  </div>
+</div>
+
+
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Skill map</h2>
+<div class="skills">
+  <svg viewBox="-55 0 450 300" width="100%" role="img" aria-label="Skill map radar chart" style="max-width:255px;display:block">
+<polygon points="170.0,129.0 184.8,135.2 191.0,150.0 184.8,164.8 170.0,171.0 155.2,164.8 149.0,150.0 155.2,135.2" fill="none" stroke="var(--line)" stroke-width="1"/>
+<polygon points="170.0,108.0 199.7,120.3 212.0,150.0 199.7,179.7 170.0,192.0 140.3,179.7 128.0,150.0 140.3,120.3" fill="none" stroke="var(--line)" stroke-width="1"/>
+<polygon points="170.0,87.0 214.5,105.5 233.0,150.0 214.5,194.5 170.0,213.0 125.5,194.5 107.0,150.0 125.5,105.5" fill="none" stroke="var(--line)" stroke-width="1"/>
+<polygon points="170.0,66.0 229.4,90.6 254.0,150.0 229.4,209.4 170.0,234.0 110.6,209.4 86.0,150.0 110.6,90.6" fill="none" stroke="var(--line)" stroke-width="1"/>
+<polygon points="170.0,45.0 244.2,75.8 275.0,150.0 244.2,224.2 170.0,255.0 95.8,224.2 65.0,150.0 95.8,75.8" fill="none" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="170.0" y2="45.0" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="244.2" y2="75.8" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="275.0" y2="150.0" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="244.2" y2="224.2" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="170.0" y2="255.0" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="95.8" y2="224.2" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="65.0" y2="150.0" stroke="var(--line)" stroke-width="1"/>
+<line x1="170" y1="150" x2="95.8" y2="75.8" stroke="var(--line)" stroke-width="1"/>
+<polygon points="170.0,66.0 244.2,75.8 264.5,150.0 236.8,216.8 170.0,223.5 118.0,202.0 75.5,150.0 110.6,90.6" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="170.0" cy="66.0" r="3" fill="var(--accent)"/>
+<circle cx="244.2" cy="75.8" r="3" fill="var(--accent)"/>
+<circle cx="264.5" cy="150.0" r="3" fill="var(--accent)"/>
+<circle cx="236.8" cy="216.8" r="3" fill="var(--accent)"/>
+<circle cx="170.0" cy="223.5" r="3" fill="var(--accent)"/>
+<circle cx="118.0" cy="202.0" r="3" fill="var(--accent)"/>
+<circle cx="75.5" cy="150.0" r="3" fill="var(--accent)"/>
+<circle cx="110.6" cy="90.6" r="3" fill="var(--accent)"/>
+<text x="170.0" y="27.0" text-anchor="middle" font-size="10" fill="var(--ink)">Product & UX</text>
+<text x="255.6" y="62.4" text-anchor="start" font-size="10" fill="var(--ink)">AI / LLM eng.</text>
+<text x="291.0" y="154.0" text-anchor="start" font-size="10" fill="var(--ink)">Backend & APIs</text>
+<text x="255.6" y="245.6" text-anchor="start" font-size="10" fill="var(--ink)">Infra & DevOps</text>
+<text x="170.0" y="281.0" text-anchor="middle" font-size="10" fill="var(--ink)">Frontend</text>
+<text x="84.4" y="245.6" text-anchor="end" font-size="10" fill="var(--ink)">Data & analytics</text>
+<text x="49.0" y="154.0" text-anchor="end" font-size="10" fill="var(--ink)">Leadership</text>
+<text x="84.4" y="62.4" text-anchor="end" font-size="10" fill="var(--ink)">Evals & quality</text>
+</svg>
+
+  <ul class="timeline">
+    <li><b>2026 · lisptc</b>: a neuro-symbolic architecture for AI agents (TypeScript, Lisp). Also sandboxed agent execution, and agents defined as data.<span class="tbs"><span class="tb dk" style="background:#3178C6"><i class="devicon-typescript-plain"></i>TypeScript</span><span class="tb dk" style="background:#7c68ee">Lisp</span><span class="tb dk" style="background:#D97757">Claude Code</span><span class="tb dk" style="background:#7B42BC"><i class="devicon-terraform-plain"></i>Terraform</span><span class="tb dk" style="background:#00AAB2">KubeVirt</span><span class="tb dk" style="background:#5FA04E"><i class="devicon-nodejs-plain"></i>Node.js</span></span></li>
+    <li><b>2024–26 · CTO, hyko.ai agents (v2)</b>: an agent platform. Context engineering, MCP, TanStack Start, Kubernetes, Helm, Argo CD, PostHog, Grafana.<span class="tbs"><span class="tb dk" style="background:#3178C6"><i class="devicon-typescript-plain"></i>TypeScript</span><span class="tb dk" style="background:#F7443D">TanStack Start</span><span class="tb dk" style="background:#000000"><i class="devicon-nextjs-plain"></i>Next.js</span><span class="tb dk" style="background:#326CE5"><i class="devicon-kubernetes-plain"></i>Kubernetes</span><span class="tb dk" style="background:#0F1689"><i class="devicon-helm-plain"></i>Helm</span><span class="tb dk" style="background:#EF7B4D"><i class="devicon-argocd-plain"></i>Argo CD</span><span class="tb dk" style="background:#5277C3"><i class="devicon-nixos-plain"></i>Nix</span><span class="tb dk" style="background:#336791"><i class="devicon-postgresql-plain"></i>Postgres</span><span class="tb dk" style="background:#2d7a2d">Drizzle</span><span class="tb dk" style="background:#E0342B">BullMQ</span><span class="tb dk" style="background:#F54E00">PostHog</span><span class="tb dk" style="background:#F46800"><i class="devicon-grafana-plain"></i>Grafana</span><span class="tb dk" style="background:#2EAD33"><i class="devicon-playwright-plain"></i>Playwright</span><span class="tb" style="background:#e8ddd3">MCP</span><span class="tb" style="background:#dcd3f7">context engineering</span></span></li>
+    <li><b>2023–24 · CTO, hyko.ai workflows (v1)</b>: visual AI workflows. React Flow, FastAPI, LangChain, DAG execution on Redis queues.<span class="tbs"><span class="tb dk" style="background:#3178C6"><i class="devicon-typescript-plain"></i>TypeScript</span><span class="tb dk" style="background:#087EA4"><i class="devicon-react-original"></i>React</span><span class="tb dk" style="background:#000000"><i class="devicon-nextjs-plain"></i>Next.js</span><span class="tb dk" style="background:#06B6D4"><i class="devicon-tailwindcss-plain"></i>Tailwind CSS</span><span class="tb dk" style="background:#ff0072">React Flow</span><span class="tb dk" style="background:#009688"><i class="devicon-fastapi-plain"></i>FastAPI</span><span class="tb dk" style="background:#3776AB"><i class="devicon-python-plain"></i>Python</span><span class="tb dk" style="background:#1c8c68">LangChain</span><span class="tb dk" style="background:#DC382D"><i class="devicon-redis-plain"></i>Redis</span><span class="tb dk" style="background:#2496ED"><i class="devicon-docker-plain"></i>Docker</span></span></li>
+    <li><b>2023 · yourscrib.ai</b>: an AI ghostwriter built on novelist Alexandre Jardin's method. Our first revenue.<span class="tbs"><span class="tb dk" style="background:#087EA4"><i class="devicon-react-original"></i>React</span><span class="tb dk" style="background:#ff0072">React Flow</span><span class="tb dk" style="background:#009688"><i class="devicon-fastapi-plain"></i>FastAPI</span><span class="tb dk" style="background:#3776AB"><i class="devicon-python-plain"></i>Python</span><span class="tb dk" style="background:#1D63ED"><i class="devicon-docker-plain"></i>Docker Compose</span><span class="tb dk" style="background:#24A1C1"><i class="devicon-traefikproxy-plain"></i>Traefik</span></span></li>
+    <li><b>4 years at BIGmama</b>: the company behind hyko.ai. I stepped away from the CTO seat in 2026 to build my own thing.<span class="tbs"><span class="tb dk" style="background:#3776AB"><i class="devicon-python-plain"></i>Python</span><span class="tb dk" style="background:#EE4C2C"><i class="devicon-pytorch-plain"></i>PyTorch</span><span class="tb" style="background:#FFD21E">Hugging Face</span><span class="tb dk" style="background:#009688"><i class="devicon-fastapi-plain"></i>FastAPI</span><span class="tb dk" style="background:#2496ED"><i class="devicon-docker-plain"></i>Docker</span></span></li>
+  </ul>
+</div>
+
+<h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Hire me, and in 2 weeks you get</h2>
+<div class="hire">
+  <div><b>PR preview deployments</b>Every pull request gets its own live URL (Argo CD + GitHub, reachable over Tailscale on your cluster), so reviews happen on the real thing.</div>
+  <div><b>A code and tech-debt review</b>A map of the codebase with interactive charts showing hotspots, duplication and risky dependencies, each with a cost and a suggested order.</div>
+  <div><b>Evals and monitoring, done right</b>Replayable eval sets for the builder (starting with the no-leak judge), Langfuse traces wired to them, and alerts on regressions.</div>
+  <div><b>Measuring what matters</b>One activation metric per persona, events that survive ad blockers (behind consent), and a dashboard the team actually opens.</div>
+</div>
+</section>
+
+<footer class="credit">This review was written with the help of Claude Opus 5.5.</footer>
+</main>
+<script>
+(() => {
+  if (!document.documentElement.classList.contains('roast-anim')) return;
+  const notes = [...document.querySelectorAll('.gnote')];
+  for (const n of notes) {
+    const p = n.querySelector('p');
+    n.roast = p.textContent;
+    const typed = document.createElement('span');
+    const ghost = document.createElement('span');
+    typed.className = 'typed';
+    ghost.className = 'ghost';
+    ghost.textContent = n.roast;
+    p.replaceChildren(typed, ghost);
+  }
+  const finish = n => {
+    n.done = true;
+    n.querySelector('.typed').textContent = n.roast;
+    n.querySelector('.ghost').textContent = '';
+    n.classList.add('live');
+    n.classList.remove('typing');
+  };
+  const type = n => {
+    n.classList.add('live', 'typing');
+    const typed = n.querySelector('.typed'), ghost = n.querySelector('.ghost');
+    let i = 0;
+    const tick = () => {
+      if (n.done) return;
+      i++;
+      typed.textContent = n.roast.slice(0, i);
+      ghost.textContent = n.roast.slice(i);
+      if (i < n.roast.length) setTimeout(tick, 18 + Math.random() * 32);
+      else finish(n);
+    };
+    setTimeout(tick, 350);
+  };
+
+  // Each note watches the section right after it. The root is shrunk to the top half of the viewport,
+  // so a note fires once its section reaches the middle of the screen. Sections already scrolled past
+  // (e.g. after a jump) still fire, so no note is skipped.
+  const sectionOf = n => { let el = n.nextElementSibling; while (el.matches('.gnote')) el = el.nextElementSibling; return el; };
+  const notesFor = new Map();
+  for (const n of notes) {
+    const section = sectionOf(n);
+    notesFor.set(section, [...(notesFor.get(section) || []), n]);
+  }
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (!e.isIntersecting && e.boundingClientRect.bottom > 0) continue;
+      io.unobserve(e.target);
+      notesFor.get(e.target).forEach(type);
+    }
+  }, { rootMargin: '0px 0px -50% 0px' });
+  // Nothing fires until the reader starts scrolling, so the roasts never compete with the header and TL;DR.
+  const start = () => {
+    if (scrollY < 80) return;
+    removeEventListener('scroll', start);
+    notesFor.forEach((_, section) => io.observe(section));
+  };
+  addEventListener('scroll', start, { passive: true });
+  start();
+  addEventListener('beforeprint', () => notes.forEach(finish));
+})();
+</script>
+</body>
+</html>
