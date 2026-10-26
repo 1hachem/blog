@@ -229,7 +229,7 @@
   <ul>
     <li>I built 4 agents over 13 sessions. None did what I asked, and the builder kept explaining its internals instead of telling me what was done and what to do next.</li>
     <li><b>Fix first:</b> a builder that reports outcomes in plain words, checked automatically before every release.</li>
-    <li><b>One metric:</b> the % of new sign-ups who publish a working agent in their first session.</li>
+    <li><b>One metric:</b> first-use success, the % of new sign-ups whose first agent does what they asked and who come back to reuse it.</li>
   </ul>
 </div>
 <div class="made">
@@ -292,7 +292,7 @@
 </ol>
 <p class="note">My evidence comes from one user. Before building, I'd check this against the Amplitude funnel and 5 calls with users who never published.</p>
 
-<div class="spec slim"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> <b>Spec: a builder that speaks outcomes.</b> <b>One metric:</b> first-session publish rate. <b>Guardrail:</b> 90%+ of builder replies a non-technical owner understands. <span class="tag">Full spec next page →</span></div>
+<div class="spec slim"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> <b>Spec: a builder that speaks outcomes.</b> <b>One metric:</b> first-use success. <b>Guardrail:</b> 90%+ of builder replies a non-technical owner understands. <span class="tag"><a href="#spec">Full spec →</a></span></div>
 
 <!-- Spec page -->
 <section class="page-break sk" id="spec">
@@ -331,7 +331,7 @@
     <ol class="gwt"><li><b>Given</b> a private task, <b>when</b> a service is connected, <b>then</b> the public app can't use it, and the owner wasn't asked to choose a pool.</li></ol>
   </div>
 </div>
-<p class="edge"><b>Edge cases:</b> asked "how does it work?" → answer technically. Technical users → "details" on demand.</p>
+<p class="edge"><b>Edge cases:</b> technical users → "details" on demand.</p>
 </details>
 
 <details class="skd"><summary class="sk-h">Requirements, entities &amp; assumptions</summary>
@@ -344,7 +344,7 @@
       <li><b>FR-003</b> System MUST collapse tool steps into four phases and hide raw errors and retries by default.</li>
       <li><b>FR-004</b> System MUST decide a connection's destination from the task, asking at most one plain question.</li>
       <li><b>FR-005</b> A plain-language check MUST run automatically on every prompt or model change and block a release that lowers the score.</li>
-      <li><b>FR-006</b> The judge runs as a Langfuse evaluation on captured builder replies.</li>
+      <li><b>FR-006</b> The judge runs as an LLM-as-a-judge evaluation on captured builder replies, in whichever eval tooling the team already uses (Langfuse or PostHog).</li>
     </ul>
   </div>
   <div>
@@ -356,7 +356,6 @@
     </ul>
     <h3 class="sk-h">Assumptions</h3>
     <ul class="fr">
-      <li>The replay set starts from real first sessions, used with consent.</li>
       <li>The judge uses a different model family than the builder.</li>
       <li>Power users keep "details".</li>
     </ul>
@@ -366,7 +365,7 @@
 
 
 <details class="skd"><summary class="sk-h">Success Criteria</summary>
-<div class="metric"><b>SC-001 · One metric</b>: first-session publish rate, the % of new sign-ups who publish an agent that answers a test message within 24h of signing up.</div>
+<div class="metric"><b>SC-001 · One metric</b>: first-use success, the % of new sign-ups whose first agent does what they asked on the first interaction. Read it with user sentiment on that session and with re-use of that first use case. The first use has to be a painkiller, not a vitamin: it is what brings users back.</div>
 <div class="metric"><b>SC-002 · Guardrail before shipping</b>: 90%+ of builder replies rated "a non-technical owner understands what happened and what to do next" on replayed first sessions. Baseline likely under 40% (63% of my replies had internal terms).</div>
 </details>
 
