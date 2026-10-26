@@ -192,7 +192,6 @@
   .ba-label { font-size: 11.3pt; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
   .led { margin: 0 0 12px; padding-left: 18px; }
   .led li { margin-bottom: 6px; }
-  .hire-extra { font-style: italic; margin-top: 12px; }
   .divider { margin: 64px 0 24px; padding: 28px 0 22px; border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); color: var(--ink); text-align: center; font-family: "Funnel Display", Inter, system-ui, sans-serif; font-size: 22pt; font-weight: 700; line-height: 1.25; }
   .divider img { display: block; margin: 0 auto 14px; height: 120px; width: auto; }
   details.extra > summary h2 { margin: 0; }
@@ -220,20 +219,20 @@
 
 <header>
   <h1>Hachem Betrouni · Product Manager</h1>
-  <div class="byline">Agentplace product review · October 2026 · 2 days, 4 agents, 13 builder sessions</div>
+  <div class="byline">Agentplace product review · October 2026 · 2 days, 3 agents, 13 builder sessions</div>
   <a class="cta" href="https://mv1u3i0bxiuo.run.agentplace.io/">My published agent →</a>
 </header>
 
 
 <div class="tldr"><b>TL;DR</b>
   <ul>
-    <li>I built 4 agents over 13 sessions. None did what I asked, and the builder kept explaining its internals instead of telling me what was done and what to do next.</li>
+    <li>3 agents, 1 working (first build: 10m45s). The builder explained its internals instead of what was done and what to do next.</li>
     <li><b>Fix first:</b> a builder that reports outcomes in plain words, checked automatically before every release.</li>
-    <li><b>One metric:</b> first-use success, the % of new sign-ups whose first agent does what they asked and who come back to reuse it.</li>
+    <li><b>One metric:</b> first-use success, the % of new sign-ups whose first agent does what they asked on the first interaction.</li>
   </ul>
 </div>
 <div class="made">
-  <p><span class="made-title">How I made this report.</span> I used Agentplace as a new user for two days, building 4 agents across 13 builder sessions. Everything marked with the person icon <svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> is that experience, in my words. Then I pointed AI agents at it, marked with the robot icon <svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg>. A browser agent read the network, console and JS bundles to identify the stack, and I pulled all 13 builder conversations through the app's own API to count errors and jargon. Where I noticed something first and the agents measured it, you'll see both icons <svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg>. Every number traces back to a capture or a screenshot.<span class="scr"> The 🔥 notes in the margins are roasts, to be taken lightheartedly 😇, and the 👍 ones are what I liked.</span></p>
+  <p><span class="made-title">How I made this report.</span> I used Agentplace as a new user for two days, building 3 agents across 13 builder sessions. Everything marked with the person icon <svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> is that experience, in my words. Then I pointed AI agents at it, marked with the robot icon <svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg>. A browser agent read the network, console and JS bundles to identify the stack, and I pulled all 13 builder conversations through the app's own API to count errors and jargon. Where I noticed something first and the agents measured it, you'll see both icons <svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg>. Every number traces back to a capture or a screenshot.<span class="scr"> The 🔥 notes in the margins are roasts, to be taken lightheartedly 😇, and the 👍 ones are what I liked.</span></p>
 </div>
 
 <aside class="gnote kudo" aria-label="kudos"><p>The landing page is clean, and the Website Agent's opening was genuinely good. First impressions: nailed.</p></aside>
@@ -264,21 +263,22 @@
 <aside class="gnote" aria-label="roast"><p>I came to build a chatbot and left knowing three connection pools by name. I didn't want a pool, I wanted a helpful assistant.</p></aside>
 <div class="problems">
   <div class="card">
-    <h3><span class="num">1</span> The builder explains its plumbing instead of finishing the job</h3>
-    <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“4 agents, 13 sessions, none did what I asked. When things went wrong, the builder talked about pools, workers and roles instead of what was missing and what I should do next. My Linear connection landed in the "wrong pool" and I had to log in again without knowing why.”</span></p>
-    <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> 27 of 43 builder replies used internal terms.</div>
+    <h3><span class="num">1</span> The builder talks plumbing, not outcomes</h3>
+    <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“When things went wrong, the builder talked about pools, workers and roles instead of what was missing and what I should do next. My Linear connection landed in the "wrong pool" and I had to log in again without knowing why.”</span></p>
+    <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> 27 of 36 builder replies used internal terms, 82 times in all. “Worker” alone appears 32 times. Counted from my exported conversations.</div>
     <div class="fix"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Fix: <a href="#spec">spec 001</a>.</div>
   </div>
   <div class="card">
     <h3><span class="num">2</span> It never tells me what it does for me</h3>
     <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“The landing page is clean, but I couldn't tell whether it was for me. The hero examples are one-off tasks: a Lake Como trip, a hotel room.”</span></p>
     <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> 7 of my 13 sessions were "what can you do?". Only 3 built something.</div>
-    <div class="fix"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Fix: ready-made setups for one industry, salons first.</div>
+    <div class="fix"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Fix: a landing page per industry or big use case. Sign up from it and you land on a ready-to-use agent, or an onboarding tailored to that use case.</div>
   </div>
   <div class="card">
     <h3><span class="num">3</span> No one shows me around</h3>
     <p class="q"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg><span>“No onboarding. Templates can't be reached in the app, Pro models are pickable on free, and credits don't say what they buy.”</span></p>
     <div class="proof"><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> My first build ran 10m45s showing 100+ raw tool steps.</div>
+    <div class="fix"><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Fix: generative onboarding, a first session that asks about my business and builds the tour, templates and examples around it.</div>
   </div>
 </div>
 <aside class="gnote" aria-label="roast"><p>Asked it to connect Linear and it read the architecture doc, browsed the catalog and walked off mid-sentence. Relatable, honestly.</p></aside>
@@ -286,8 +286,8 @@
 
 <h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> How I'd prioritize</h2>
 <ol class="prio">
-  <li><b>Plumbing</b>: every user hits it in every reply, it makes the other two problems worse, and an automatic check can guard it.</li>
-  <li><b>What it does for me</b>: ready-made setups for one industry get the right users to the first request. Salons first: Agentplace's own positioning is bookings and service choice, salons lose money on every no-show, and 94 salon templates already exist.</li>
+  <li><b>Plumbing</b>: it shows up in three in four replies, it makes the other two problems worse, and an automatic check can guard it.</li>
+  <li><b>What it does for me</b>: a page per use case shows visitors an agent like theirs, and signing up from it wires that agent for them.</li>
   <li><b>Orientation</b>: copy and UI quick wins that ship alongside.</li>
 </ol>
 <p class="note">My evidence comes from one user. Before building, I'd check this against the Amplitude funnel and 5 calls with users who never published.</p>
@@ -312,7 +312,7 @@
 <div class="story p1">
   <div class="story-t"><span class="pr">P1</span>Replies in outcome language</div>
   <p>The owner asks for a change. The builder reports what changed for their business and what to try next. No pools, workers, roles, builds or tool names.</p>
-  <p><b>Why this priority:</b> it reaches every user in every reply. 27 of my 43 builder replies used internal terms.<br><b>Independent test:</b> replay the eval set of real first sessions, and the judge scores every builder reply.</p>
+  <p><b>Why this priority:</b> it shows up in three in four builder replies. 27 of the 36 builder replies to my requests (75%) used internal terms, 82 times in all: “worker” 32 times, “pool” 11, “the build is clean” 7, plus raw tool and component names like <code>update_tools</code> and <code>OptionGrid</code>. These numbers were computed by a script over the full dump of my 13 builder conversations, pulled through the app's API. It leaves out the 7 replies where I asked about the builder's own internals.<br><b>Independent test:</b> replay the eval set of real first sessions, and the judge scores every builder reply.</p>
   <ol class="gwt">
     <li><b>Given</b> a task that needs Linear, <b>when</b> the builder connects it, <b>then</b> it says "Linear is connected, only you can use it", not "connected to the team pool".</li>
     <li><b>Given</b> a finished build, <b>when</b> the builder reports back, <b>then</b> it says what customers can now do, not "the build is clean, 0 errors and 0 warnings".</li>
@@ -343,8 +343,7 @@
       <li><b>FR-002</b> System MUST map internal concepts to plain names: team pool → "private to you", agent pool → "used by your public app", worker → "a helper that runs on a schedule".</li>
       <li><b>FR-003</b> System MUST collapse tool steps into four phases and hide raw errors and retries by default.</li>
       <li><b>FR-004</b> System MUST decide a connection's destination from the task, asking at most one plain question.</li>
-      <li><b>FR-005</b> A plain-language check MUST run automatically on every prompt or model change and block a release that lowers the score.</li>
-      <li><b>FR-006</b> The judge runs as an LLM-as-a-judge evaluation on captured builder replies, in whichever eval tooling the team already uses (Langfuse or PostHog).</li>
+      <li><b>FR-005</b> An LLM-as-a-judge plain-language check MUST run automatically on every prompt or model change and block a release that lowers the score.</li>
     </ul>
   </div>
   <div>
@@ -366,7 +365,7 @@
 
 <details class="skd"><summary class="sk-h">Success Criteria</summary>
 <div class="metric"><b>SC-001 · One metric</b>: first-use success, the % of new sign-ups whose first agent does what they asked on the first interaction. Read it with user sentiment on that session and with re-use of that first use case. The first use has to be a painkiller, not a vitamin: it is what brings users back.</div>
-<div class="metric"><b>SC-002 · Guardrail before shipping</b>: 90%+ of builder replies rated "a non-technical owner understands what happened and what to do next" on replayed first sessions. Baseline likely under 40% (63% of my replies had internal terms).</div>
+<div class="metric"><b>SC-002 · Guardrail before shipping</b>: 90%+ of builder replies rated "a non-technical owner understands what happened and what to do next" on replayed first sessions. Baseline likely 25% or lower (75% of builder replies had internal terms).</div>
 </details>
 
 </section>
@@ -385,7 +384,6 @@
       <li><b>The team</b>: split the work into tasks, reviewed the code, and set the bug-fix priorities day to day.</li>
       <li><b>Quality</b>: set up end-to-end tests and evals for the AI features, so we knew a change worked before users did.</li>
     </ul>
-    <p>That's why this review reads the way it does. I judge a product by how it feels to a new user, and I can also open the network tab, find the reason and propose the fix.</p>
     <p class="witty">“What appeared to be user friendly to us was too complicated for the non technical user.”<span class="cite">— me, about hyko.ai v1. Saying it out loud made us pivot, and that pivot brought our first profitable months.</span></p>
     <p class="note"><a href="https://d4shi.com">d4shi.com</a></p>
   </div>
@@ -437,14 +435,13 @@
 
 <h2><svg class="ic hum" viewBox="0 0 24 24" aria-label="my own experience" role="img"><circle cx="12" cy="7" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7.5 8.5-7.5s8.5 3.1 8.5 7.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1Z"/></svg> Hire me, and in the first month you get</h2>
 <div class="hire">
-  <div><b>PR previews</b>Every pull request gets its own live URL. Reviews happen on the real thing instead of a diff, code from AI agents gets checked without pulling the branch and running it locally, feedback comes back the same day, and anyone, not just engineers, can see what each dev is shipping.</div>
-  <div><b>AI agents testing every flow</b>Agents spin up real browsers on a schedule and walk through key user flows, like sign-up, building and publishing an agent, to check they still work. Pointed at PR previews, they catch bugs in staging before they reach users.</div>
-  <div><b>A detailed bug report</b>Every bug I find, with steps to reproduce, evidence and a suggested fix, ranked by how many users it hits.</div>
-  <div><b>A tech-debt map</b>I learn the system before I add to it. An overview of the codebase with interactive charts of hotspots, duplication and risky dependencies, each with a cost and a suggested order to fix them, so the roadmap starts from what you actually need, not from features I think are cool.</div>
+  <div><b>PR previews</b>A live URL per pull request, so anyone can review the real thing the same day.</div>
+  <div><b>AI agents testing every flow</b>Scheduled browser agents walk sign-up, build and publish, catching bugs on PR previews before users do.</div>
+  <div><b>A detailed bug report</b>Every bug I find, with repro steps, evidence and a fix, ranked by users hit.</div>
+  <div><b>A tech-debt map</b>Hotspots, duplication and risky dependencies, each with a cost and a fix order.</div>
   <div><b>Spec 001 shipped behind a flag</b>With the plain-language check running on every prompt change.</div>
   <div><b>A 6-week roadmap</b>One the team has agreed on.</div>
 </div>
-<p class="hire-extra">And because I write code, I can prototype fixes myself instead of waiting for a sprint.</p>
 </section>
 
 <div class="divider"><img src="https://cdn.d4shi.com/agentplace/assets/parrot-party.gif" alt="A party parrot dancing" width="302" height="229">Everything below is optional extra for the engineering team.</div>
@@ -454,7 +451,7 @@
 <aside class="gnote" aria-label="roast"><p>Mid-build: &quot;Firecrawl, 50 credits, reads pages behind a login!&quot; I don't know what a credit is, but apparently I'm buying fifty.</p></aside>
 <details class="skd extra" open><summary>
 <h2><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> Your stack, as an outsider sees it</h2></summary>
-<p class="desc" style="margin-bottom:12px"><b>Why this matters:</b> I mapped everything below from the outside with nothing but a browser, logged out or on a free account. Response headers name the server, the unminified development bundles spell out routes, tool names and the model registry, and server logs stream to the browser. That's a free map for anyone looking for a way in. <b>Fix:</b> drop identifying headers like <code>x-powered-by</code>, ship minified production builds, and keep logs and internal names on the server.</p>
+<p class="desc" style="margin-bottom:12px"><b>Why this matters:</b> I mapped everything below with nothing but a browser on a free account. That's a free map for anyone looking for a way in. <b>Fix:</b> drop identifying headers like <code>x-powered-by</code>, ship minified production builds, and keep logs and internal names on the server.</p>
 <h3 class="sk-h">What gives it away</h3>
 <div class="leaks">
   <div class="leak"><div class="leak-src"><span class="num">1</span> Response headers</div><div class="leak-ex"><code>server: nginx</code><br><code>x-powered-by: Express</code></div><div class="leak-out"><b>Gives away:</b> the web server and the backend framework.</div></div>
@@ -466,7 +463,6 @@
 </div>
 <p class="known-legend"><span class="known-key"></span> <b>Green dot = I've shipped with it.</b></p>
 <div class="logos"><div class="lg"><div class="lg-name">Web</div><div class="lg-row"><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/astro.svg" alt=""><span>Astro</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/react.svg" alt=""><span>React</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/vite.svg" alt=""><span>Vite</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/redux.svg" alt=""><span>Redux</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/radixui.svg" alt=""><span>Radix</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/tailwindcss.svg" alt=""><span>Tailwind</span></span></div></div><div class="lg"><div class="lg-name">Backend</div><div class="lg-row"><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/nodedotjs.svg" alt=""><span>Node.js</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/express.svg" alt=""><span>Express</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/nginx.svg" alt=""><span>nginx</span></span></div></div><div class="lg"><div class="lg-name">AWS</div><div class="lg-row"><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/amazonwebservices.svg" alt=""><span>CloudFront</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/amazons3.svg" alt=""><span>S3</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/amazonec2.svg" alt=""><span>EC2</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/amazoncognito.svg" alt=""><span>Cognito</span></span></div></div><div class="lg"><div class="lg-name">AI</div><div class="lg-row"><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/vercel.svg" alt=""><span>AI SDK</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/openai.svg" alt=""><span>OpenAI</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/anthropic.svg" alt=""><span>Anthropic</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/googlegemini.svg" alt=""><span>Gemini</span></span><span class="logo chip known"><span>Langfuse</span></span><span class="logo chip known"><span>MCP</span></span><span class="logo chip"><span>A2UI</span></span></div></div><div class="lg"><div class="lg-name">Agent runtime</div><div class="lg-row"><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/esbuild.svg" alt=""><span>esbuild</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/mobx.svg" alt=""><span>MobX</span></span><span class="logo known"><img src="https://cdn.d4shi.com/agentplace/assets/logos/react.svg" alt=""><span>React dev</span></span></div></div><div class="lg"><div class="lg-name">Telemetry</div><div class="lg-row"><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/sentry.svg" alt=""><span>Sentry</span></span><span class="logo chip"><span>Amplitude</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/googleanalytics.svg" alt=""><span>GA4</span></span><span class="logo"><img src="https://cdn.d4shi.com/agentplace/assets/logos/meta.svg" alt=""><span>Meta</span></span></div></div></div>
-<p class="note">Read from network traffic, response headers, JS bundles and server logs streamed to the browser. Amplitude, Langfuse, MCP and A2UI are shown as text.</p>
 <div class="good" style="margin-top:14px"><b><svg class="ic bot" viewBox="0 0 24 24" aria-label="found by AI agents" role="img"><path d="M12 2a1.5 1.5 0 0 1 .75 2.8V7H17a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4.25V4.8A1.5 1.5 0 0 1 12 2Zm-3 9.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM2 12h1v4H2a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm20 0a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-1v-4h1Z"/></svg> What already works well:</b> the builder is honest about what it hasn't tested. It cut my PostHog access down to read-only tools on its own, and refused both of my prompt-extraction attempts. The EU cookie banner is done right. The marketing site is a clean static build with JSON-LD and llms.txt.</div>
 </details>
 </section>
