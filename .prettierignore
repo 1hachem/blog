@@ -10,4 +10,4 @@ apps/*/dist/
 .claude/
 .agents/
 .codex/
-apps/blog/public/agentplace/
+apps/blog/public/reviews/agentplace/
